@@ -57,7 +57,7 @@ function World() {
     //obj = new SquareRenderable(this.mConstColorShader); // The head
     obj = new CircleRenderable(this.mConstColorShader); // The head
     this.mParent.addToSet(obj);
-    obj.setColor([0,0,0,1]);
+    obj.setColor([0.3,0.3,0.3,1]);
     xf = obj.getXform();
     xf.setSize(1.3, 1.3);
     
