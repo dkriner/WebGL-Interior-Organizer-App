@@ -36,6 +36,7 @@ myModule.controller("MainCtrl", function ($scope) {
     $scope.mSelectedEcho = $scope.eSelection[0].label;
     
     $scope.mHandleMode = null;
+    $scope.mShouldDrawHandle = false;
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
@@ -54,7 +55,8 @@ myModule.controller("MainCtrl", function ($scope) {
         //
         // $scope.mMyWorld.update();
         $scope.mMyWorld.draw($scope.mView);
-        $scope.mMySceneHandle.draw($scope.mView);
+        if ($scope.mShouldDrawHandle)
+            $scope.mMySceneHandle.draw($scope.mView);
     };
 
     $scope.serviceSelection = function () {

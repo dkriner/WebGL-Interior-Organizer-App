@@ -83,6 +83,5 @@ SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,dist) {
 
 SceneHandle.prototype.draw = function (aCamera, parentMat) {
     this.update();
-    if( this.vmShouldDrawHandle )
     SceneNode.prototype.draw.call(this, aCamera, parentMat);
 };
