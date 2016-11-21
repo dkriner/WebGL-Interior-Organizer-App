@@ -30,6 +30,7 @@ myModule.controller("MainCtrl", function ($scope) {
 
        // this is the model
     $scope.mMyWorld = new World();
+    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.mMyWorld.mLeftChild);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     $scope.mSelectedEcho = $scope.eSelection[0].label;
     
@@ -51,6 +52,7 @@ myModule.controller("MainCtrl", function ($scope) {
         //
         // $scope.mMyWorld.update();
         $scope.mMyWorld.draw($scope.mView);
+        $scope.mMySceneHandle.draw($scope.mView);
     };
 
     $scope.serviceSelection = function () {
