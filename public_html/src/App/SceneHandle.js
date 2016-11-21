@@ -63,15 +63,15 @@ SceneHandle.prototype.setScene = function (scene) {
     this.update();
 };
 
-SceneHandle.prototype.mouseInTransHandle = function () {
+SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY) {
     // Do Handle stuff
 };
 
-SceneHandle.prototype.mouseInScaleHandle = function () {
+SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY) {
     // Do Handle stuff
 };
 
-SceneHandle.prototype.mouseInRotHandle = function () {
+SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY) {
     // Do Handle stuff
 };
 
