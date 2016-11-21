@@ -8,7 +8,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ClassExample() {
+function World() {
     this.mSizeChange = 0.01;
     this.mChildShouldUpdate = false;
     this.mArmShouldRotate = false;
@@ -62,16 +62,16 @@ function ClassExample() {
     xf.setSize(1.3, 1.3);
 }
 
-ClassExample.prototype.toggleHeadSpin = function () {
+World.prototype.toggleHeadSpin = function () {
     this.mHeadShouldSpin = !this.mHeadShouldSpin; };
 
-ClassExample.prototype.toggleChildUpdate = function () {
+World.prototype.toggleChildUpdate = function () {
     this.mChildShouldUpdate = !this.mChildShouldUpdate; };
 
-ClassExample.prototype.toggleArmRotate = function () {
+World.prototype.toggleArmRotate = function () {
     this.mArmShouldRotate = !this.mArmShouldRotate; };
 
-ClassExample.prototype.draw = function (camera) {
+World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
 
@@ -84,7 +84,7 @@ ClassExample.prototype.draw = function (camera) {
     }
 };
 
-ClassExample.prototype.update = function () {
+World.prototype.update = function () {
     if (this.mChildShouldUpdate) {
         this.mLeftChild.update();
         this.mRightChild.update();
@@ -113,20 +113,20 @@ ClassExample.prototype.update = function () {
 
 
 
-ClassExample.prototype.leftChildXform = function () {
+World.prototype.leftChildXform = function () {
     return this.mLeftChild.getXform();
 };
 
-ClassExample.prototype.rightChildXform = function () {
+World.prototype.rightChildXform = function () {
     return this.mRightChild.getXform();
 };
 
 
-ClassExample.prototype.topChildXform = function () {
+World.prototype.topChildXform = function () {
     return this.mTopChild.getXform();
 };
 
 
-ClassExample.prototype.parentXform = function () {
+World.prototype.parentXform = function () {
     return this.mParent.getXform();
 };

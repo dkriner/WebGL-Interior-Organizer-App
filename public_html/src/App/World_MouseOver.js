@@ -3,20 +3,20 @@
  * This is the logic of our game. For now, this is very simple.
  */
 /*jslint node: true, vars: true */
-/*global ClassExample, matrix  */
+/*global World, matrix  */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 var kBoundTol = 0.2;
 // check if (wcx, wcy) is close enough to (px, py) by kBountTol
-ClassExample.prototype.withInBound = function (p, wc) {
+World.prototype.withInBound = function (p, wc) {
     return ( ((p[0] - kBoundTol) < wc[0]) && (wc[0] < (p[0] + kBoundTol)) &&
              ((p[1] - kBoundTol) < wc[1]) && (wc[1] < (p[1] + kBoundTol)) );
 };
 
 // define a hit as a WC pos within 0.2 from the center position
-ClassExample.prototype.detectMouseOver = function (wcX, wcY, shouldToggle) {
+World.prototype.detectMouseOver = function (wcX, wcY, shouldToggle) {
     var posEcho = wcX.toFixed(2).toString() + " " + wcY.toFixed(2).toString() + " :";
     var overObj = "Nothing";
     
