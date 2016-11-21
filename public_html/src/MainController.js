@@ -30,17 +30,19 @@ myModule.controller("MainCtrl", function ($scope) {
 
        // this is the model
     $scope.mMyWorld = new World();
-    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.mMyWorld.mLeftChild);
+    $scope.currScene = $scope.mMyWorld.mParent;
+    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     $scope.mSelectedEcho = $scope.eSelection[0].label;
     
+    $scope.mHandleMode = null;
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
 
     $scope.mView = new Camera(
-                [0, 3],         // wc Center
-                15,                // wc Wdith
+                [0, 3],             // wc Center
+                15,                 // wc Wdith
                 [0, 0, 800, 600]);  // viewport: left, bottom, width, height
 
     $scope.mainTimerHandler = function () {
@@ -72,11 +74,36 @@ myModule.controller("MainCtrl", function ($scope) {
         }
     };
 
-    $scope.serviceMove = function (event) {
+    $scope.onMouseDown = function (event) {
+        if (event.which === 1) { // left
+            var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
+            var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
+            var dist = 3;
+            
+            if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
+                $scope.handleMode = "Translate";
+            else if ($scope.mMySceneHandle.mouseInRotHandle(x, y, dist))
+                $scope.handleMode = "Rotation";
+            else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
+                $scope.handleMode = "Scale";
+        }
+    };
+
+    $scope.onMouseMove = function (event) {
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-        $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
-        $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
+        var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
+        var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
         $scope.mMouseOver = $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
+
+        if (event.which === 1 && $scope.handleMode) {
+            if ($scope.handleMode == "Translate")
+                $scope.currScene.getXForm().setPosition(x, y)
+            else if ($scope.handleMode == "Rotation") 
+                $scope.currScene.getXForm().setRotationInRad(Math.atan2(x,y));
+            else if ($scope.handleMode == "Scale")
+                ; // TODO $scope.currScene.getXForm()
+        }
+        else $scope.handleMode = null;
     };
 });

@@ -24,10 +24,14 @@ Renderable.prototype.update = function () {};
 // Public methods
 //**-----------------------------------------
 Renderable.prototype.draw = function (camera) {};
-Renderable.prototype.computeAndLoadModelXform = function (parentMat) {
+Renderable.prototype.computeXform = function (parentMat) {
     var m = this.mXform.getXform();
     if (parentMat !== undefined)
         mat4.multiply(m, parentMat, m);
+    return m;
+};
+Renderable.prototype.computeAndLoadModelXform = function (parentMat) {
+    var m = this.computeXform(parentMat);
     this.mShader.loadObjectTransform(m);
 };
 
