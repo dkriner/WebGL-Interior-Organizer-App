@@ -60,6 +60,14 @@ function World() {
     obj.setColor([0.9, 0.8, 0.8, 1]);
     xf = obj.getXform();
     xf.setSize(1.3, 1.3);
+    
+    // ********************************************
+    //                The initial bed
+    // ********************************************
+    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true);
+    var bed = new Bed(this.mConstColorShader, "Bed1", 
+                            -2, 0);
+    this.mBedParent.addAsChild(bed);
 }
 
 World.prototype.toggleHeadSpin = function () {
@@ -75,7 +83,9 @@ World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
 
+    
     this.mParent.draw(camera);
+    //this.mBedParent.draw(camera);
     if (this.vmShouldDrawControl) {
         this.mHeadSq.draw(camera);
         this.mBlueSq.draw(camera);
