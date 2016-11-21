@@ -78,7 +78,7 @@ myModule.controller("MainCtrl", function ($scope) {
         if (event.which === 1) { // left
             var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
             var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
-            var dist = 3;
+            var dist = 0.5;
             
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
                 $scope.handleMode = "Translate";
