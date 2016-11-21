@@ -13,6 +13,11 @@ function PivotedTransform() {
     Transform.call(this);
     this.mPivot = vec2.fromValues(0, 0);  // this is the pivot
 }
+
+function PivotedTransform(xPos, yPos) {
+    Transform.call(this);
+    this.mPivot = vec2.fromValues(xPos, yPos);  // this is the pivot
+}
 gEngine.Core.inheritPrototype(PivotedTransform, Transform);
 
 // <editor-fold desc="Public Methods">

@@ -14,7 +14,8 @@ function SceneNode(shader, name, drawPivot) {
     this.mName = name;
     this.mSet = [];
     this.mChildren = [];
-    this.mXform = new PivotedTransform();
+    this.mXform = new PivotedTransform(-4, 4);
+    //this.mXform = new PivotedTransform();
 
     // this is for debugging only: for drawing the pivot position
     this.mPivotPos = null;

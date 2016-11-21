@@ -62,12 +62,32 @@ function World() {
     xf.setSize(1.3, 1.3);
     
     // ********************************************
-    //                The initial bed
+    //                  the beds
     // ********************************************
     this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true);
-    var bed = new Bed(this.mConstColorShader, "Bed1", 
-                            -2, 0);
+    this.mArrayOfBeds = [];
+    var initBedSize = [5, 7];
+    
+    var bedColor = [[0.8, 0, 0, 1], 
+                    [0, 1, 0, 1], 
+                    [0, 0, 1, 1]];
+    
+    var bedNames = ["Bed1", "Bed2", "Bed3"];
+    var firstBedPos = [-4, 4];
+
+    var bed = new Bed(this.mConstColorShader, bedNames[0], 
+                        firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
+    this.mArrayOfBeds.push(bed);
     this.mBedParent.addAsChild(bed);
+
+    for (var i = 1; i < bedNames.length; i++)
+    {
+        var bed = new Bed(this.mConstColorShader, bedNames[i], 
+                            firstBedPos[0] + i + 4, firstBedPos[1], bedColor[i], initBedSize);
+        this.mArrayOfBeds.push(bed);
+        this.mBedParent.addAsChild(bed);
+        //this.mBedParent.addToSet(bed);
+    }
 }
 
 World.prototype.toggleHeadSpin = function () {
@@ -83,15 +103,25 @@ World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
 
-    
     this.mParent.draw(camera);
-    //this.mBedParent.draw(camera);
+//    this.mArrayOfBeds.forEach(function(element) 
+//    {
+//        element.draw(camera);
+//    });
+    this.mBedParent.draw(camera);
+    
+    // display "Bed1" on top of others
+//    for (var i = this.mArrayOfBeds.length - 1; i >= 0; i--)
+//    {
+//        alert(i);
+//        this.mArrayOfBeds[i].draw(camera);
+//    }
+    
     if (this.vmShouldDrawControl) {
         this.mHeadSq.draw(camera);
         this.mBlueSq.draw(camera);
         this.mRedSq.draw(camera);
         this.mXfSq.draw(camera);
-        this.bed.draw(camera);
     }
 };
 
@@ -100,7 +130,6 @@ World.prototype.update = function () {
         this.mLeftChild.update();
         this.mRightChild.update();
         this.mTopChild.update();
-        
     }
     
     // 1. rotate the head (middle square on body)
@@ -140,5 +169,6 @@ World.prototype.topChildXform = function () {
 
 
 World.prototype.parentXform = function () {
-    return this.mParent.getXform();
+    return this.mBedParent.getXform();
+    //return this.mParent.getXform();
 };
