@@ -26,3 +26,6 @@ Thumbs.db
 # node / bower
 node_modules
 bower_components
+
+# netbeans
+.nbproject/private
