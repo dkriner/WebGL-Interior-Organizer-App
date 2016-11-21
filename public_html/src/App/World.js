@@ -57,7 +57,7 @@ function World() {
     //obj = new SquareRenderable(this.mConstColorShader); // The head
     obj = new CircleRenderable(this.mConstColorShader); // The head
     this.mParent.addToSet(obj);
-    obj.setColor([0.9, 0.8, 0.8, 1]);
+    obj.setColor([0,0,0,1]);
     xf = obj.getXform();
     xf.setSize(1.3, 1.3);
     
@@ -91,6 +91,7 @@ World.prototype.draw = function (camera) {
         this.mBlueSq.draw(camera);
         this.mRedSq.draw(camera);
         this.mXfSq.draw(camera);
+        this.bed.draw(camera);
     }
 };
 
@@ -99,6 +100,7 @@ World.prototype.update = function () {
         this.mLeftChild.update();
         this.mRightChild.update();
         this.mTopChild.update();
+        
     }
     
     // 1. rotate the head (middle square on body)

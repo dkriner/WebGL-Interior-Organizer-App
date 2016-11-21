@@ -13,6 +13,8 @@ function SceneHandle(shader, scene) {
     SceneNode.call(this, shader, scene.getName() + " Handle", true);
     var obj, xf, mForm = this.getXform();
     var barWidth = 0.1, barLen = 1.5;
+    
+    this.vmShouldDrawHandle = false;
 
     this.mScene = scene;
     this.update();
@@ -81,5 +83,6 @@ SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,dist) {
 
 SceneHandle.prototype.draw = function (aCamera, parentMat) {
     this.update();
+    if( this.vmShouldDrawHandle )
     SceneNode.prototype.draw.call(this, aCamera, parentMat);
 };
