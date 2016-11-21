@@ -21,13 +21,13 @@ gEngine.Core.inheritPrototype(CircleRenderable, Renderable);
 // To get all the methods defined in the super-class.prototype
 
 // Ovreride the super-class "draw()" method!
-CircleRenderable.prototype.draw = function (camera) {
+CircleRenderable.prototype.draw = function (camera, parentMat) {
     var gl = gEngine.Core.getGL();
     this.mShader.activateShader(
         gEngine.VertexBuffer.getGLVertexRefCIRCLE(),
         this.mColor,        // this is defined in the super class!
         camera.getVPMatrix());  // always activate the shader first!
-    this.mShader.loadObjectTransform(this.mXform.getXform());
+    this.computeAndLoadModelXform(parentMat);
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 22);
 };
 
