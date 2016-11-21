@@ -76,9 +76,11 @@ myModule.controller("MainCtrl", function ($scope) {
 
     $scope.onMouseDown = function (event) {
         if (event.which === 1) { // left
-            var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
-            var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
-            var dist = 3;
+            var x = $scope.mLastWCPosX;
+            //this.mView.mouseWCX(event.canvasX);
+            var y = $scope.mLastWCPosY;
+            //this.mView.mouseWCY(event.canvasY);
+            var dist = 0.2;
             
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
                 $scope.handleMode = "Translate";
@@ -97,11 +99,11 @@ myModule.controller("MainCtrl", function ($scope) {
         $scope.mMouseOver = $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
 
         if (event.which === 1 && $scope.handleMode) {
-            if ($scope.handleMode == "Translate")
-                $scope.currScene.getXForm().setPosition(x, y)
-            else if ($scope.handleMode == "Rotation") 
+            if ($scope.handleMode === "Translate")
+                $scope.currScene.getXForm().setPosition(x, y);
+            else if ($scope.handleMode === "Rotation") 
                 $scope.currScene.getXForm().setRotationInRad(Math.atan2(x,y));
-            else if ($scope.handleMode == "Scale")
+            else if ($scope.handleMode === "Scale")
                 ; // TODO $scope.currScene.getXForm()
         }
         else $scope.handleMode = null;

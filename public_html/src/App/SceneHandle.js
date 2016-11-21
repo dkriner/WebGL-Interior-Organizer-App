@@ -50,6 +50,14 @@ function SceneHandle(shader, scene) {
     xf.setSize(0.2, 0.2);
     xf.setPosition(barLen, 0);
     this.addToSet(obj);
+    
+    // the trans handle tip
+    this.transTip = obj = new SquareRenderable(shader);
+    xf = obj.getXform();
+    obj.setColor([1,0,0,1]);
+    xf.setSize(0.3,0.3);
+    xf.setPosition(0,0);
+    this.addToSet(obj);
 }
 gEngine.Core.inheritPrototype(SceneHandle, SceneNode);
 
@@ -66,19 +74,34 @@ SceneHandle.prototype.setScene = function (scene) {
 };
 
 SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY,dist) {
-    // Do Handle stuff
+    var transX = this.transTip.getXform().getXPos();
+    var transY = this.transTip.getXform().getYPos();
+
+    return ( ((transX - dist) < wcX) && (wcX < (transX + dist)) &&
+             ((transY - dist) < wcY) && (wcY < (transY + dist)) );
 };
 
 SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY,dist) {
-    // Do Handle stuff
+    var xTipX = this.xBarTip.getXform().getXPos();
+    var xTipY = this.xBarTip.getXform().getYPos();
+
+     return (((xTipX - dist) < wcX) && (wcX < (xTipX + dist)) &&
+             ((xTipY - dist) < wcY) && (wcY < (xTipY + dist)) );
 };
 
 SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,dist) {
-    // Do Handle stuff
+    var yTipX = this.yBarTip.getXform().getXPos();
+    var yTipY = this.yBarTip.getXform().getYPos();
+    
+    return ( ((yTipX - dist) < wcX) && (wcX < (yTipX + dist)) &&
+             ((yTipY - dist) < wcY) && (wcY < (yTipY + dist)) );
 };
 
 SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,dist) {
-    // Do Handle stuff
+    
+   return ( ((targetX - dist) <wcX) && (wcX < (targetX + dist)) &&
+             ((targetY - dist) < wcY) && (wcY < (targetY + dist)) );
+     
 };
 
 SceneHandle.prototype.draw = function (aCamera, parentMat) {
