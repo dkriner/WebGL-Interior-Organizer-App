@@ -38,6 +38,10 @@ function Bed(shader, name, xPivot, yPivot, baseColor, initBedSize) {
     {
 
     }
+    else if (name === "Bed4")
+    {
+
+    }
 
     // ******************************************
     // BED

@@ -34,7 +34,7 @@ function World() {
     this.mXfSq.setColor([0.4, 0., 0.4, 1]);
     this.mXfSq.getXform().setSize(0.2, 0.2);
 
-    this.mParent = new SceneNode(this.mConstColorShader, "Root", true);
+    this.mParent = new SceneNode(this.mConstColorShader, "Root", true, 0, 0);
     this.mLeftChild = new ArmSegment(this.mConstColorShader, "LeftGen 1",
                             -2, 0);
     this.mParent.addAsChild(this.mLeftChild);
@@ -64,7 +64,9 @@ function World() {
     // ********************************************
     //                  the beds
     // ********************************************
-    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true);
+    var firstBedPos = [-4, 4];
+    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true, 
+                                    firstBedPos[0], firstBedPos[1]);
     this.mArrayOfBeds = [];
     var initBedSize = [5, 7];
     
@@ -73,7 +75,6 @@ function World() {
                     [0, 0, 1, 1]];
     
     var bedNames = ["Bed1", "Bed2", "Bed3"];
-    var firstBedPos = [-4, 4];
 
     var bed = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);

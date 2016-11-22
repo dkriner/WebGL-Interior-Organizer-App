@@ -10,11 +10,11 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 
-function SceneNode(shader, name, drawPivot) {
+function SceneNode(shader, name, drawPivot, xPos, yPos) {
     this.mName = name;
     this.mSet = [];
     this.mChildren = [];
-    this.mXform = new PivotedTransform(-4, 4);
+    this.mXform = new PivotedTransform(xPos, yPos);
     //this.mXform = new PivotedTransform();
 
     // this is for debugging only: for drawing the pivot position

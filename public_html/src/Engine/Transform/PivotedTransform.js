@@ -9,10 +9,10 @@
 
 "use strict";
 
-function PivotedTransform() {
-    Transform.call(this);
-    this.mPivot = vec2.fromValues(0, 0);  // this is the pivot
-}
+//function PivotedTransform() {
+//    Transform.call(this);
+//    this.mPivot = vec2.fromValues(0, 0);  // this is the pivot
+//}
 
 function PivotedTransform(xPos, yPos) {
     Transform.call(this);
