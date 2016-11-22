@@ -22,10 +22,10 @@ myModule.controller("MainCtrl", function ($scope) {
     
     // Radio button selection support
     $scope.eSelection = [
-        {label: "Parent"},
-        {label: "LeftChild"},
-        {label: "TopChild"},
-        {label: "RightChild"},
+        {label: "Room"},
+        {label: "Parent Bed"},
+        {label: "Child Bed #1"},
+        {label: "Child Bed #2"},
     ];
 
        // this is the model
@@ -41,6 +41,7 @@ myModule.controller("MainCtrl", function ($scope) {
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
+
 
     $scope.mView = new Camera(
                 [0, 3],             // wc Center
@@ -96,7 +97,39 @@ myModule.controller("MainCtrl", function ($scope) {
                 $scope.handleMode = "Rotation";
             else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
                 $scope.handleMode = "Scale";
+            
+            //checking which object is being clicked on
+            if($scope.withinRoom(x,y)){
+                $scope.mSelectedEcho = $scope.eSelection[0].label;
+                //room is selected object
+            }
+            else{
+                for(var i = 0; i < $scope.mMyWorld.mRoomParent.mChildren.length; i++){
+                    //if
+                    //test within
+                    //set $scope.mSelectedEcho = $scope.eSelection[i].label
+                    //break
+                    
+                }
+            }
+                
+            //for(var i = 0; $scope.currScene.mChildren.length)
+            
         }
+    };
+    
+    $scope.withinRoom = function (wcX, wcY){        //this needs tuning
+        var roomXform = $scope.mMyWorld.mRoomParent.mSet[0].getXform();
+        var roomX = roomXform.getXPos();
+        var roomY = roomXform.getYPos();
+        var roomWidth = roomXform.getWidth() - $scope.mView.getWCWidth()/2;
+        var roomHeight = roomXform.getHeight() - $scope.mView.getWCHeight()/2;
+        var mousePos = [wcX,wcY];
+        
+        console.log("roomx " + roomX + " roomy " + roomY + " roomWidth: " + roomWidth + " roomHeight: "  + roomHeight);
+        console.log((wcX > roomX) && (wcX < roomX + roomWidth) && (wcY > roomY) && (wcY < roomY + roomHeight));
+        
+        return ((wcX > roomX) && (wcX < roomX + roomWidth) && (wcY > roomY) && (wcY < roomY + roomHeight));
     };
 
     $scope.onMouseMove = function (event) {

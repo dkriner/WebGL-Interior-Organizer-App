@@ -147,3 +147,4 @@ Bed.prototype.update = function () {
 //    if (xf.getWidth() > 0.7 || xf.getWidth() < 0.4)
 //        this.mPulseRate = -this.mPulseRate;
 };
+

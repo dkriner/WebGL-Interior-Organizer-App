@@ -91,8 +91,6 @@ SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,dist) {
     var yTipX = this.yBarTip.getXform().getXPos();
     var yTipY = this.yBarTip.getXform().getYPos();
     
-    //console.log("targetX: " + yTipX + " targetY: " + yTipY + " wcX: " + wcX + " wcY: " + wcY + " dist: " + dist);
-    //console.log(this._mouseWithin(yTipX, yTipY, wcX, wcY, dist));
     return this._mouseWithin(yTipX, yTipY, wcX, wcY, dist);
     
 };
@@ -101,11 +99,6 @@ SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,dist) {
     
    return ( ((targetX - dist) <wcX) && (wcX < (targetX + dist)) &&
              ((targetY - dist) < wcY) && (wcY < (targetY + dist)) );
-     
-   //console.log("targetX: " + targetX + " targetY: " + targetY + " wcX: " + wcX + " wcY: " + wcY + " dist: " + dist);
-   
-//   console.log(( ((targetX - dist) <wcX) && (wcX < (targetX + dist)) &&
-//             ((targetY - dist) < wcY) && (wcY < (targetY + dist)) ));
 };
 
 

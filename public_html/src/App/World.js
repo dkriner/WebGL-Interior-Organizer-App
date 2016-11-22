@@ -77,7 +77,7 @@ function World() {
     xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
     
     var obj = new SquareRenderable(this.mConstColorShader);
-    obj.setColor([0, 0, 0, 1]);
+    obj.setColor([0.3, 0.3, 0.3, 1]);
     
     var xf = obj.getXform();
     xf.setSize(14.75, 11);
