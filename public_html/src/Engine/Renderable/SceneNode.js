@@ -21,7 +21,7 @@ function SceneNode(shader, name, drawPivot, xPos, yPos) {
     this.mSet = [];
     this.mChildren = [];
     this.mXform = new PivotedTransform(xPos, yPos);
-    //this.mXform = new PivotedTransform();
+    this.mParent = null;
 
     // this is for debugging only: for drawing the pivot position
     this.mPivotPos = null;
@@ -45,11 +45,14 @@ SceneNode.prototype.getRenderableAt = function (index) {
 
 SceneNode.prototype.addToSet = function (obj) {
     this.mSet.push(obj);
+    obj.mParent = this;
 };
 SceneNode.prototype.removeFromSet = function (obj) {
     var index = this.mSet.indexOf(obj);
-    if (index > -1)
+    if (index > -1) {
+        this.mSet[index].mParent = null;
         this.mSet.splice(index, 1);
+    }
 };
 SceneNode.prototype.moveToLast = function (obj) {
     this.removeFromSet(obj);
@@ -58,12 +61,15 @@ SceneNode.prototype.moveToLast = function (obj) {
 
 // support children opeations
 SceneNode.prototype.addAsChild = function (node) {
+    node.mParent = this;
     this.mChildren.push(node);
 };
 SceneNode.prototype.removeChild= function (node) {
     var index = this.mChildren.indexOf(node);
-    if (index > -1)
+    if (index > -1) {
+        this.mChildren[index].mParent = null;
         this.mChildren.splice(index, 1);
+    }
 };
 SceneNode.prototype.getChildAt = function (index) {
     return this.mChildren[index];
