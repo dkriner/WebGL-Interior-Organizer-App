@@ -8,11 +8,13 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Bed(shader, name, xPivot, yPivot, baseColor, initBedSize) {
+function Bed(shader, name, xPos, yPos, baseColor, initBedSize) {
     SceneNode.call(this, shader, name, true);   // calling super class constructor
-
+    
     var xf = this.getXform();
-    xf.setPivot(xPivot, yPivot);
+    xf.setPosition(xPos, yPos);
+    //xf.setPivot(xPivot, yPivot);
+    var scale = 1;
     
     // always initialize sizes and positions to Bed1
     var bedSize = initBedSize;
@@ -21,11 +23,11 @@ function Bed(shader, name, xPivot, yPivot, baseColor, initBedSize) {
     var leftCircleHeadSize = [0.75, 0.75];
     var rightCircleHeadSize = [0.75, 0.75];
 
-    var bedPos = [xPivot, yPivot];
-    var leftSquarePillowPos = [xPivot - 1.25, 2.5 + yPivot];
-    var rightSquarePillowPos = [xPivot + 1.25, 2.5 + yPivot];
-    var leftCircleHeadPos = [xPivot - 1.25, 2.25 + yPivot];
-    var rightCircleHeadPos = [xPivot + 1.25, 2.25 + yPivot];
+    var bedPos = [0, 0];
+    var leftSquarePillowPos = [0 - 1.25, 2.5];
+    var rightSquarePillowPos = [1.25, 2.5];
+    var leftCircleHeadPos = [0 - 1.25, 2.25];
+    var rightCircleHeadPos = [0 + 1.25, 2.25];
 
     this.bedColor = baseColor;
 
@@ -55,13 +57,26 @@ function Bed(shader, name, xPivot, yPivot, baseColor, initBedSize) {
     // scale to 1/3
     else if (name === "Bed Gen3Baby")
     {
-
+        scale = 1/3;
     }
-    // scale to 1/4
-    else if (name === "Bed4")
-    {
 
-    }
+    bedSize[0] *= scale;
+    bedSize[1] *= scale;
+    leftSquarePillowSize[0] *= scale;
+    leftSquarePillowSize[1] *= scale;
+    rightSquarePillowSize[0] *= scale;
+    rightSquarePillowSize[1] *= scale;
+    leftCircleHeadSize[0] *= scale;
+    leftCircleHeadSize[1] *= scale;
+    rightCircleHeadSize[0] *= scale;
+    rightCircleHeadSize[1] *= scale;
+
+    //bedPos = ;
+    leftSquarePillowPos = [0 - 1.25 * scale, 2.5 * scale];
+    rightSquarePillowPos = [1.25 * scale, 2.5 * scale];
+    leftCircleHeadPos = [0 - 1.25 * scale, 2.25 * scale];
+    rightCircleHeadPos = [1.25 * scale, 2.25 * scale];
+
 
     // ******************************************
     // BED

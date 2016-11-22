@@ -96,24 +96,29 @@ function World() {
     
     var bedNames = ["Bed Gen2Main", "Bed Gen2Slider", "Bed Gen3Baby"];
 
+    // Bed Gen2Main   ********************************************
+    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true, 
+                                    firstBedPos[0], firstBedPos[1]);
+    this.mArrayOfSceneNodes.push(this.mBedParent);
+    this.mRoomParent.addAsChild(this.mBedParent);
+    
     var bed = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
     this.mArrayOfBeds.push(bed);
-    this.mRoomParent.addAsChild(bed);
-//
-//    for (var i = 1; i < bedNames.length; i++)
-//    {
-        var bed = new Bed(this.mConstColorShader, bedNames[1], 
-                            firstBedPos[0] + 4, firstBedPos[1], bedColor[1], initBedSize);
-        this.mArrayOfBeds.push(bed);
-        this.mRoomParent.addAsChild(bed);
-//    }
+    //this.mRoomParent.addAsChild(bed);
+    this.mBedParent.addAsChild(bed);
 
-        // TINY BED INSIDE BED 1
-        var bed = new Bed(this.mConstColorShader, bedNames[2], 
-                            firstBedPos[0], firstBedPos[1], bedColor[2], initBedSize);
-        this.mArrayOfBeds.push(bed);
-        this.mRoomParent.addAsChild(bed);
+    // Bed Gen2Slider   ********************************************
+    var bed = new Bed(this.mConstColorShader, bedNames[1], 
+                        firstBedPos[0] + 4, firstBedPos[1], bedColor[1], initBedSize);
+    this.mArrayOfBeds.push(bed);
+    this.mRoomParent.addAsChild(bed);
+    
+    // Bed Gen3Baby   ********************************************
+    var bed = new Bed(this.mConstColorShader, bedNames[2], 
+                        firstBedPos[0], firstBedPos[1], bedColor[2], initBedSize);
+    this.mArrayOfBeds.push(bed);
+    this.mRoomParent.addAsChild(bed);
 }
 
 World.prototype.toggleHeadSpin = function () {
