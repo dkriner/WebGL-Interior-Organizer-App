@@ -30,14 +30,34 @@ function Bed(shader, name, xPivot, yPivot, baseColor, initBedSize) {
     this.bedColor = baseColor;
 
     // set other bed sizes and positions
-    if (name === "Bed2")
+    // scale to 1/2
+    if (name === "Bed Gen2Slider")
     {
-        
+//        bedSize[0] *= ;
+//        bedSize[1] *= ;
+//        leftSquarePillowSize[0] *= ;
+//        leftSquarePillowSize[1] *= ;
+//        rightSquarePillowSize[0] *= ;
+//        rightSquarePillowSize[1] *= ;
+//        leftCircleHeadSize[0] = ;
+//        leftCircleHeadSize[1] = ;
+//        rightCircleHeadSize[0] = ;
+//        rightCircleHeadSize[1] = ;
+//
+//
+//
+//        bedPos = ;
+//        leftSquarePillowPos = [xPivot - 1.25, 2.5 + yPivot];
+//        rightSquarePillowPos = [xPivot + 1.25, 2.5 + yPivot];
+//        leftCircleHeadPos = [xPivot - 1.25, 2.25 + yPivot];
+//        rightCircleHeadPos = [xPivot + 1.25, 2.25 + yPivot];
     }
-    else if (name === "Bed3")
+    // scale to 1/3
+    else if (name === "Bed Gen3Baby")
     {
 
     }
+    // scale to 1/4
     else if (name === "Bed4")
     {
 

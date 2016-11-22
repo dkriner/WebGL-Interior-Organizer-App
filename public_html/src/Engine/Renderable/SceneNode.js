@@ -11,6 +11,12 @@
 
 
 function SceneNode(shader, name, drawPivot, xPos, yPos) {
+    if (xPos === undefined)
+        xPos = 0;
+    if (yPos === undefined)
+        yPos = 0;
+
+    
     this.mName = name;
     this.mSet = [];
     this.mChildren = [];

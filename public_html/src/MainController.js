@@ -30,7 +30,8 @@ myModule.controller("MainCtrl", function ($scope) {
 
        // this is the model
     $scope.mMyWorld = new World();
-    $scope.currScene = $scope.mMyWorld.mParent;
+    //$scope.currScene = $scope.mMyWorld.mParent;
+    $scope.currScene = $scope.mMyWorld.mRoomParent;
     $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     $scope.mSelectedEcho = $scope.eSelection[0].label;

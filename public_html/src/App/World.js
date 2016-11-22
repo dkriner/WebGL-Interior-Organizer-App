@@ -21,6 +21,7 @@ function World() {
         "src/GLSLShaders/SimpleVS.glsl",      // Path to the VertexShader 
         "src/GLSLShaders/SimpleFS.glsl");    // Path to the simple FragmentShader
         
+    // CONTROL POINTS
     this.mHeadSq = new SquareRenderable(this.mConstColorShader);
     this.mHeadSq.setColor([0.2, 1.0, 0.2, 1]);
     this.mHeadSq.getXform().setSize(0.25, 0.25);
@@ -62,11 +63,30 @@ function World() {
     xf.setSize(1.3, 1.3);
     
     // ********************************************
+    //                  the room
+    // ********************************************
+    this.mArrayOfSceneNodes = [];
+    
+    var firstBedPos = [-4, 4];
+    var centerOfRoom = [0, 3];
+    this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
+                                    centerOfRoom[0], centerOfRoom[1]);
+    this.mArrayOfSceneNodes.push(this.mRoomParent);
+    
+    var xfRoomPXf = this.mRoomParent.getXform();
+    xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
+    
+    var obj = new SquareRenderable(this.mConstColorShader);
+    obj.setColor([0, 0, 0, 1]);
+    
+    var xf = obj.getXform();
+    xf.setSize(14.75, 11);
+    xf.setPosition(centerOfRoom[0], centerOfRoom[1]);
+    this.mRoomParent.addToSet(obj);
+    
+    // ********************************************
     //                  the beds
     // ********************************************
-    var firstBedPos = [-4, 4];
-    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true, 
-                                    firstBedPos[0], firstBedPos[1]);
     this.mArrayOfBeds = [];
     var initBedSize = [5, 7];
     
@@ -74,21 +94,26 @@ function World() {
                     [0, 1, 0, 1], 
                     [0, 0, 1, 1]];
     
-    var bedNames = ["Bed1", "Bed2", "Bed3"];
+    var bedNames = ["Bed Gen2Main", "Bed Gen2Slider", "Bed Gen3Baby"];
 
     var bed = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
     this.mArrayOfBeds.push(bed);
-    this.mBedParent.addAsChild(bed);
-
-    for (var i = 1; i < bedNames.length; i++)
-    {
-        var bed = new Bed(this.mConstColorShader, bedNames[i], 
-                            firstBedPos[0] + i + 4, firstBedPos[1], bedColor[i], initBedSize);
+    this.mRoomParent.addAsChild(bed);
+//
+//    for (var i = 1; i < bedNames.length; i++)
+//    {
+        var bed = new Bed(this.mConstColorShader, bedNames[1], 
+                            firstBedPos[0] + 4, firstBedPos[1], bedColor[1], initBedSize);
         this.mArrayOfBeds.push(bed);
-        this.mBedParent.addAsChild(bed);
-        //this.mBedParent.addToSet(bed);
-    }
+        this.mRoomParent.addAsChild(bed);
+//    }
+
+        // TINY BED INSIDE BED 1
+        var bed = new Bed(this.mConstColorShader, bedNames[2], 
+                            firstBedPos[0], firstBedPos[1], bedColor[2], initBedSize);
+        this.mArrayOfBeds.push(bed);
+        this.mRoomParent.addAsChild(bed);
 }
 
 World.prototype.toggleHeadSpin = function () {
@@ -109,7 +134,7 @@ World.prototype.draw = function (camera) {
 //    {
 //        element.draw(camera);
 //    });
-    this.mBedParent.draw(camera);
+    this.mRoomParent.draw(camera);
     
     // display "Bed1" on top of others
 //    for (var i = this.mArrayOfBeds.length - 1; i >= 0; i--)
@@ -170,6 +195,6 @@ World.prototype.topChildXform = function () {
 
 
 World.prototype.parentXform = function () {
-    return this.mBedParent.getXform();
+    return this.mRoomParent.getXform();
     //return this.mParent.getXform();
 };
