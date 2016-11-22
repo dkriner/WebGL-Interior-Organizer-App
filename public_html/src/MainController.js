@@ -30,8 +30,8 @@ myModule.controller("MainCtrl", function ($scope) {
 
        // this is the model
     $scope.mMyWorld = new World();
-    //$scope.currScene = $scope.mMyWorld.mParent;
-    $scope.currScene = $scope.mMyWorld.mRoomParent;
+    // $scope.currScene = $scope.mMyWorld.mRoomParent;
+    $scope.currScene = $scope.mMyWorld.mArrayOfBeds[2];
     $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     $scope.mSelectedEcho = $scope.eSelection[0].label;
@@ -89,7 +89,7 @@ myModule.controller("MainCtrl", function ($scope) {
             //this.mView.mouseWCX(event.canvasX);
             var y = $scope.mLastWCPosY;
             //this.mView.mouseWCY(event.canvasY);
-            var dist = 0.2;
+            var dist = 0.4;
             
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
                 $scope.handleMode = "Translate";
@@ -136,16 +136,26 @@ myModule.controller("MainCtrl", function ($scope) {
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
         var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
+            x -= $scope.currScene.getXform().getPivot()[0];
         var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
-        $scope.mMouseOver = $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
+            y -= $scope.currScene.getXform().getPivot()[1];
+
+        $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
 
         if (event.which === 1 && $scope.handleMode) {
             if ($scope.handleMode === "Translate")
-                $scope.currScene.getXForm().setPosition(x, y);
-            else if ($scope.handleMode === "Rotation") 
-                $scope.currScene.getXForm().setRotationInRad(Math.atan2(x,y));
-            else if ($scope.handleMode === "Scale")
-                ; // TODO $scope.currScene.getXForm()
+                $scope.currScene.getXform().setPosition(x, y);
+            else if ($scope.handleMode === "Rotation") {
+                x -= $scope.currScene.getXform().getXPos();
+                y -= $scope.currScene.getXform().getYPos();
+                $scope.currScene.getXform().setRotationInRad(-Math.atan2(x,y) + Math.PI/2);
+            }
+            else if ($scope.handleMode === "Scale") {
+                x -= $scope.currScene.getXform().getXPos();
+                y -= $scope.currScene.getXform().getYPos();
+                $scope.currScene.getXform().setSize(x+1,y);
+                ; // TODO fix scaling while rotated
+            }
         }
         else $scope.handleMode = null;
     };
