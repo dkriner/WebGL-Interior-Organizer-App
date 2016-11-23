@@ -118,7 +118,7 @@ function World() {
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0], firstBedPos[1] - 1.75, bedColor[2], initBedSize);
     this.mArrayOfBeds.push(this.mBed3);
-    this.mRoomParent.addAsChild(this.mBed3);
+    // this.mRoomParent.addAsChild(this.mBed3);
     this.mBedParent.addAsChild(this.mBed3);
 }
 
