@@ -128,3 +128,5 @@ SceneHandle.prototype.draw = function (aCamera, parentMat) {
     this.update();
     SceneNode.prototype.draw.call(this, aCamera, parentMat);
 };
+
+

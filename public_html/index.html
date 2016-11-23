@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <style type ="text/css">
+            h1{
+                text-decoration: overline;
+                text-align: center;
+                font-family: "Georgia";
+                color: midnightblue;
+                
+            }
+            h2{
+                text-align: center;
+                text-decoration: underline;
+                font-family: "Georgia";
+                color: midnightblue;
+            }
+            body{
+                font-family: "Georgia";
+                color: midnightblue;
+            }
+            authors{
+                font-family: "Georgia";
+                position: absolute;
+                    TOP: 5px;
+                    LEFT: 0px;
+            }
+        </style>
         <title>MP5: Hierarchical Modeling and Direct Manipulation</title>
         <link rel ="icon" type ="image/x-icon" href="./assets/favicon.png">
 
@@ -52,22 +78,25 @@
                timeron="true"
                callback="mainTimerHandler"></css-timer>
                
-    <br>
-    <css-xform model="mSelectedXform"> </css-xform>
+    
     <div style="display: inline-block">
-        Draw Control Points: <input type="checkbox" ng-model="mMyWorld.vmShouldDrawControl">
-        Draw Scene Handle: <input type="checkbox" ng-model="mShouldDrawHandle"><br>
-        Mouse Over: <input type="text" ng-model="mMouseOver" size=50 readonly><br>
         
+        
+        
+    </div>
+    
+        <h1>MP5: Hierarchical Modeling and Direct Manipulation</h1>
+        <br>
+        <h3>Selected Object</h3> 
         <label ng-repeat="myOp in eSelection">
         {{myOp.label}}<input type="radio" 
                     value={{myOp.label}}
+                    font ="Georgia"
                     ng-model="$parent.mSelectedEcho"
-                    ng-click="serviceSelection()"> &nbsp;
+                    ng-click="serviceSelection()"
+                    > &nbsp; <br>
         </label>
-    </div>
-        <br>
-        <canvas             
+        <canvas style = "position:absolute; TOP:175px; LEFT:230px;"            
             ng-mousemove="onMouseMove($event)"
             ng-mousedown="onMouseDown($event)"
             id="GLCanvas" width="800" height="600">
@@ -75,6 +104,19 @@
             Your browser does not support the HTML5 canvas.
             <!-- this message will show only if WebGL clearing failed -->
         </canvas>
+        <br>
+        
+        <css-xform model="mSelectedXform">  </css-xform>
+        <br><br><br>
+        Draw Control Points: <input type="checkbox" ng-model="mMyWorld.vmShouldDrawControl"> <br>
+        Draw Scene Handle: <input type="checkbox" ng-model="mShouldDrawHandle"><br>
+        Mouse Over: <br> <input type="text" ng-model="mMouseOver" size=20 readonly><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br>
+        Authors: <br>
+        John Fitzgerald <br>
+        Griffin Howlett <br>
+        Darren Kriner   <br>
+        
                    
     </body>
 </html>
