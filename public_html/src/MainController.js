@@ -38,7 +38,7 @@ myModule.controller("MainCtrl", function ($scope) {
     $scope.mSelectedEcho = $scope.eSelection[0].label;
     
     $scope.mHandleMode = null;
-    $scope.mShouldDrawHandle = false;
+    $scope.mShouldDrawHandle = true;
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
@@ -142,27 +142,34 @@ myModule.controller("MainCtrl", function ($scope) {
     };
 
     $scope.onMouseMove = function (event) {
+        var currSceneForm = $scope.currScene.getXform();
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
         var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
-            x -= $scope.currScene.getXform().getPivot()[0];
+            x -= currSceneForm.getPivot()[0]; // account for scene pivot offset
         var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
-            y -= $scope.currScene.getXform().getPivot()[1];
+            y -= currSceneForm.getPivot()[1];
 
         $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
 
         if (event.which === 1 && $scope.handleMode) {
             if ($scope.handleMode === "Translate")
-                $scope.currScene.getXform().setPosition(x, y);
+                currSceneForm.setPosition(x, y);
             else if ($scope.handleMode === "Rotation") {
-                x -= $scope.currScene.getXform().getXPos();
-                y -= $scope.currScene.getXform().getYPos();
-                $scope.currScene.getXform().setRotationInRad(-Math.atan2(x,y) + Math.PI/2);
+                x -= currSceneForm.getXPos(); // account for scene pos offset
+                y -= currSceneForm.getYPos();
+                currSceneForm.setRotationInRad(-Math.atan2(x,y) + Math.PI/2);
             }
             else if ($scope.handleMode === "Scale") {
-                x -= $scope.currScene.getXform().getXPos();
-                y -= $scope.currScene.getXform().getYPos();
-                $scope.currScene.getXform().setSize(x+1,y);
+                x -= currSceneForm.getXPos(); // account for scene pos offset
+                y -= currSceneForm.getYPos();
+
+                var rotMat = mat4.create(); // reverse rotation
+                mat4.rotateZ(rotMat, rotMat, -currSceneForm.getRotationInRad());
+                var posWC = vec2.fromValues(0, 0);
+                vec2.transformMat4(posWC, [x,y], rotMat);
+
+                currSceneForm.setSize(posWC[0]+1,posWC[1]);
                 ; // TODO fix scaling while rotated
             }
         }
