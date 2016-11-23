@@ -23,9 +23,9 @@ myModule.controller("MainCtrl", function ($scope) {
     // Radio button selection support
     $scope.eSelection = [
         {label: "Room"},
-        {label: "Parent Bed"},
-        {label: "Child Bed #1"},
-        {label: "Child Bed #2"},
+        {label: "Parent Bed (Sibling1)"},
+        {label: "Child Bed of Parent Bed"},
+        {label: "Neighbor Bed (Sibling2)"}
     ];
 
        // this is the model

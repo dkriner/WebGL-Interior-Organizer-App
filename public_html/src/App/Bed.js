@@ -15,7 +15,7 @@ function Bed(shader, name, xPos, yPos, baseColor, initBedSize) {
     xf.setPosition(xPos, yPos);
     //xf.setPivot(xPivot, yPivot);
     var scale = 1;
-    
+
     // always initialize sizes and positions to Bed1
     var bedSize = initBedSize;
     var leftSquarePillowSize = [1.75, 1.75];

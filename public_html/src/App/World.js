@@ -110,15 +110,16 @@ function World() {
 
     // Bed Gen2Slider   ********************************************
     this.mBed2 = new Bed(this.mConstColorShader, bedNames[1], 
-                        firstBedPos[0] + 4, firstBedPos[1], bedColor[1], initBedSize);
+                        firstBedPos[0] + 5, firstBedPos[1], bedColor[1], initBedSize);
     this.mArrayOfBeds.push(this.mBed2);
     this.mRoomParent.addAsChild(this.mBed2);
     
     // Bed Gen3Baby   ********************************************
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
-                        firstBedPos[0], firstBedPos[1], bedColor[2], initBedSize);
+                        firstBedPos[0], firstBedPos[1] - 1.75, bedColor[2], initBedSize);
     this.mArrayOfBeds.push(this.mBed3);
     this.mRoomParent.addAsChild(this.mBed3);
+    this.mBedParent.addAsChild(this.mBed3);
 }
 
 World.prototype.toggleHeadSpin = function () {
@@ -184,11 +185,13 @@ World.prototype.update = function () {
 };
 
 World.prototype.leftChildXform = function () {
-    return this.mBed1.getXform();
+//    return this.mBed1.getXform();
+    return this.mBedParent.getXform();
 };
 
 World.prototype.leftChildScene = function () {
-    return this.mBed1;
+    //return this.mBed1;
+    return this.mBedParent;
 };
 
 World.prototype.rightChildXform = function () {
