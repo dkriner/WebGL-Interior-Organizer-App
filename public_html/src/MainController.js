@@ -91,9 +91,9 @@ myModule.controller("MainCtrl", function ($scope) {
     $scope.onMouseDown = function (event) {
         if (event.which === 1) { // left
 
-//            var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
-//            var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
-//            var dist = 0.5;
+           // var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
+           // var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
+           // var dist = 0.5;
 
             var x = $scope.mLastWCPosX;
             //this.mView.mouseWCX(event.canvasX);
@@ -119,32 +119,65 @@ myModule.controller("MainCtrl", function ($scope) {
         var currSceneForm = $scope.currScene.getXform();
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-        var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
-            x -= currSceneForm.getPivot()[0]; // account for scene pivot offset
-        var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
-            y -= currSceneForm.getPivot()[1];
+        $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
+        $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
 
+        // TODO: remove this kelvin code and GUI mosue over
         $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
 
+        var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
+
+        // convert mouse position to parent's local coords 
+        if ($scope.currScene.mParent) 
+            pos = $scope.currScene.mParent.wcToLocal(pos);
+
+        // make mouse position relative to pivot
+        pos[0] -= $scope.currScene.getXform().getPivot()[0];
+        pos[0] -= $scope.currScene.getXform().getXPos();
+        pos[1] -= $scope.currScene.getXform().getPivot()[1];
+        pos[1] -= $scope.currScene.getXform().getYPos();
+
         if (event.which === 1 && $scope.handleMode) {
-            if ($scope.handleMode === "Translate")
-                currSceneForm.setPosition(x, y);
+            if ($scope.handleMode === "Translate") {
+                // assign position to mouse coords offset from pivot
+                pos[0] += $scope.currScene.getXform().getXPos();
+                pos[1] += $scope.currScene.getXform().getYPos();
+                currSceneForm.setPosition(pos[0], pos[1]);
+            }
             else if ($scope.handleMode === "Rotation") {
-                x -= currSceneForm.getXPos(); // account for scene pos offset
-                y -= currSceneForm.getYPos();
-                currSceneForm.setRotationInRad(-Math.atan2(x,y) + Math.PI/2);
+                // TODO: figure out why this doesn't work when parent is scaled
+                // // calculate mouse position angle to pivot
+                // var rot = Math.PI/2 - Math.atan2(pos[0],pos[1]);
+                // currSceneForm.setRotationInRad(rot);
+
+                // TODO: and why this does work
+                var relPos = [ // mouse position relative to scene handle center
+                    $scope.mLastWCPosX - $scope.mMySceneHandle.getXform().getXPos(),
+                    $scope.mLastWCPosY - $scope.mMySceneHandle.getXform().getYPos()
+                ];
+
+                var rot = Math.PI/2 - Math.atan2(relPos[0],relPos[1]);
+                if ($scope.currScene.mParent) 
+                    rot -= $scope.currScene.mParent.getWCRotation();
+                currSceneForm.setRotationInRad(rot);
             }
             else if ($scope.handleMode === "Scale") {
-                x -= currSceneForm.getXPos(); // account for scene pos offset
-                y -= currSceneForm.getYPos();
+                // TODO: figure out why this doesn't work when scene rotated
+                // currSceneForm.setSize(pos[0]+1,pos[1]);
 
-                var rotMat = mat4.create(); // reverse rotation
-                mat4.rotateZ(rotMat, rotMat, -currSceneForm.getRotationInRad());
-                var posWC = vec2.fromValues(0, 0);
-                vec2.transformMat4(posWC, [x,y], rotMat);
+                // TODO: and why this does work
+                var relPos = [ // mouse position relative to scene handle center
+                    $scope.mLastWCPosX - $scope.mMySceneHandle.getXform().getXPos(),
+                    $scope.mLastWCPosY - $scope.mMySceneHandle.getXform().getYPos()
+                ];
 
-                currSceneForm.setSize(posWC[0]+1,posWC[1]);
-                ; // TODO fix scaling while rotated
+                var rotMat = mat4.create(); // reverse the scene's rotation
+                mat4.rotateZ(rotMat, rotMat, -$scope.mMySceneHandle.getXform().getRotationInRad());
+                var relPosWC = vec2.transformMat4(vec2.create(), relPos, rotMat);
+
+                // TOOD: clamp scale
+
+                currSceneForm.setSize(relPosWC[0]+1,relPosWC[1]);
             }
         }
         else $scope.handleMode = null;

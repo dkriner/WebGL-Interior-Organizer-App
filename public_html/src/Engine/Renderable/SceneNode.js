@@ -75,6 +75,39 @@ SceneNode.prototype.getChildAt = function (index) {
     return this.mChildren[index];
 };
 
+// converts world coords to scene's local coord system
+SceneNode.prototype.localToWC = function(coords) {
+    var m = this._getXFormStack();
+    return vec2.transformMat4(vec2.create(), coords, m);
+}
+
+// converts local scene coords to world coord system
+SceneNode.prototype.wcToLocal = function(coords) {
+    var m = mat4.invert(mat4.create(), this._getXFormStack());
+    return vec2.transformMat4(vec2.create(), coords, m);
+}
+
+// get concatenation of this and all parent scenes xforms
+SceneNode.prototype._getXFormStack = function() {
+    var currNode = this;
+    var m = currNode.getXform().getXform();
+    while (currNode.mParent) {
+        var parentMat = currNode.mParent.getXform().getXform();
+        mat4.multiply(m, parentMat, m);
+        currNode = currNode.mParent;
+    } 
+    return m;
+}
+
+// get concatenation of this and all parent scenes rotation
+SceneNode.prototype.getWCRotation = function() {
+    var rot = 0, currNode = this;
+    do rot += currNode.getXform().getRotationInRad();
+    while (currNode = currNode.mParent);
+    while (rot > 2*Math.PI) rot -= 2*Math.PI;
+    return rot;
+}
+
 SceneNode.prototype.draw = function (aCamera, parentMat) {
     var i;
     var xfMat = this.mXform.getXform();

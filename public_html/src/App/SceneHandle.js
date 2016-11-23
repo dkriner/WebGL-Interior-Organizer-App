@@ -60,28 +60,18 @@ function SceneHandle(shader, scene) {
 gEngine.Core.inheritPrototype(SceneHandle, SceneNode);
 
 // syncrhonize with the target sceneNode
-SceneHandle.prototype.update = function (scene) { 
-    // update to work on multi-level scenes  
-    var node = this.mScene;
-    //var node = scene;
-    var m = node.getXform().getXform();
-
-    while (node.mParent) {
-        var parentMat = node.mParent.getXform().getXform();
-        mat4.multiply(m, parentMat, m);
-        node = node.mParent;
-    } 
-
-    var pivotPos = this.mScene.getXform().getPivot();
-    var posWC = vec2.fromValues(0, 0);
-    vec2.transformMat4(posWC, pivotPos, m);
-    var x = posWC[0], y = posWC[1];
-
+SceneHandle.prototype.update = function () { 
+    // set position
     var sceneForm = this.mScene.getXform();
-    // var x = sceneForm.getXPos() + sceneForm.getPivotXPos();
-    // var y = sceneForm.getYPos() + sceneForm.getPivotYPos();
-    this.getXform().setPosition(x,y);
-    this.getXform().setRotationInRad(sceneForm.getRotationInRad());
+    var posWC = this.mScene.localToWC(sceneForm.getPivot());
+    this.getXform().setPosition(posWC[0],posWC[1]);
+
+    // set rotation
+    var rot = this.mScene.getWCRotation();
+    // var rot = 0, currNode = this.mScene;
+    // do rot += currNode.getXform().getRotationInRad();
+    // while (currNode = currNode.mParent);
+    this.getXform().setRotationInRad(rot);
 };
 
 SceneHandle.prototype.setScene = function (scene) {
@@ -90,37 +80,33 @@ SceneHandle.prototype.setScene = function (scene) {
     this.update();
 };
 
-SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY,dist) {
+SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.transTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
 
-    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, dist);
+    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY,dist) {
+SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.yBarTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
 
-    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, dist);
+    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,dist) {
+SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.xBarTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
 
-    console.log('rotHandle', tipPos, posWC);
-
-    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, dist);
+    return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,dist) {
-    console.log([targetX, targetY], [wcX, wcY]);
-
-    var calcDist = Math.sqrt(Math.pow(wcX - targetX, 2) + Math.pow(wcY - targetY, 2));
-    return calcDist <= dist;
+SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,maxDist) {
+    var dist = Math.sqrt(Math.pow(wcX - targetX, 2) + Math.pow(wcY - targetY, 2));
+    return dist <= maxDist;
 };
 
 
