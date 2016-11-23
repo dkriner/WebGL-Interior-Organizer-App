@@ -63,6 +63,7 @@ gEngine.Core.inheritPrototype(SceneHandle, SceneNode);
 SceneHandle.prototype.update = function (scene) { 
     // update to work on multi-level scenes  
     var node = this.mScene;
+    //var node = scene;
     var m = node.getXform().getXform();
 
     while (node.mParent) {

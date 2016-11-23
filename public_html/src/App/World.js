@@ -183,26 +183,34 @@ World.prototype.update = function () {
     }
 };
 
-
-
 World.prototype.leftChildXform = function () {
     return this.mBed1.getXform();
-    //return this.mLeftChild.getXform();
+};
+
+World.prototype.leftChildScene = function () {
+    return this.mBed1;
 };
 
 World.prototype.rightChildXform = function () {
     return this.mBed2.getXform();
-    //return this.mRightChild.getXform();
 };
 
+World.prototype.rightChildScene = function () {
+    return this.mBed2;
+};
 
 World.prototype.topChildXform = function () {
     return this.mBed3.getXform();
-    //return this.mTopChild.getXform();
 };
 
+World.prototype.topChildScene = function () {
+    return this.mBed3;
+};
 
 World.prototype.parentXform = function () {
     return this.mRoomParent.getXform();
-    //return this.mParent.getXform();
+};
+
+World.prototype.parentScene = function () {
+    return this.mRoomParent;
 };

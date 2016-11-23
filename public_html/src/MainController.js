@@ -31,7 +31,8 @@ myModule.controller("MainCtrl", function ($scope) {
        // this is the model
     $scope.mMyWorld = new World();
     // $scope.currScene = $scope.mMyWorld.mRoomParent;
-    $scope.currScene = $scope.mMyWorld.mArrayOfBeds[2];
+    //$scope.currScene = $scope.mMyWorld.mArrayOfBeds[0];
+    $scope.currScene = $scope.mMyWorld.mRoomParent; // start by editing entire room
     $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     $scope.mSelectedEcho = $scope.eSelection[0].label;
@@ -64,15 +65,23 @@ myModule.controller("MainCtrl", function ($scope) {
     $scope.serviceSelection = function () {
         switch ($scope.mSelectedEcho) {
         case $scope.eSelection[0].label:
+            $scope.currScene = $scope.mMyWorld.parentScene();
+            $scope.mMySceneHandle.setScene($scope.currScene);
             $scope.mSelectedXform = $scope.mMyWorld.parentXform();
             break;
         case $scope.eSelection[1].label:
+            $scope.currScene = $scope.mMyWorld.leftChildScene();
+            $scope.mMySceneHandle.setScene($scope.currScene);
             $scope.mSelectedXform = $scope.mMyWorld.leftChildXform();
             break;
         case $scope.eSelection[2].label:
+            $scope.currScene = $scope.mMyWorld.topChildScene();
+            $scope.mMySceneHandle.setScene($scope.currScene);
             $scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             break;
         case $scope.eSelection[3].label:
+            $scope.currScene = $scope.mMyWorld.rightChildScene();
+            $scope.mMySceneHandle.setScene($scope.currScene);
             $scope.mSelectedXform = $scope.mMyWorld.rightChildXform();
             break;
         }
