@@ -102,23 +102,23 @@ function World() {
     this.mArrayOfSceneNodes.push(this.mBedParent);
     this.mRoomParent.addAsChild(this.mBedParent);
     
-    var bed = new Bed(this.mConstColorShader, bedNames[0], 
+    this.mBed1 = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
-    this.mArrayOfBeds.push(bed);
+    this.mArrayOfBeds.push(this.mBed1);
     //this.mRoomParent.addAsChild(bed);
-    this.mBedParent.addAsChild(bed);
+    this.mBedParent.addAsChild(this.mBed1);
 
     // Bed Gen2Slider   ********************************************
-    var bed = new Bed(this.mConstColorShader, bedNames[1], 
+    this.mBed2 = new Bed(this.mConstColorShader, bedNames[1], 
                         firstBedPos[0] + 4, firstBedPos[1], bedColor[1], initBedSize);
-    this.mArrayOfBeds.push(bed);
-    this.mRoomParent.addAsChild(bed);
+    this.mArrayOfBeds.push(this.mBed2);
+    this.mRoomParent.addAsChild(this.mBed2);
     
     // Bed Gen3Baby   ********************************************
-    var bed = new Bed(this.mConstColorShader, bedNames[2], 
+    this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0], firstBedPos[1], bedColor[2], initBedSize);
-    this.mArrayOfBeds.push(bed);
-    this.mRoomParent.addAsChild(bed);
+    this.mArrayOfBeds.push(this.mBed3);
+    this.mRoomParent.addAsChild(this.mBed3);
 }
 
 World.prototype.toggleHeadSpin = function () {
@@ -186,16 +186,19 @@ World.prototype.update = function () {
 
 
 World.prototype.leftChildXform = function () {
-    return this.mLeftChild.getXform();
+    return this.mBed1.getXform();
+    //return this.mLeftChild.getXform();
 };
 
 World.prototype.rightChildXform = function () {
-    return this.mRightChild.getXform();
+    return this.mBed2.getXform();
+    //return this.mRightChild.getXform();
 };
 
 
 World.prototype.topChildXform = function () {
-    return this.mTopChild.getXform();
+    return this.mBed3.getXform();
+    //return this.mTopChild.getXform();
 };
 
 
