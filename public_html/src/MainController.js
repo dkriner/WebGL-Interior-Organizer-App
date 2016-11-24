@@ -152,9 +152,10 @@ myModule.controller("MainCtrl", function ($scope) {
                     return scene;
                 
                 return clickedScene;
+                
+                
             }
-            
-            
+
         }
     };
   
