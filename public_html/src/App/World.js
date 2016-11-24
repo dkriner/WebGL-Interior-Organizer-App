@@ -72,7 +72,7 @@ function World() {
     
     // Bed Gen3Baby   ********************************************
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
-                        firstBedPos[0], firstBedPos[1] - 1.75, bedColor[2], initBedSize);
+                        firstBedPos[0] + 4, firstBedPos[1] - 5.75, bedColor[2], initBedSize);
     this.mBed1.addAsChild(this.mBed3);
 }
 
