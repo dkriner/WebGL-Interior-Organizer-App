@@ -15,54 +15,15 @@ function World() {
     this.mHeadShouldSpin = false;
     this.mSelectedObject = "Parent Bed";
     
-    this.vmShouldDrawControl = false;
-    
-
     this.mConstColorShader = new SimpleShader(
         "src/GLSLShaders/SimpleVS.glsl",      // Path to the VertexShader 
         "src/GLSLShaders/SimpleFS.glsl");    // Path to the simple FragmentShader
         
-    // CONTROL POINTS
-//    this.mHeadSq = new SquareRenderable(this.mConstColorShader);
-//    this.mHeadSq.setColor([0.2, 1.0, 0.2, 1]);
-//    this.mHeadSq.getXform().setSize(0.25, 0.25);
-//    this.mBlueSq = new SquareRenderable(this.mConstColorShader);
-//    this.mBlueSq.setColor([0.5, 0.5, 1.0, 1]);
-//    this.mBlueSq.getXform().setSize(0.25, 0.25);
-//    this.mRedSq =  new SquareRenderable(this.mConstColorShader);
-//    this.mRedSq.setColor([1.0, 0.5, 0.5, 1]);
-//    this.mRedSq.getXform().setSize(0.25, 0.25);
-//    this.mXfSq =  new SquareRenderable(this.mConstColorShader);
-//    this.mXfSq.setColor([0.4, 0., 0.4, 1]);
-//    this.mXfSq.getXform().setSize(0.2, 0.2);
-//
-//    this.mParent = new SceneNode(this.mConstColorShader, "Root", true, 0, 0);
-//    this.mLeftChild = new ArmSegment(this.mConstColorShader, "LeftGen 1",
-//                            -2, 0);
-//    this.mParent.addAsChild(this.mLeftChild);
-//    this.mTopChild = new ArmSegment(this.mConstColorShader, "LeftGen 2",
-//                            -2, 2);
-//    this.mLeftChild.addAsChild(this.mTopChild);
-//
-//    this.mRightChild = new ArmSegment(this.mConstColorShader, "RightGen 1",
-//                            2, 0);
-//    this.mParent.addAsChild(this.mRightChild);  // <-- WHAT ARE WE DOING?!!
-//
-//
-//    // shapes in the parent
-//    var obj = new SquareRenderable(this.mConstColorShader);  // the base
-//    this.mParent.addToSet(obj);
-//    obj.setColor([0.3, 0.3, 0.9, 1]);
-//    var xf = obj.getXform();
-//    xf.setSize(4, 1.5);
-//    
-//    //obj = new SquareRenderable(this.mConstColorShader); // The head
-//    obj = new CircleRenderable(this.mConstColorShader); // The head
-//    this.mParent.addToSet(obj);
-//    obj.setColor([0.3,0.3,0.3,1]);
-//    xf = obj.getXform();
-//    xf.setSize(1.3, 1.3);
-    
+    // CONTROL POINT FOR MOUSE
+    this.mXfSq =  new SquareRenderable(this.mConstColorShader);
+    this.mXfSq.setColor([0.3, 0., 0.3, 1]);
+    this.mXfSq.getXform().setSize(0.2, 0.2);
+
     // ********************************************
     //                  the room
     // ********************************************
@@ -106,7 +67,6 @@ function World() {
     this.mBed1 = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
     this.mArrayOfBeds.push(this.mBed1);
-    //this.mRoomParent.addAsChild(bed);
     this.mBedParent.addAsChild(this.mBed1);
 
     // Bed Gen2Slider   ********************************************
@@ -119,7 +79,6 @@ function World() {
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0], firstBedPos[1] - 1.75, bedColor[2], initBedSize);
     this.mArrayOfBeds.push(this.mBed3);
-    // this.mRoomParent.addAsChild(this.mBed3);
     this.mBedParent.addAsChild(this.mBed3);
 }
 
@@ -135,27 +94,9 @@ World.prototype.toggleArmRotate = function () {
 World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
-
-    //this.mParent.draw(camera);
-//    this.mArrayOfBeds.forEach(function(element) 
-//    {
-//        element.draw(camera);
-//    });
+    
     this.mRoomParent.draw(camera);
-    
-    // display "Bed1" on top of others
-//    for (var i = this.mArrayOfBeds.length - 1; i >= 0; i--)
-//    {
-//        alert(i);
-//        this.mArrayOfBeds[i].draw(camera);
-//    }
-    
-//    if (this.vmShouldDrawControl) {
-//        this.mHeadSq.draw(camera);
-//        this.mBlueSq.draw(camera);
-//        this.mRedSq.draw(camera);
-//        this.mXfSq.draw(camera);
-//    }
+    //this.mXfSq.draw(camera);    // DRAW MOUSE CONTROL POINT
 };
 
 World.prototype.update = function () {
@@ -218,4 +159,3 @@ World.prototype.parentXform = function () {
 World.prototype.parentScene = function () {
     return this.mRoomParent;
 };
-

@@ -61,6 +61,8 @@ myModule.controller("MainCtrl", function ($scope) {
         $scope.mMyWorld.draw($scope.mView);
         if ($scope.mShouldDrawHandle)
             $scope.mMySceneHandle.draw($scope.mView);
+        
+        $scope.mMyWorld.mXfSq.draw($scope.mView);
     };
 
     $scope.serviceSelection = function () {
@@ -166,6 +168,8 @@ myModule.controller("MainCtrl", function ($scope) {
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
         $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
         $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
+
+        $scope.mMyWorld.mXfSq.getXform().setPosition($scope.mLastWCPosX, $scope.mLastWCPosY);
 
         // TODO: remove this kelvin code and GUI mosue over
         //$scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
