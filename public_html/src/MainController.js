@@ -121,19 +121,20 @@ myModule.controller("MainCtrl", function ($scope) {
                     console.log("in the loop!");
                     var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
                     if(clickedScene)
-                        return clickedScene;
+                        break;
                     
                 }
               }
                 
                 
                 var localMouse = mousePos;
-                console.log("before Mouse: ", localMouse);
+                //console.log("before Mouse: ", localMouse);
+                
                 if(scene.mParent)
                     var localMouse = scene.mParent.wcToLocal(localMouse);   
                 
                 
-                console.log("middle Mouse: ", localMouse);
+                //console.log("middle Mouse: ", localMouse);
                 
                 
                 // make mouse position relative to pivot
@@ -143,14 +144,14 @@ myModule.controller("MainCtrl", function ($scope) {
                 localMouse[1] -= scene.getXform().getYPos();
                 
                 
-                 console.log("after Mouse: ", localMouse);
+                 //console.log("after Mouse: ", localMouse);
                 
                 var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);
                     
                 if(distAllowed >= dist)
                     return scene;
                 
-                
+                return clickedScene;
             }
             
             
