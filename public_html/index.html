@@ -63,7 +63,7 @@
         <!-- My application code -->
         <script type="text/javascript" src="src/MainController.js"></script> 
         <script type="text/javascript" src="src/App/World.js"></script> 
-
+         
         <script type="text/javascript" src="src/App/ArmSegment.js"></script>
         <script type="text/javascript" src="src/App/Bed.js"></script> 
         <script type="text/javascript" src="src/App/SceneHandle.js"></script>
@@ -87,6 +87,15 @@
     
         <h1>MP5: Hierarchical Modeling and Direct Manipulation</h1>
         <br>
+<!--         <h3>Selected Object</h3> 
+        <label ng-repeat="myOp in eSelection">
+        {{myOp.label}}<input type="radio" 
+                    value={{myOp.label}}
+                    font ="Georgia"
+                    ng-model="$parent.mSelectedEcho"
+                    ng-click="serviceSelection()"
+                    > &nbsp; <br>
+        </label> -->
         <canvas style = "position:absolute; TOP:175px; LEFT:230px;"            
             ng-mousemove="onMouseMove($event)"
             ng-mousedown="onMouseDown($event)"
@@ -97,7 +106,7 @@
         </canvas>
         <br>
         
-        <css-xform model="mSelectedXform">  </css-xform>
+       <!--  <css-xform model="mSelectedXform">  </css-xform> -->
         <br><br><br>
         Draw Scene Handle: <input type="checkbox" ng-model="mShouldDrawHandle"><br>
      
