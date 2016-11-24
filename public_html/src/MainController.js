@@ -163,6 +163,9 @@ myModule.controller("MainCtrl", function ($scope) {
   
 
     $scope.onMouseMove = function (event) {
+        // TODO: fix bug where mouse position is off if 
+        //       the page is reloaded while scrolled down
+
         var currSceneForm = $scope.currScene.getXform();
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);

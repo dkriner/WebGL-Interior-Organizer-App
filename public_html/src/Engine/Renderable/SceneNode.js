@@ -103,7 +103,7 @@ SceneNode.prototype._getXFormStack = function() {
 SceneNode.prototype.getWCRotation = function() {
     var rot = 0, currNode = this;
     do rot += currNode.getXform().getRotationInRad();
-    while (currNode === currNode.mParent);
+    while (currNode = currNode.mParent);
     while (rot > 2*Math.PI) rot -= 2*Math.PI;
     return rot;
 };
