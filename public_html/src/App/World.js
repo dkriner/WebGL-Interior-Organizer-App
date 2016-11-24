@@ -27,13 +27,11 @@ function World() {
     // ********************************************
     //                  the room
     // ********************************************
-    this.mArrayOfSceneNodes = [];
     
     var firstBedPos = [-4, 4];
     var centerOfRoom = [0, 3];
     this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
                                     centerOfRoom[0], centerOfRoom[1]);
-    this.mArrayOfSceneNodes.push(this.mRoomParent);
     
     var xfRoomPXf = this.mRoomParent.getXform();
     xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
@@ -59,27 +57,23 @@ function World() {
     var bedNames = ["Bed Gen2Main", "Bed Gen2Slider", "Bed Gen3Baby"];
 
     // Bed Gen2Main   ********************************************
-    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", true, 
+    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", false, 
                                     firstBedPos[0], firstBedPos[1]);
-    this.mArrayOfSceneNodes.push(this.mBedParent);
     this.mRoomParent.addAsChild(this.mBedParent);
     
     this.mBed1 = new Bed(this.mConstColorShader, bedNames[0], 
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
-    this.mArrayOfBeds.push(this.mBed1);
     this.mBedParent.addAsChild(this.mBed1);
 
     // Bed Gen2Slider   ********************************************
     this.mBed2 = new Bed(this.mConstColorShader, bedNames[1], 
                         firstBedPos[0] + 5, firstBedPos[1], bedColor[1], initBedSize);
-    this.mArrayOfBeds.push(this.mBed2);
-    this.mRoomParent.addAsChild(this.mBed2);
+    this.mBedParent.addAsChild(this.mBed2);
     
     // Bed Gen3Baby   ********************************************
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0], firstBedPos[1] - 1.75, bedColor[2], initBedSize);
-    this.mArrayOfBeds.push(this.mBed3);
-    this.mBedParent.addAsChild(this.mBed3);
+    this.mBed1.addAsChild(this.mBed3);
 }
 
 World.prototype.toggleHeadSpin = function () {
