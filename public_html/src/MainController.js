@@ -122,7 +122,7 @@ myModule.controller("MainCtrl", function ($scope) {
                 for(var i = scene.mChildren.length - 1; i >= 0; i--){
                     console.log("in the loop!");
                     var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
-                    if (clickedScene) break;
+                    if(clickedScene) return clickedScene;
                     
                 }
               }
