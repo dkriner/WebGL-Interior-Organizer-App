@@ -79,13 +79,13 @@ SceneNode.prototype.getChildAt = function (index) {
 SceneNode.prototype.localToWC = function(coords) {
     var m = this._getXFormStack();
     return vec2.transformMat4(vec2.create(), coords, m);
-}
+};
 
 // converts local scene coords to world coord system
 SceneNode.prototype.wcToLocal = function(coords) {
     var m = mat4.invert(mat4.create(), this._getXFormStack());
     return vec2.transformMat4(vec2.create(), coords, m);
-}
+};
 
 // get concatenation of this and all parent scenes xforms
 SceneNode.prototype._getXFormStack = function() {
@@ -97,16 +97,16 @@ SceneNode.prototype._getXFormStack = function() {
         currNode = currNode.mParent;
     } 
     return m;
-}
+};
 
 // get concatenation of this and all parent scenes rotation
 SceneNode.prototype.getWCRotation = function() {
     var rot = 0, currNode = this;
     do rot += currNode.getXform().getRotationInRad();
-    while (currNode = currNode.mParent);
+    while (currNode === currNode.mParent);
     while (rot > 2*Math.PI) rot -= 2*Math.PI;
     return rot;
-}
+};
 
 SceneNode.prototype.draw = function (aCamera, parentMat) {
     var i;

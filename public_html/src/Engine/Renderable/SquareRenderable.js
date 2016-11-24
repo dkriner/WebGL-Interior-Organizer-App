@@ -31,4 +31,13 @@ SquareRenderable.prototype.draw = function (camera, parentMat) {
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 };
 
+//SquareRenderable.prototype.isMouseWithin = function (wcX, wcY, dist){
+//    
+//};
+//
+//SquareRenderable.prototype.withInBound = function (p, wc, kBoundTol) {
+//    return ( ((p[0] - kBoundTol) < wc[0]) && (wc[0] < (p[0] + kBoundTol)) &&
+//             ((p[1] - kBoundTol) < wc[1]) && (wc[1] < (p[1] + kBoundTol)) );
+//};
+
 // The get/set color, and getXform funcitons are inherited

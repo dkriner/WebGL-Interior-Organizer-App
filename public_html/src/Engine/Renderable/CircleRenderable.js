@@ -31,4 +31,26 @@ CircleRenderable.prototype.draw = function (camera, parentMat) {
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 22);
 };
 
+//CircleRenderable.prototype.isMouseWithin = function(wcX, wcY, dist){
+//    var mousePos = [wcX, wcY];
+//    
+//    if(this.mParent){
+//        //convert mouse coord to parent coord
+//        this.mParent.wcToLocal(mousePos);
+//        return (this.withInBound(this.mParent.getXform().getPos(), mousePos, dist));
+//    }
+//    
+//    return (this.withInBound(this.mParent.getXform().getPos(), mousePos, dist));
+//};
+//
+//CircleRenderable.prototype.wcToLocal = function(coords) {
+//    var m = mat4.invert(mat4.create(), this._getXFormStack());
+//    return vec2.transformMat4(vec2.create(), coords, m);
+//};
+//
+//CircleRenderable.prototype.withInBound = function (p, wc, kBoundTol) {
+//    return ( ((p[0] - kBoundTol) < wc[0]) && (wc[0] < (p[0] + kBoundTol)) &&
+//             ((p[1] - kBoundTol) < wc[1]) && (wc[1] < (p[1] + kBoundTol)) );
+//};
+
 // The get/set color, and getXform funcitons are inherited

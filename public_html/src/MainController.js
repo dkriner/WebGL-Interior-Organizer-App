@@ -102,6 +102,58 @@ myModule.controller("MainCtrl", function ($scope) {
                 $scope.handleMode = "Rotation";
             else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
                 $scope.handleMode = "Scale";
+            
+            
+            var msPos = [x,y];
+            var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
+            
+            if(newScene){
+                    $scope.currScene = newScene;
+                    $scope.mMySceneHandle.setScene(newScene);
+                    //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
+            }
+            
+            
+            function getClickedScene(mousePos, scene, distAllowed){
+                
+              if(scene.mChildren){ 
+                for(var i = scene.mChildren.length - 1; i >= 0; i--){
+                    console.log("in the loop!");
+                    var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
+                    if(clickedScene)
+                        return clickedScene;
+                    
+                }
+              }
+                
+                
+                var localMouse = mousePos;
+                console.log("before Mouse: ", localMouse);
+                if(scene.mParent)
+                    var localMouse = scene.mParent.wcToLocal(localMouse);   
+                
+                
+                console.log("middle Mouse: ", localMouse);
+                
+                
+                // make mouse position relative to pivot
+                localMouse[0] -= scene.getXform().getPivot()[0];
+                localMouse[0] -= scene.getXform().getXPos();
+                localMouse[1] -= scene.getXform().getPivot()[1];
+                localMouse[1] -= scene.getXform().getYPos();
+                
+                
+                 console.log("after Mouse: ", localMouse);
+                
+                var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);
+                    
+                if(distAllowed >= dist)
+                    return scene;
+                
+                
+            }
+            
+            
         }
     };
   
@@ -114,7 +166,7 @@ myModule.controller("MainCtrl", function ($scope) {
         $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
 
         // TODO: remove this kelvin code and GUI mosue over
-        $scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
+        //$scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
 
         var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
 

@@ -36,7 +36,7 @@ function SceneHandle(shader, scene) {
     // The vertical handle bar tip
     this.yBarTip = obj = new CircleRenderable(shader);  
     xf = obj.getXform();
-    obj.setColor([1, 0, 0, 1]); // red
+    obj.setColor([1, 1, 0, 1]); // red
     xf.setSize(0.2, 0.2);
     xf.setPosition(0, barLen);
     this.addToSet(obj);
@@ -44,7 +44,7 @@ function SceneHandle(shader, scene) {
     // The horizontal handle bar tip
     this.xBarTip = obj = new CircleRenderable(shader);  
     xf = obj.getXform();
-    obj.setColor([1, 0, 0, 1]); // red
+    obj.setColor([1, 0, 1, 1]); // red
     xf.setSize(0.2, 0.2);
     xf.setPosition(barLen, 0);
     this.addToSet(obj);
