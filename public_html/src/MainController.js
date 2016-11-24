@@ -90,15 +90,10 @@ myModule.controller("MainCtrl", function ($scope) {
 
     $scope.onMouseDown = function (event) {
         if (event.which === 1) { // left
-
-           // var x = $scope.mLastWCPosX = this.mView.mouseWCX(event.canvasX);
-           // var y = $scope.mLastWCPosY = this.mView.mouseWCY(event.canvasY);
-           // var dist = 0.5;
-
-            var x = $scope.mLastWCPosX;
-            //this.mView.mouseWCX(event.canvasX);
-            var y = $scope.mLastWCPosY;
-            //this.mView.mouseWCY(event.canvasY);
+            var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
+            var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
+            var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
+            var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
             var dist = 0.4;
             
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
@@ -107,10 +102,6 @@ myModule.controller("MainCtrl", function ($scope) {
                 $scope.handleMode = "Rotation";
             else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
                 $scope.handleMode = "Scale";
-            
-            //checking which object is being clicked on
-           
-
         }
     };
   

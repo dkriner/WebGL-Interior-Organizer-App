@@ -15,8 +15,8 @@ World.prototype.withInBound = function (p, wc) {
              ((p[1] - kBoundTol) < wc[1]) && (wc[1] < (p[1] + kBoundTol)) );
 };
 
-// define a hit as a WC pos within 0.2 from the center position
-World.prototype.detectMouseOver = function (wcX, wcY, shouldToggle) {
+// define a hit as a WC pos within 0.2 from center position
+World.prototype.mouseOverScene = function (wcX, wcY, shouldToggle) {
     var posEcho = wcX.toFixed(2).toString() + " " + wcY.toFixed(2).toString() + " :";
     var overObj = "Nothing";
     
