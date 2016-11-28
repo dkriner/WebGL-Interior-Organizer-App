@@ -82,6 +82,15 @@ SimpleShader.prototype.loadObjectTransform = function (modelTransform) {
     gl.uniformMatrix4fv(this.mModelTransform, false, modelTransform);
 };
 
+// global simple shader
+SimpleShader.getStaticShader = function() {
+    if (!SimpleShader._staticShader) 
+        SimpleShader._staticShader = new SimpleShader(
+            "src/GLSLShaders/SimpleVS.glsl",      // Path to the VertexShader 
+            "src/GLSLShaders/SimpleFS.glsl");     // Path to the simple FragmentShader
+    return SimpleShader._staticShader;
+};
+
 //-- end of public methods
 // </editor-fold>
 

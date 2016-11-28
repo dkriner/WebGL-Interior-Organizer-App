@@ -15,7 +15,8 @@ var myModule = angular.module("appMyExample", ["CSS450Timer", "CSS450Slider", "C
 // registers the constructor for the controller
 // NOTE: the constructor is only called _AFTER_ the </body> tag is encountered
 //       this code does NOT run until the end of loading the HTML page
-myModule.controller("MainCtrl", function ($scope) {
+myModule.controller("MainCtrl", function ($scope) 
+{
     // Initialize the graphics system
     gEngine.Core.initializeWebGL('GLCanvas');
     $scope.mCanvasMouse = new CanvasMouseSupport('GLCanvas');
@@ -28,44 +29,151 @@ myModule.controller("MainCtrl", function ($scope) {
         {label: "Neighbor Bed (Sibling2)"}
     ];
 
-       // this is the model
+    // All the mouse coordinate points
+    $scope.mClientX = 0;
+    $scope.mClientY = 0;
+    $scope.mCanvasX = 0;
+    $scope.mCanvasY = 0;
+    $scope.mViewportX = 0;
+    $scope.mViewportY = 0;
+    $scope.mCameraX = 0;
+    $scope.mCameraY = 0;
+    $scope.mWhichCamera = "Large";
+
+    // this is the model
     $scope.mMyWorld = new World();
+
     // $scope.currScene = $scope.mMyWorld.mRoomParent;
     //$scope.currScene = $scope.mMyWorld.mArrayOfBeds[0];
     $scope.currScene = $scope.mMyWorld.mRoomParent; // start by editing entire room
     $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
-    $scope.mSelectedEcho = $scope.eSelection[0].label;
+    //$scope.mSelectedEcho = $scope.eSelection[0].label;
 
-    
     $scope.mHandleMode = null;
     $scope.mShouldDrawHandle = true;
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
 
-
     $scope.mView = new Camera(
                 [0, 3],             // wc Center
                 15,                 // wc Wdith
                 [0, 0, 800, 600]);  // viewport: left, bottom, width, height
 
-    $scope.mainTimerHandler = function () {
+    // small view support
+    $scope.setSmallViewWC = function () 
+    {
+        $scope.mSmallView.setWCWidth(parseInt($scope.mSmallViewWCWidth));
+    };
+    
+    $scope.setSmallViewWCCenter = function () 
+    {
+        $scope.mSmallView.setWCCenter(
+            parseInt($scope.mSmallViewWCCenter[0]),
+            parseInt($scope.mSmallViewWCCenter[1])
+        );
+    };
+    
+    $scope.setSmallViewport = function () 
+    {
+        var v = $scope.mSmallView.getViewport();
+        var i;
+        for (i=0; i<4; i++)
+            v[i] = parseInt($scope.mSmallViewport[i]);
+    };
+
+    $scope.mSmallViewWCWidth = 30;                      // WC coordinates
+    $scope.mSmallViewport = [800, 450, 200, 150];       // size of VP window that we look through
+    $scope.mSmallViewWCCenter = [-5, -10];              // center of VP window (in WC coord) that we're looking through
+    $scope.mSmallView = new Camera(
+                [0, 3],// wc Center
+                15, // wc width
+                [0, 0, 800, 600]);    // viewport: left, bottom, width, height
+    $scope.mSmallView.setBackgroundColor([0.9, 0.7, 0.7, 1]);
+    $scope.setSmallViewWC();
+    $scope.setSmallViewWCCenter();
+    $scope.setSmallViewport();
+        
+    // ***********************************
+    //             SQUAREAREAS
+    // ***********************************
+//    // WC
+//    $scope.wcSquareArea = new SquareArea($scope.mView);
+//    $scope.wcSquareArea.setColor([1,1,1,1]);
+
+    // VP
+    $scope.vpSquareArea = new SquareArea($scope.mSmallView);
+    $scope.vpSquareArea.setColor([0,0,1,1]);
+
+    $scope.mainTimerHandler = function () 
+    {
         // 1. update the world
-        $scope.mMyWorld.update();
+        //$scope.mMyWorld.update();
         
         // Step E: Clear the canvas
         gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);        // Clear the canvas
-        //
-        // $scope.mMyWorld.update();
+
+        // draw large view
         $scope.mMyWorld.draw($scope.mView);
         if ($scope.mShouldDrawHandle)
             $scope.mMySceneHandle.draw($scope.mView);
+        $scope.mMyWorld.mXfSq.draw($scope.mView);           // Draw mouse box (in case of browser zooming-in allignment bug)
+
+        // draw small view
+        $scope.mMyWorld.draw($scope.mSmallView);
+        $scope.vpSquareArea.draw($scope.mSmallView);
         
+        // ******** FOR TESTING - remove later ***************
         $scope.mMyWorld.mXfSq.draw($scope.mView);
     };
 
-    $scope.serviceSelection = function () {
+    $scope.computeWCPos = function (event) 
+    {
+        var wcPos = [0, 0];
+        $scope.mClientX = event.clientX;
+        $scope.mClientY = event.clientY;
+        
+        $scope.mCanvasX = $scope.mCanvasMouse.getPixelXPos(event);
+        $scope.mCanvasY = $scope.mCanvasMouse.getPixelYPos(event);
+        if(!$scope.isDragging)
+        {
+            $scope.useCam = $scope.mView; // assume using this camera
+            $scope.mWhichCamera = "Large";
+            if ($scope.mSmallView.isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+                $scope.useCam = $scope.mSmallView;
+                $scope.mWhichCamera = "Small";
+            }
+        }
+        
+        // these are "private functions" on the camera, 
+        // for the purpose of clear illustration, we will call them
+        $scope.mViewportX = $scope.useCam._viewportX($scope.mCanvasX);
+        $scope.mViewportY = $scope.useCam._viewportY($scope.mCanvasY);
+        
+        wcPos[0] = $scope.useCam.mouseWCX($scope.mCanvasX);
+        wcPos[1] = $scope.useCam.mouseWCY($scope.mCanvasY);
+        $scope.mCameraX = wcPos[0];
+        $scope.mCameraY = wcPos[1];
+        return wcPos;
+    };
+
+//    $scope.setVPPos = function(wcX,wcY) 
+//    {
+//        $scope.mSmallViewport[0] = $scope.mCanvasX - $scope.mSmallViewport[2] / 2;
+//        $scope.mSmallViewport[1] = $scope.mCanvasY - $scope.mSmallViewport[3] / 2;
+//        $scope.setSmallViewport();
+//    };
+
+    $scope.setWCPos = function(wcX,wcY) 
+    {
+        $scope.mSmallViewWCCenter[0] = wcX;
+        $scope.mSmallViewWCCenter[1] = wcY;
+        $scope.setSmallViewWCCenter();
+    };
+
+    $scope.serviceSelection = function () 
+    {
         switch ($scope.mSelectedEcho) {
         case $scope.eSelection[0].label:
             $scope.currScene = $scope.mMyWorld.parentScene();
@@ -90,7 +198,8 @@ myModule.controller("MainCtrl", function ($scope) {
         }
     };
 
-    $scope.onMouseDown = function (event) {
+    $scope.onMouseDown = function (event) 
+    {
         if (event.which === 1) { // left
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
             var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
@@ -120,7 +229,7 @@ myModule.controller("MainCtrl", function ($scope) {
                 
               if(scene.mChildren){ 
                 for(var i = scene.mChildren.length - 1; i >= 0; i--){
-                    console.log("in the loop!");
+                    //console.log("in the loop!");
                     var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
                     if(clickedScene) return clickedScene;
                     
@@ -160,8 +269,8 @@ myModule.controller("MainCtrl", function ($scope) {
         }
     };
   
-
-    $scope.onMouseMove = function (event) {
+    $scope.onMouseMove = function (event) 
+    {
         // TODO: fix bug where mouse position is off if 
         //       the page is reloaded while scrolled down
 

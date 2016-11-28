@@ -90,8 +90,7 @@ World.prototype.draw = function (camera) {
     camera.setupViewProjection();
     
     this.mRoomParent.draw(camera);
-    //this.mXfSq.draw(camera);    // DRAW MOUSE CONTROL POINT
-};
+ };
 
 World.prototype.update = function () {
 //    if (this.mChildShouldUpdate) {
