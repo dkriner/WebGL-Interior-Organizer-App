@@ -17,9 +17,11 @@ function World() {
     
     this.mConstColorShader = new SimpleShader(
         "src/GLSLShaders/SimpleVS.glsl",      // Path to the VertexShader 
-        "src/GLSLShaders/SimpleFS.glsl");    // Path to the simple FragmentShader
+        "src/GLSLShaders/SimpleFS.glsl");     // Path to the simple FragmentShader
         
-    // CONTROL POINT FOR MOUSE
+    // ********************************************
+    //         control point for the mouse
+    // ********************************************
     this.mXfSq =  new SquareRenderable(this.mConstColorShader);
     this.mXfSq.setColor([0.3, 0., 0.3, 1]);
     this.mXfSq.getXform().setSize(0.2, 0.2);
@@ -27,7 +29,6 @@ function World() {
     // ********************************************
     //                  the room
     // ********************************************
-    
     var firstBedPos = [-4, 4];
     var centerOfRoom = [0, 3];
     this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
@@ -36,6 +37,9 @@ function World() {
     var xfRoomPXf = this.mRoomParent.getXform();
     xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
     
+    // ********************************************
+    //                   floor
+    // ********************************************
     var obj = new SquareRenderable(this.mConstColorShader);
     obj.setColor([0.3, 0.3, 0.3, 1]);
     
@@ -56,7 +60,7 @@ function World() {
     
     var bedNames = ["Bed Gen2Main", "Bed Gen2Slider", "Bed Gen3Baby"];
 
-    // Bed Gen2Main   ********************************************
+    // ****************** Bed Gen2Main ******************
     this.mBedParent = new SceneNode(this.mConstColorShader, "Root", false, 
                                     firstBedPos[0], firstBedPos[1]);
     this.mRoomParent.addAsChild(this.mBedParent);
@@ -65,25 +69,25 @@ function World() {
                         firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
     this.mBedParent.addAsChild(this.mBed1);
 
-    // Bed Gen2Slider   ********************************************
+    // ****************** Bed Gen2Slider ******************
     this.mBed2 = new Bed(this.mConstColorShader, bedNames[1], 
                         firstBedPos[0] + 5, firstBedPos[1], bedColor[1], initBedSize);
     this.mBedParent.addAsChild(this.mBed2);
     
-    // Bed Gen3Baby   ********************************************
+    // ****************** Bed Gen3Baby ******************
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0] + 4, firstBedPos[1] - 5.75, bedColor[2], initBedSize);
     this.mBed1.addAsChild(this.mBed3);
 }
 
-World.prototype.toggleHeadSpin = function () {
-    this.mHeadShouldSpin = !this.mHeadShouldSpin; };
+//World.prototype.toggleHeadSpin = function () {
+//    this.mHeadShouldSpin = !this.mHeadShouldSpin; };
 
-World.prototype.toggleChildUpdate = function () {
-    this.mChildShouldUpdate = !this.mChildShouldUpdate; };
+//World.prototype.toggleChildUpdate = function () {
+//    this.mChildShouldUpdate = !this.mChildShouldUpdate; };
 
-World.prototype.toggleArmRotate = function () {
-    this.mArmShouldRotate = !this.mArmShouldRotate; };
+//World.prototype.toggleArmRotate = function () {
+//    this.mArmShouldRotate = !this.mArmShouldRotate; };
 
 World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
@@ -119,13 +123,12 @@ World.prototype.update = function () {
 //    }
 };
 
+// TODO: Update getters to return based on array (will allow for dynamic creation)
 World.prototype.leftChildXform = function () {
-//    return this.mBed1.getXform();
     return this.mBedParent.getXform();
 };
 
 World.prototype.leftChildScene = function () {
-    //return this.mBed1;
     return this.mBedParent;
 };
 

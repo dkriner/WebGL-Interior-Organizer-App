@@ -83,6 +83,9 @@ myModule.controller("MainCtrl", function ($scope)
             v[i] = parseInt($scope.mSmallViewport[i]);
     };
 
+    // ********************************************
+    //             setup small viewport
+    // ********************************************
     $scope.mSmallViewWCWidth = 30;                      // WC coordinates
     $scope.mSmallViewport = [800, 450, 200, 150];       // size of VP window that we look through
     $scope.mSmallViewWCCenter = [-5, -10];              // center of VP window (in WC coord) that we're looking through
@@ -95,12 +98,12 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.setSmallViewWCCenter();
     $scope.setSmallViewport();
         
-    // ***********************************
-    //             SQUAREAREAS
-    // ***********************************
-//    // WC
-//    $scope.wcSquareArea = new SquareArea($scope.mView);
-//    $scope.wcSquareArea.setColor([1,1,1,1]);
+    // ********************************************
+    //                 square areas
+    // ********************************************
+    // WC
+    $scope.wcSquareArea = new SquareArea($scope.mView);
+    $scope.wcSquareArea.setColor([1,1,1,1]);
 
     // VP
     $scope.vpSquareArea = new SquareArea($scope.mSmallView);
@@ -114,18 +117,24 @@ myModule.controller("MainCtrl", function ($scope)
         // Step E: Clear the canvas
         gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);        // Clear the canvas
 
-        // draw large view
+        // ********************************************
+        //        draw large view and handles
+        // ********************************************
         $scope.mMyWorld.draw($scope.mView);
         if ($scope.mShouldDrawHandle)
             $scope.mMySceneHandle.draw($scope.mView);
         $scope.mMyWorld.mXfSq.draw($scope.mView);           // Draw mouse box (in case of browser zooming-in allignment bug)
 
-        // draw small view
+        //$scope.wcSquareArea.draw($scope.mView);
+
+        // ********************************************
+        //              draw small view
+        // ********************************************
         $scope.mMyWorld.draw($scope.mSmallView);
         $scope.vpSquareArea.draw($scope.mSmallView);
         
-        // ******** FOR TESTING - remove later ***************
-        $scope.mMyWorld.mXfSq.draw($scope.mView);
+        // ******** FOR TESTING: draws mouse-control-point in mSmallView ... why? ***************
+        //$scope.mMyWorld.mXfSq.draw($scope.mView);
     };
 
     $scope.computeWCPos = function (event) 
