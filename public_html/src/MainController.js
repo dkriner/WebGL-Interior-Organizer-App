@@ -38,6 +38,7 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mCameraX = 0;
     $scope.mCameraY = 0;
     $scope.mWhichCamera = "Large";
+    $scope.mSelected="";
 
     // this is the model
     $scope.mMyWorld = new World();
@@ -182,6 +183,7 @@ myModule.controller("MainCtrl", function ($scope)
     
     $scope.addFurniture = function (selection)
     {
+       $scope.mSelected = selection;
         //draw a new piece of furniture
         switch(selection){
             case "Bed": 
@@ -275,6 +277,7 @@ myModule.controller("MainCtrl", function ($scope)
                 if(distAllowed >= dist)
                     return scene;
                 
+               
                 return clickedScene;
                 
                 

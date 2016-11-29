@@ -11,8 +11,9 @@
                 
             }
             h2{
-                text-align: center;
-                
+                position: absolute;
+                top: 80px;
+                left: 560px;
                 font-family: "Georgia";
                 color: midnightblue;
             } 
@@ -27,20 +28,29 @@
                 font-family: "Georgia";
                 color: midnightblue;
             }
-            authors{
+            .authors{
                 font-family: "Georgia";
                 position: absolute;
+                left: 0px;
+                top: 750px;
+                font-size: 10px;
             }
             .delete{
                 position: absolute;
                 top: 700px;
-                left: 1095px;
+                left: 1090px;
             }
             .coloring{
                 position: absolute;
                 top: 150px;
                 left: 1250px;
             }
+            .currentObject{
+                position: absolute;
+                top: 650px;
+                left: 1050px;
+            }
+            
             
 
         </style>
@@ -111,21 +121,22 @@
 
         
        <!-- DRAW SCENE HANDLE CHECKBOX-->
-
+       <br><br><br><br>
         Draw Scene Handle: <input type="checkbox" ng-model="mShouldDrawHandle"><br>
      
         <br>
         
         <!-- MENU FOR ADDING FURNITURE --------->
         <h3>Add Furniture</h3> 
-        <input type = "button" ng-model="mAddition" value="Bed" ng-click="addFurniture('Bed')" ><br>
-        <input type = "button" ng-model="mAddition" value="Ceiling Fan" ng-click="addFurniture('Ceiling Fan')" ><br>
-        <input type = "button" ng-model="mAddition" value="Chair" ng-click="addFurniture('Chair')"><br>
-        <input type = "button" ng-model="mAddition" value="Couch" ng-click="addFurniture('Couch')"><br>
-        <input type = "button" ng-model="mAddition" value="Lamp" ng-click="addFurniture('Lamp')"><br>
-        <input type = "button" ng-model="mAddition" value="Plant" ng-click="addFurniture('Plant')"><br>
-        <input type = "button" ng-model="mAddition" value="Rug" ng-click="addFurniture('Rug')"><br>
-        <input type = "button" ng-model="mAddition" value="Table" ng-click="addFurniture('Table')"><br>
+        
+        <button> <img height="25" width="25" ng-click = "addFurniture('Bed')" src="assets/bed.png" alt="Bed"/></button>Bed<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Ceiling Fan')" src="assets/ceiling_fan.png" alt="Ceiling Fan"/></button>Ceiling Fan<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Chair')" src="assets/chair.png" alt="Chair"/></button>Chair<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Couch')" src="assets/couch.png" alt="Couch"/></button>Couch<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Lamp')" src="assets/lamp.png" alt="Lamp"/></button>Lamp<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Plant')" src="assets/plant.png" alt="Plant"/></button>Plant<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Rug')" src="assets/rug.png" alt="Rug"/></button>Rug<br>
+        <button> <img height="25" width="25" ng-click = "addFurniture('Table')" src="assets/table.png" alt="Table"/></button>Table<br>
         
         <!---TODO----color picker and/or texture picker---->
         <div class="coloring">
@@ -144,12 +155,18 @@
         <br><br>
         Use the PURPLE handle to <br>adjust the  <i>rotation</i> of the <br>selected object<br><br><br><br>
         
-        
-        <!--------AUTHORS----------------->
+        <div class="currentObject">
+            Selected Object:
+            <br><input type="textbox" ng-model="mSelected" ng-readonly = "true">
+        </div>
+        <!--------AUTHORS-------------
+        <div class="authors">
         <b>Authors:</b> <br>
         John Fitzgerald <br>
         Griffin Howlett <br>
         Darren Kriner   <br>
+        </div>
+        ----------------------------->
         
                    
     </body>
