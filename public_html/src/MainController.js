@@ -22,12 +22,11 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mCanvasMouse = new CanvasMouseSupport('GLCanvas');
     
     // Radio button selection support
-    $scope.eSelection = [
-        {label: "Room"},
-        {label: "Parent Bed (Sibling1)"},
-        {label: "Child Bed of Parent Bed"},
-        {label: "Neighbor Bed (Sibling2)"}
-    ];
+//    $scope.eSelection = [
+//        {label: "Bed"},
+//        {label: "Ceiling Fan"}
+//        //add more
+//    ];
 
     // All the mouse coordinate points
     $scope.mClientX = 0;
@@ -180,31 +179,37 @@ myModule.controller("MainCtrl", function ($scope)
         $scope.mSmallViewWCCenter[1] = wcY;
         $scope.setSmallViewWCCenter();
     };
-
-    $scope.serviceSelection = function () 
+    
+    $scope.addFurniture = function (selection)
     {
-        switch ($scope.mSelectedEcho) {
-        case $scope.eSelection[0].label:
-            $scope.currScene = $scope.mMyWorld.parentScene();
-            $scope.mMySceneHandle.setScene($scope.currScene);
-            $scope.mSelectedXform = $scope.mMyWorld.parentXform();
-            break;
-        case $scope.eSelection[1].label:
-            $scope.currScene = $scope.mMyWorld.leftChildScene();
-            $scope.mMySceneHandle.setScene($scope.currScene);
-            $scope.mSelectedXform = $scope.mMyWorld.leftChildXform();
-            break;
-        case $scope.eSelection[2].label:
-            $scope.currScene = $scope.mMyWorld.topChildScene();
-            $scope.mMySceneHandle.setScene($scope.currScene);
-            $scope.mSelectedXform = $scope.mMyWorld.topChildXform();
-            break;
-        case $scope.eSelection[3].label:
-            $scope.currScene = $scope.mMyWorld.rightChildScene();
-            $scope.mMySceneHandle.setScene($scope.currScene);
-            $scope.mSelectedXform = $scope.mMyWorld.rightChildXform();
-            break;
-        }
+        //draw a new piece of furniture
+        switch(selection){
+            case "Bed": 
+                //add bed
+        
+            case "Lamp":
+                //add lamp
+        
+            case "Plant":
+                //add plant
+                
+            case "Chair":
+                //add chair
+                
+            case "Couch":
+                //add couch
+                
+            case "Ceiling Fan":
+                //add ceiling fan
+                
+            case "Rug":
+                //add rug
+                
+            case "Table":
+                //add table
+        
+      }
+        
     };
 
     $scope.onMouseDown = function (event) 
