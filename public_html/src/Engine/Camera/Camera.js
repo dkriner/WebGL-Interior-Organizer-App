@@ -9,12 +9,13 @@
 
 "use strict";
 
-function Camera(wcCenter, wcWidth, viewportArray) {
+function Camera(wcCenter, wcWidth, viewportArray, name) {
     this.mWCCenter = wcCenter;
     this.mWCWidth = wcWidth;
     this.mNearPlane = 0;
     this.mFarPlane = 1000;
     this.setViewport(viewportArray);
+    this.mName = name;
 
     // transformation matrices
     this.mViewMatrix = mat4.create();

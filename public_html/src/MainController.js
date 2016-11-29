@@ -40,11 +40,11 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mWhichCamera = "Large";
     $scope.mSelected="";
 
+    $scope.mCameras = [];
+    
     // this is the model
     $scope.mMyWorld = new World();
 
-    // $scope.currScene = $scope.mMyWorld.mRoomParent;
-    //$scope.currScene = $scope.mMyWorld.mArrayOfBeds[0];
     $scope.currScene = $scope.mMyWorld.mRoomParent; // start by editing entire room
     $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
     $scope.mSelectedXform = $scope.mMyWorld.parentXform();
@@ -56,58 +56,117 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
 
-    $scope.mView = new Camera(
-                [0, 3],             // wc Center
-                15,                 // wc Wdith
-                [0, 0, 800, 600]);  // viewport: left, bottom, width, height
-
     // small view support
-    $scope.setSmallViewWC = function () 
+    $scope.setViewWC = function (camera) 
     {
-        $scope.mSmallView.setWCWidth(parseInt($scope.mSmallViewWCWidth));
+        var i;
+        var cam = camera;
+        
+        if (cam.mName === $scope.mCameraNames[0])
+            i = 0;
+        else if (cam.mName === $scope.mCameraNames[1])
+            i = 1;
+        else if (cam.mName === $scope.mCameraNames[2])
+            i = 2;
+                
+        cam.setWCWidth(parseInt($scope.mWCWidths[i]));
     };
     
-    $scope.setSmallViewWCCenter = function () 
+    $scope.setViewWCCenter = function (camera) 
     {
-        $scope.mSmallView.setWCCenter(
-            parseInt($scope.mSmallViewWCCenter[0]),
-            parseInt($scope.mSmallViewWCCenter[1])
+        var i;
+        var cam = camera;
+        
+        if (cam.mName === $scope.mCameraNames[0])
+            i = 0;
+        else if (cam.mName === $scope.mCameraNames[1])
+            i = 1;
+        else if (cam.mName === $scope.mCameraNames[2])
+            i = 2;
+        
+        cam.setWCCenter(
+            parseInt($scope.mWCCenters[i][0]),
+            parseInt($scope.mWCCenters[i][1])
         );
     };
     
-    $scope.setSmallViewport = function () 
+    $scope.setViewport = function (camera) 
     {
-        var v = $scope.mSmallView.getViewport();
         var i;
-        for (i=0; i<4; i++)
-            v[i] = parseInt($scope.mSmallViewport[i]);
+        var cam = camera;
+        var viewPort = cam.getViewport();
+        
+        if (cam.mName === $scope.mCameraNames[0])
+            i = 0;
+        else if (cam.mName === $scope.mCameraNames[1])
+            i = 1;
+        else if (cam.mName === $scope.mCameraNames[2])
+            i = 2;
+        
+        for (var j=0; j<4; j++)
+            viewPort[i] = parseInt($scope.mViewPorts[i][j]);
     };
 
-    // ********************************************
-    //             setup small viewport
-    // ********************************************
-    $scope.mSmallViewWCWidth = 30;                      // WC coordinates
-    $scope.mSmallViewport = [800, 450, 200, 150];       // size of VP window that we look through
-    $scope.mSmallViewWCCenter = [-5, -10];              // center of VP window (in WC coord) that we're looking through
-    $scope.mSmallView = new Camera(
-                [0, 3],// wc Center
-                15, // wc width
-                [0, 0, 800, 600]);    // viewport: left, bottom, width, height
-    $scope.mSmallView.setBackgroundColor([0.9, 0.7, 0.7, 1]);
-    $scope.setSmallViewWC();
-    $scope.setSmallViewWCCenter();
-    $scope.setSmallViewport();
+    $scope.mCameraNames = ["Large", "Floor", "Floor+Ceiling"];
+    $scope.mWCWidths = [15, 15, 15];
+    $scope.mWCCenters = [[0, 3], 
+                         [0, 3], 
+                         [0, 3]
+                        ];
+    $scope.mViewPorts = [[0, 0, 800, 600],
+                         [800, 250, 200, 150], 
+                         [800, 425, 200, 150]
+                        ];
+
+//    $scope.mWCWidths.push(15);
+//    $scope.mWCCenters.push([0, 3]);
+//    $scope.mViewPorts.push([0, 0, 800, 600]);
+//
+//    $scope.mWCWidths.push($scope.mWCWidths[0]);  // WC coordinates
+//    $scope.mWCCenters.push([$scope.mWCCenters[0][0]], $scope.mWCCenters[0][1]);
+//    $scope.mViewPorts.push([800, 250, 200, 150]);// size of VP window that we look through
+//    
+//    $scope.mWCWidths.push($scope.mWCWidths[0]);  // WC coordinates
+//    $scope.mWCCenters.push([$scope.mWCCenters[0][0]], $scope.mWCCenters[0][1]); // center of VP window (in WC coord) that we're looking through
+//    $scope.mViewPorts.push([800, 450, 200, 150]);// size of VP window that we look through 
+    
+    // Create 3 cameras
+    for (var i = 0; i < $scope.mCameraNames.length; i++)
+    {
+        var cam = new Camera(
+                    [$scope.mWCCenters[i][0], $scope.mWCCenters[i][1]],   // wc Center
+                     $scope.mWCWidths[i],                                 // wc Wdith
+                    [$scope.mViewPorts[i][0], $scope.mViewPorts[i][1], 
+                     $scope.mViewPorts[i][2], $scope.mViewPorts[i][3]],   // viewport: left, bottom, width, height
+                     $scope.mCameraNames[i]);                             // camera name
+
+        cam.setBackgroundColor([1, 1, 1, 1]);
+
+          // TODO: determine problem in the three functions listed below
+//        if (cam.mName !== "Large")
+//        {
+//            $scope.setViewWC(cam);
+//            $scope.setViewWCCenter(cam);
+//            $scope.setViewport(cam);
+//        }
+        
+        $scope.mCameras.push(cam);  // acces cameras through array
+    }
         
     // ********************************************
     //                 square areas
     // ********************************************
-    // WC
-    $scope.wcSquareArea = new SquareArea($scope.mView);
-    $scope.wcSquareArea.setColor([1,1,1,1]);
+    // Large viewport
+    $scope.largeVPSquareArea = new SquareArea($scope.mCameras[0]);
+    $scope.largeVPSquareArea.setColor([0,1,0,1]);
 
-    // VP
-    $scope.vpSquareArea = new SquareArea($scope.mSmallView);
-    $scope.vpSquareArea.setColor([0,0,1,1]);
+    // Floor (small viewport)
+    $scope.floorSquareArea = new SquareArea($scope.mCameras[1]);
+    $scope.floorSquareArea.setColor([1,1,1,1]);
+
+    // Floor+Ceiling (small viewport)
+    $scope.floorCeilingSquareArea = new SquareArea($scope.mCameras[2]);
+    $scope.floorCeilingSquareArea.setColor([0,0,1,1]);
 
     $scope.mainTimerHandler = function () 
     {
@@ -120,21 +179,24 @@ myModule.controller("MainCtrl", function ($scope)
         // ********************************************
         //        draw large view and handles
         // ********************************************
-        $scope.mMyWorld.draw($scope.mView);
+        $scope.mMyWorld.draw($scope.mCameras[0]);
         if ($scope.mShouldDrawHandle)
-            $scope.mMySceneHandle.draw($scope.mView);
-        $scope.mMyWorld.mXfSq.draw($scope.mView);           // Draw mouse box (in case of browser zooming-in allignment bug)
-
-        //$scope.wcSquareArea.draw($scope.mView);
+            $scope.mMySceneHandle.draw($scope.mCameras[0]);
+        $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);           // Draw mouse box (in case of browser zooming-in allignment bug)
+        // TODO: determine why drawing square area blocks future drawing from inside the square
+        //$scope.largeVPSquareArea.draw($scope.mCameras[0]);
 
         // ********************************************
-        //              draw small view
+        //         draw small floor + ceiling
         // ********************************************
-        $scope.mMyWorld.draw($scope.mSmallView);
-        $scope.vpSquareArea.draw($scope.mSmallView);
+        $scope.mMyWorld.draw($scope.mCameras[2]);
+        //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
-        // ******** FOR TESTING: draws mouse-control-point in mSmallView ... why? ***************
-        //$scope.mMyWorld.mXfSq.draw($scope.mView);
+        // ********************************************
+        //              draw small floor 
+        // ********************************************
+        $scope.mMyWorld.draw($scope.mCameras[1]);
+        //$scope.floorSquareArea.draw($scope.mCameras[1]);
     };
 
     $scope.computeWCPos = function (event) 
@@ -147,11 +209,17 @@ myModule.controller("MainCtrl", function ($scope)
         $scope.mCanvasY = $scope.mCanvasMouse.getPixelYPos(event);
         if(!$scope.isDragging)
         {
-            $scope.useCam = $scope.mView; // assume using this camera
+            $scope.useCam = $scope.mCameras[0]; // assume using this camera
             $scope.mWhichCamera = "Large";
-            if ($scope.mSmallView.isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
-                $scope.useCam = $scope.mSmallView;
-                $scope.mWhichCamera = "Small";
+            
+            if ($scope.mCameras[1].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+                $scope.useCam = $scope.mCameras[1];
+                $scope.mWhichCamera = "Floor";
+            }
+            else if ($scope.mCameras[2].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+                $scope.useCam = $scope.mCameras[2];
+                $scope.mWhichCamera = "Floor+Ceiling";
+                
             }
         }
         
@@ -174,12 +242,12 @@ myModule.controller("MainCtrl", function ($scope)
 //        $scope.setSmallViewport();
 //    };
 
-    $scope.setWCPos = function(wcX,wcY) 
-    {
-        $scope.mSmallViewWCCenter[0] = wcX;
-        $scope.mSmallViewWCCenter[1] = wcY;
-        $scope.setSmallViewWCCenter();
-    };
+//    $scope.setWCPos = function(wcX,wcY) 
+//    {
+//        $scope.mWCCenters[2][0] = wcX;
+//        $scope.mWCCenters[2][0] = wcY;
+//        $scope.setSmallViewWCCenter();
+//    };
     
     $scope.addFurniture = function (selection)
     {
@@ -219,8 +287,8 @@ myModule.controller("MainCtrl", function ($scope)
         if (event.which === 1) { // left
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
             var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-            var x = $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
-            var y = $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
+            var x = $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
+            var y = $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
             var dist = 0.4;
             
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
@@ -294,8 +362,8 @@ myModule.controller("MainCtrl", function ($scope)
         var currSceneForm = $scope.currScene.getXform();
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-        $scope.mLastWCPosX = this.mView.mouseWCX(canvasX);
-        $scope.mLastWCPosY = this.mView.mouseWCY(canvasY);
+        $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
+        $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
 
         $scope.mMyWorld.mXfSq.getXform().setPosition($scope.mLastWCPosX, $scope.mLastWCPosY);
 

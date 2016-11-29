@@ -93,8 +93,17 @@ World.prototype.draw = function (camera) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
     
-    this.mRoomParent.draw(camera);
- };
+    // determine what gets drawn based on the camera
+    if (camera.mName === "Large")
+        this.mRoomParent.draw(camera);
+    else if (camera.mName === "Floor+Ceiling")
+    {
+        this.mRoomParent.draw(camera);
+        //this.mCeilingParent.draw();
+    }
+    else if (camera.mName === "Floor")
+        this.mRoomParent.draw(camera);
+};
 
 World.prototype.update = function () {
 //    if (this.mChildShouldUpdate) {

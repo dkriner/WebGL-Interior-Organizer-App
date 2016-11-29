@@ -125,7 +125,7 @@ SceneNode.prototype.draw = function (aCamera, parentMat) {
     }
     
     // for debugging, let's draw the pivot position
-    if (this.mPivotPos !== null) {
+    if (this.mPivotPos !== null && aCamera.mName === "Large") {
         var pxf = this.getXform();
         var t = pxf.getPosition();
         var p = pxf.getPivot();
