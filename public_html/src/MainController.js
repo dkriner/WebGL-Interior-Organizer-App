@@ -38,7 +38,6 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mCameraX = 0;
     $scope.mCameraY = 0;
     $scope.mWhichCamera = "Large";
-    $scope.mSelected="";
 
     $scope.mCameras = [];
     
@@ -249,37 +248,17 @@ myModule.controller("MainCtrl", function ($scope)
 //        $scope.setSmallViewWCCenter();
 //    };
     
-    $scope.addFurniture = function (selection)
-    {
-       $scope.mSelected = selection;
-        //draw a new piece of furniture
-        switch(selection){
-            case "Bed": 
-                //add bed
-        
-            case "Lamp":
-                //add lamp
-        
-            case "Plant":
-                //add plant
-                
-            case "Chair":
-                //add chair
-                
-            case "Couch":
-                //add couch
-                
-            case "Ceiling Fan":
-                //add ceiling fan
-                
-            case "Rug":
-                //add rug
-                
-            case "Table":
-                //add table
-        
-      }
-        
+    $scope.addFurniture = function (selection) {
+        var item = new SquareRenderable($scope.mMyWorld.mConstColorShader);
+        item.setTexture($scope.mMyWorld.textures[selection]);
+        item.getXform().setSize(2, 2);
+
+        // create scene for sceneHandle functionality
+        // TODO: make scenehandle work with renderables too
+        var scene = new SceneNode($scope.mMyWorld.mConstColorShader, selection, false);
+        scene.addToSet(item);
+
+        $scope.mMyWorld.addFurniture(scene);
     };
 
     $scope.onMouseDown = function (event) 

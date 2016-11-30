@@ -79,6 +79,21 @@ function World() {
     this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
                         firstBedPos[0] + 4, firstBedPos[1] - 5.75, bedColor[2], initBedSize);
     this.mBed1.addAsChild(this.mBed3);
+
+    // ********************************************
+    //                  the textures
+    // ********************************************
+    // TODO: move this to somewhere more global
+    this.textures = {
+        "Bed": new Texture('assets/bed.png'),
+        "Lamp": new Texture('assets/lamp.png'),
+        "Plant": new Texture('assets/plant.png'),
+        "Chair": new Texture('assets/chair.png'),
+        "Couch": new Texture('assets/couch.png'),
+        "Ceiling Fan": new Texture('assets/ceiling_fan.png'),
+        "Rug": new Texture('assets/rug.png'),
+        "Table": new Texture('assets/table.png'),
+    }
 }
 
 //World.prototype.toggleHeadSpin = function () {
@@ -104,6 +119,14 @@ World.prototype.draw = function (camera) {
     }
     else if (camera.mName === "Floor")
         this.mRoomParent.draw(camera);
+};
+
+World.prototype.addFurniture = function(item) {
+    this.mRoomParent.addAsChild(item);
+};
+
+World.prototype.removeFurniture = function(item) {
+    this.mRoomParent.removeChild(item);
 };
 
 World.prototype.update = function () {
