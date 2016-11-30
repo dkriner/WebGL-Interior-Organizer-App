@@ -22,7 +22,7 @@ function World() {
     // ********************************************
     //         control point for the mouse
     // ********************************************
-    this.mXfSq =  new SquareRenderable(this.mConstColorShader);
+    this.mXfSq = new SquareRenderable(this.mConstColorShader);
     this.mXfSq.setColor([0.3, 0., 0.3, 1]);
     this.mXfSq.getXform().setSize(0.2, 0.2);
 
@@ -41,7 +41,8 @@ function World() {
     //                   floor
     // ********************************************
     var obj = new SquareRenderable(this.mConstColorShader);
-    obj.setColor([0.3, 0.3, 0.3, 1]);
+    // obj.setColor([0.3, 0.3, 0.3, 1]);
+    obj.setTexture(new Texture('assets/sung.jpg'));
     
     var xf = obj.getXform();
     xf.setSize(14.75, 11);

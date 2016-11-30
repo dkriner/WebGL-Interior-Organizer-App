@@ -38,6 +38,13 @@ gEngine.Core = (function () {
             return;
         }
 
+        // Allows transperency with textures.
+        mGL.blendFunc(mGL.SRC_ALPHA, mGL.ONE_MINUS_SRC_ALPHA);
+        mGL.enable(mGL.BLEND);
+
+        // Set images to flip y axis to match the texture coordinate space.
+        mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
+
         // now initialize the VertexBuffer
         gEngine.VertexBuffer.initialize();
     };

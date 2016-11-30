@@ -42,10 +42,9 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
         return null;
     }
 
-    // Step D: Gets a reference to the aSquareVertexPosition attribute within the shaders.
-    this.mShaderVertexPositionAttribute = gl.getAttribLocation(
-        this.mCompiledShader, "aSquareVertexPosition");
-    // Step E: Gets a reference to the uniform variable uPixelColor in the fragment shader
+    // Step D: Gets a reference to the attributes within the shaders.
+    this.mShaderVertexPositionAttribute = gl.getAttribLocation(this.mCompiledShader, "aVertexPosition");
+    this.mTextureCoord = gl.getAttribLocation(this.mCompiledShader, "aTextureCoord");
     this.mPixelColor = gl.getUniformLocation(this.mCompiledShader, "uPixelColor");
     this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, "uModelTransform");
     this.mViewProjTransform = gl.getUniformLocation(this.mCompiledShader, "uViewProjTransform");
@@ -59,21 +58,38 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
 SimpleShader.prototype.getShader = function () { return this.mCompiledShader; };
 
 // Activate the shader for rendering
-SimpleShader.prototype.activateShader = function (buf, pixelColor, vpMatrix) {
+SimpleShader.prototype.activateShader = function (vertBuf, texBuf, pixelColor, vpMatrix) {
     var gl = gEngine.Core.getGL();
-    
     gl.useProgram(this.mCompiledShader);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    
+    // vertex geometry
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertBuf);
     gl.vertexAttribPointer(this.mShaderVertexPositionAttribute,
-        3,              // each element is a 3-float (x,y.z)
+        3,              // each element is a 3-float (x,y,z)
         gl.FLOAT,       // data type is FLOAT
         false,          // if the content is normalized vectors
         0,              // number of bytes to skip in between elements
         0);             // offsets to the first element
-    
-    gl.uniformMatrix4fv(this.mViewProjTransform, false, vpMatrix);
     gl.enableVertexAttribArray(this.mShaderVertexPositionAttribute);
+
+    // texture geometry
+    gl.bindBuffer(gl.ARRAY_BUFFER, texBuf);
+    gl.vertexAttribPointer(this.mTextureCoord, 
+        2,              // each element is a 2-float (x,y)
+        gl.FLOAT,       // data type is FLOAT
+        false,          // if the content is normalized vectors
+        0,              // number of bytes to skip in between elements
+        0);             // offsets to the first element
+    gl.enableVertexAttribArray(this.mTextureCoord);
+    
+    // texture sampler
+    gl.uniform1i(gl.getUniformLocation(this.mCompiledShader, "uSampler"), 0);
+
+    // uniform pixel color
     gl.uniform4fv(this.mPixelColor, pixelColor);
+
+    // view projection matrix
+    gl.uniformMatrix4fv(this.mViewProjTransform, false, vpMatrix);
 };
 // Loads per-object model transform to the vertex shader
 SimpleShader.prototype.loadObjectTransform = function (modelTransform) {

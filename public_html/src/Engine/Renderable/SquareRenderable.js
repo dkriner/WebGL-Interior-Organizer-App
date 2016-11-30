@@ -22,9 +22,14 @@ gEngine.Core.inheritPrototype(SquareRenderable, Renderable);
 
 // Ovreride the super-class "draw()" method!
 SquareRenderable.prototype.draw = function (camera, parentMat) {
+    Renderable.prototype.draw.call(this, camera, parentMat);
+
     var gl = gEngine.Core.getGL();
+    var vertexBuffer = gEngine.VertexBuffer.getGLVertexRefSQUARE();
+    var texCoordBuffer = gEngine.VertexBuffer.getGLTexCoordRefSQUARE();
     this.mShader.activateShader(
-        gEngine.VertexBuffer.getGLVertexRefSQUARE(),
+        vertexBuffer,
+        texCoordBuffer,
         this.mColor,        // this is defined in the super class!
         camera.getVPMatrix());  // always activate the shader first!
     this.computeAndLoadModelXform(parentMat);

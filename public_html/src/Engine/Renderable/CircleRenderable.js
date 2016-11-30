@@ -22,13 +22,18 @@ gEngine.Core.inheritPrototype(CircleRenderable, Renderable);
 
 // Ovreride the super-class "draw()" method!
 CircleRenderable.prototype.draw = function (camera, parentMat) {
+    Renderable.prototype.draw.call(this, camera, parentMat);
+
     var gl = gEngine.Core.getGL();
+    var vertexBuffer = gEngine.VertexBuffer.getGLVertexRefCIRCLE();
+    var texCoordBuffer = gEngine.VertexBuffer.getGLTexCoordRefCIRCLE();
     this.mShader.activateShader(
-        gEngine.VertexBuffer.getGLVertexRefCIRCLE(),
+        vertexBuffer,
+        texCoordBuffer,
         this.mColor,        // this is defined in the super class!
         camera.getVPMatrix());  // always activate the shader first!
     this.computeAndLoadModelXform(parentMat);
-    gl.drawArrays(gl.TRIANGLE_FAN, 0, 22);
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexBuffer.vertCount);
 };
 
 //CircleRenderable.prototype.isMouseWithin = function(wcX, wcY, dist){
