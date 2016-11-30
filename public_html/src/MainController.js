@@ -261,6 +261,13 @@ myModule.controller("MainCtrl", function ($scope)
         $scope.mMyWorld.addFurniture(scene);
     };
 
+    $scope.deleteItem = function () {
+        if ($scope.currScene.mParent)
+            $scope.currScene.mParent.removeChild($scope.currScene);
+
+        $scope.currScene = null;
+    };
+
     $scope.onMouseDown = function (event) 
     {
         if (event.which === 1) { // left
