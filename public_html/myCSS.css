@@ -1,0 +1,159 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 7, 2016, 8:50:10 PM
+    Author     : Darren
+*/
+
+
+/*
+Canvas stuff
+*/
+            body{
+                background: #990000;
+                background: linear-gradient(#660000, #FF3300);
+                height: 1000px;
+            }
+            .canvasBorder{
+                position: absolute;
+                top: 150px;
+                left: 15px;
+                border-radius: 15px 15px 150px 5px;
+                background: darkorange;
+                padding: 20px;
+                width: 1000px;
+                height: 600px;
+            }
+            canvas{
+                border-radius: 15px 15px 150px 15px;       
+            }
+            
+            /*
+            Nameplate, where the title of the app is printed
+            */
+            .name{
+                width: 280px;
+                height: 75px;
+                background: darkorange; 
+                border-radius: 20px 20px 20px 20px;
+            }
+            
+            /*header formatting*/
+            h1{
+                position: absolute;
+                font-family: Century Gothic, sans-serif;
+                color: darkred;
+                left: 15px;
+                
+            }
+            h2{
+                position: absolute;
+                left: 350px;
+                top: 50px;
+                font-family: Century Gothic, sans-serif;
+                color: yellow;
+                font-style: italic;
+            } 
+            h3{
+                font-family: Century Gothic, sans-serif;
+                color: yellow;
+            }
+            .viewLabel{
+                position: absolute;
+                left: 850px;
+            }
+            h5{
+                position: absolute;
+                top: 100px;
+                left: 1100px;
+                font-family: "Georgia";
+                color: midnightblue;
+            }
+            
+            /*Old stuff, may reuse*/
+            .authors{
+                font-family: "Georgia";
+                position: absolute;
+                left: 0px;
+                top: 750px;
+                font-size: 10px;
+            }
+            .delete{
+                position: absolute;
+                top: 650px;
+                left: 1090px;
+            }
+            .coloring{
+                position: absolute;
+                top: 150px;
+                left: 1250px;
+            }
+            .currentObject{
+                position: absolute;
+                top: 600px;
+                left: 1050px;
+            }
+            /*ADD FURNITURE DROPDOWN*/
+            
+            .dropbtn {
+                background-color: black;
+                color: darkorange;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                position: relative;
+           
+            }
+
+            /* The container <div> - needed to position the dropdown content */
+            .dropdown {
+                position: relative;
+                left: 20px;
+                top: 70px;
+                display: inline-block;
+                cursor: pointer
+            }
+
+            /* Dropdown Content (Hidden by Default) */
+            .dropdown-content {
+                display: none;
+                position: relative;
+                cursor: pointer;
+                background-color: #999999;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {background-color: white}
+
+            /* Show the dropdown menu on hover */
+            .dropdown:hover .dropdown-content {
+                display: block;
+                position: relative;
+            }
+
+            /* Change the background color of the dropdown button when the dropdown content is shown */
+            .dropdown:hover .dropbtn {
+                background-color: #333333;
+            }
+            
+            /*Draw Handle*/
+            .drawHandle{
+                position: absolute;
+                top: 200px;
+                left: 1200px;
+            }
+       

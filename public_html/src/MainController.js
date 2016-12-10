@@ -38,6 +38,8 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mCameraX = 0;
     $scope.mCameraY = 0;
     $scope.mWhichCamera = "Large";
+    $scope.mFloorSelected = true;
+    $scope.mFloorCeilingSelected = false;
 
     $scope.mCameras = [];
     
@@ -111,10 +113,12 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mWCCenters = [[0, 3], 
                          [0, 3], 
                          [0, 3]
+
                         ];
     $scope.mViewPorts = [[0, 0, 800, 600],
-                         [800, 250, 200, 150], 
-                         [800, 425, 200, 150]
+                         [800, 250, 200, 155], 
+                         [800, 425, 200, 155]
+
                         ];
 
 //    $scope.mWCWidths.push(15);
@@ -139,7 +143,7 @@ myModule.controller("MainCtrl", function ($scope)
                      $scope.mViewPorts[i][2], $scope.mViewPorts[i][3]],   // viewport: left, bottom, width, height
                      $scope.mCameraNames[i]);                             // camera name
 
-        cam.setBackgroundColor([1, 1, 1, 1]);
+        cam.setBackgroundColor([0.6, 0, 0, 1]);
 
           // TODO: determine problem in the three functions listed below
 //        if (cam.mName !== "Large")
@@ -161,11 +165,18 @@ myModule.controller("MainCtrl", function ($scope)
 
     // Floor (small viewport)
     $scope.floorSquareArea = new SquareArea($scope.mCameras[1]);
-    $scope.floorSquareArea.setColor([1,1,1,1]);
+    $scope.floorSquareArea.setColor([0,1,0,1]);
+    
 
     // Floor+Ceiling (small viewport)
     $scope.floorCeilingSquareArea = new SquareArea($scope.mCameras[2]);
-    $scope.floorCeilingSquareArea.setColor([0,0,1,1]);
+    $scope.floorCeilingSquareArea.setColor([0,1,0,1]);
+    
+   
+
+
+
+
 
     $scope.mainTimerHandler = function () 
     {
@@ -173,14 +184,17 @@ myModule.controller("MainCtrl", function ($scope)
         //$scope.mMyWorld.update();
         
         // Step E: Clear the canvas
-        gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1]);        // Clear the canvas
+        gEngine.Core.clearCanvas([0.6, 0, 0, 1]);        // Clear the canvas
 
         // ********************************************
         //        draw large view and handles
         // ********************************************
         $scope.mMyWorld.draw($scope.mCameras[0]);
+        
         if ($scope.mShouldDrawHandle)
             $scope.mMySceneHandle.draw($scope.mCameras[0]);
+
+        
         $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);           // Draw mouse box (in case of browser zooming-in allignment bug)
         // TODO: determine why drawing square area blocks future drawing from inside the square
         //$scope.largeVPSquareArea.draw($scope.mCameras[0]);
@@ -188,14 +202,21 @@ myModule.controller("MainCtrl", function ($scope)
         // ********************************************
         //         draw small floor + ceiling
         // ********************************************
-        $scope.mMyWorld.draw($scope.mCameras[2]);
+        
+        //$scope.mMyWorld.draw($scope.mCameras[2]);
+        $scope.floorCeilingSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, $scope.mFloorCeilingSelected);
         //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
         // ********************************************
         //              draw small floor 
         // ********************************************
-        $scope.mMyWorld.draw($scope.mCameras[1]);
-        //$scope.floorSquareArea.draw($scope.mCameras[1]);
+        //$scope.mMyWorld.draw($scope.mCameras[1]);
+        $scope.floorSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mFloorSelected);
+        
+        
+        
+        
+        
     };
 
     $scope.computeWCPos = function (event) 
@@ -257,8 +278,15 @@ myModule.controller("MainCtrl", function ($scope)
         // TODO: make scenehandle work with renderables too
         var scene = new SceneNode($scope.mMyWorld.mConstColorShader, selection, false);
         scene.addToSet(item);
-
+        
+        
+        
         $scope.mMyWorld.addFurniture(scene);
+        
+    };
+    
+    $scope.editTexture = function(selection){
+        //CHANGE TEXTURE OF SELECTED OBJECT
     };
 
     $scope.deleteItem = function () {
@@ -267,10 +295,29 @@ myModule.controller("MainCtrl", function ($scope)
 
         $scope.currScene = null;
     };
+    
+    
+    $scope.checkViewSelection = function(event){
+            var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
+            var canvasY = $scope.mCanvasMouse.getPixelYPos(event);     
+            
+            
+            if($scope.mCameras[1].isMouseInViewport(canvasX, canvasY)){
+                $scope.mFloorCeilingSelected =true;
+                $scope.mFloorSelected = false;
+            }
+            else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY)){
+                $scope.mFloorSelected = true;
+                $scope.mFloorCeilingSelected = false;
+            }
+            
+    };
 
     $scope.onMouseDown = function (event) 
     {
+        
         if (event.which === 1) { // left
+            $scope.checkViewSelection(event);           //check if user is selecting a new view
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
             var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
             var x = $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);

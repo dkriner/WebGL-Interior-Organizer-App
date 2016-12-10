@@ -116,12 +116,19 @@ SceneNode.prototype.draw = function (aCamera, parentMat) {
     
     // Draw our own!
     for (i = 0; i < this.mSet.length; i++) {
+        
         this.mSet[i].draw(aCamera, xfMat); // pass to each renderable
     }
     
     // now draw the children
     for (i = 0; i < this.mChildren.length; i++) {
+
+        
         this.mChildren[i].draw(aCamera, xfMat); // pass to each renderable
+        
+        
+        
+        
     }
     
     // for debugging, let's draw the pivot position

@@ -33,6 +33,8 @@ function World() {
     var centerOfRoom = [0, 3];
     this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
                                     centerOfRoom[0], centerOfRoom[1]);
+                                    
+    
     
     var xfRoomPXf = this.mRoomParent.getXform();
     xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
@@ -92,8 +94,8 @@ function World() {
         "Couch": new Texture('assets/couch.png'),
         "Ceiling Fan": new Texture('assets/ceiling_fan.png'),
         "Rug": new Texture('assets/rug.png'),
-        "Table": new Texture('assets/table.png'),
-    }
+        "Table": new Texture('assets/table.png')
+    };
 }
 
 //World.prototype.toggleHeadSpin = function () {
@@ -115,7 +117,7 @@ World.prototype.draw = function (camera) {
     else if (camera.mName === "Floor+Ceiling")
     {
         this.mRoomParent.draw(camera);
-        //this.mCeilingParent.draw();
+        //this.mCeilingParent.draw(camera);
     }
     else if (camera.mName === "Floor")
         this.mRoomParent.draw(camera);
@@ -124,6 +126,8 @@ World.prototype.draw = function (camera) {
 World.prototype.addFurniture = function(item) {
     this.mRoomParent.addAsChild(item);
 };
+
+
 
 World.prototype.removeFurniture = function(item) {
     this.mRoomParent.removeChild(item);

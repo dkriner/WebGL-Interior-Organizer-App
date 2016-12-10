@@ -24,9 +24,9 @@ function SquareArea(currView)
     {
         var sq = new SquareRenderable(this.mConstColorShader);
         var xf = sq.getXform();
-        sq.setColor([0, 0, 0, 1]);
+        sq.setColor([0, 1, 0, 1]);
         xf.setPosition(0,0);
-        xf.setSize(0,0);
+        xf.setSize(10,10);
         this.mBorders.push(sq);
     }
 };
@@ -46,45 +46,51 @@ SquareArea.prototype.initBorder = function(camera)
     var yPos = currView.getWCCenter()[1];
     var wcWidth = currView.getWCWidth();
     var wcHeight = currView.getWCHeight();
+    var sc = 20;
 
     var bWidth = camera.getWCWidth() / camera.getViewport()[2];
 
     // LEFT
     var xf = this.mBorders[0].getXform();
     xf.setPosition(xPos - (wcWidth/2) + (bWidth/2), yPos);
-    xf.setSize(bWidth, wcHeight);
+    xf.setSize(bWidth*sc, wcHeight*sc);
 
     // RIGHT
     var xf = this.mBorders[1].getXform();
     xf.setPosition(xPos + (wcWidth/2) - (bWidth/2), yPos);
-    xf.setSize(bWidth, wcHeight);
+    xf.setSize(bWidth*sc, wcHeight*sc);
 
     // UP
     var xf = this.mBorders[2].getXform();
     xf.setPosition(xPos, currView.getWCCenter()[1] + (wcHeight/2) - (bWidth/2));
-    xf.setSize(wcWidth, bWidth);
+    xf.setSize(wcWidth*sc, bWidth*sc);
 
     // DOWN
     var xf = this.mBorders[3].getXform();
     xf.setPosition(xPos, currView.getWCCenter()[1] - (wcHeight/2) + (bWidth/2));
-    xf.setSize(wcWidth, bWidth);
+    xf.setSize(wcWidth*sc, bWidth*sc);
 
     // PIVOT RED SQUARE
     this.mCenterPos.getXform().setSize(bWidth * 4, bWidth * 4);
     this.mCenterPos.getXform().setPosition(xPos, yPos);
 };
 
-SquareArea.prototype.draw = function (camera) 
+SquareArea.prototype.draw = function (camera, world, selected) 
 {
     camera.setupViewProjection();
-
     // BORDER
     this.initBorder(camera);
+    
+    world.draw(camera);
+    
+    if(selected)
     for (var i=0; i<this.mBorders.length; i++)
     {
         this.mBorders[i].draw(camera);
     }
     
     // PIVOT RED SQUARE IN CENTRE
-    this.mCenterPos.draw(camera);
+    //this.mCenterPos.draw(camera);
+    
+
 };

@@ -1,65 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
-        <style type ="text/css">
-            h1{
-              
-                text-align: left;
-                font-family: "Georgia";
-                color: midnightblue;
-                
-            }
-            h2{
-                position: absolute;
-                top: 80px;
-                left: 560px;
-                font-family: "Georgia";
-                color: midnightblue;
-            } 
-            h5{
-                position: absolute;
-                top: 100px;
-                left: 1100px;
-                font-family: "Georgia";
-                color: midnightblue;
-            }
-            body{
-                font-family: "Georgia";
-                color: midnightblue;
-            }
-            .authors{
-                font-family: "Georgia";
-                position: absolute;
-                left: 0px;
-                top: 750px;
-                font-size: 10px;
-            }
-            .delete{
-                position: absolute;
-                top: 700px;
-                left: 1090px;
-            }
-            .coloring{
-                position: absolute;
-                top: 150px;
-                left: 1250px;
-            }
-            .currentObject{
-                position: absolute;
-                top: 650px;
-                left: 1050px;
-            }
-            
-            
 
-        </style>
         <title>Interior Organizer</title>
         <link rel ="icon" type ="image/x-icon" href="./assets/favicon.png">
 
         <!-- the following says there are javascript source code contained in 
              the external source files
         -->
+        <!-- Style -->
+        <link rel="stylesheet" type="text/css" href="myCSS.css">
+        <script src="src/jscolor.js"> </script>
+        
         <!-- external library -->
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
         <script type="text/javascript" src="src/lib/gl-matrix.js"></script>
@@ -85,6 +37,8 @@
         <!-- GUI Lib -->
         <script type="text/javascript" src="src/GUI/CSS450Timer.js"></script>
         <script type="text/javascript" src="src/GUI/CSS450Slider.js"></script>
+        <script type="text/javascript" src="src/App/Bed.js"></script> 
+        <script type="text/javascript" src="src/App/SceneHandle.js"></script>
         <script type="text/javascript" src="src/GUI/CSS450Xform.js"></script>
         <script type="text/javascript" src="src/GUI/CanvasMouseSupport.js"></script>
         
@@ -94,9 +48,11 @@
          
         <script type="text/javascript" src="src/App/Bed.js"></script> 
         <script type="text/javascript" src="src/App/SceneHandle.js"></script>
+        
+
     </head>
 
-    <body bgcolor="lightblue"
+    <body 
          ng-app="appMyExample" 
          ng-controller="MainCtrl">
         
@@ -105,70 +61,71 @@
                timeron="true"
                callback="mainTimerHandler"></css-timer>
                
-    <h1>Interior Organizer: Build Your Home!</h1>
-    <div style="display: inline-block">
+    <div class="name">
+        <h1>Interior Organizer</h1>
+        <h2>Design Your Own Home!</h2>
     </div>
+   
     
-        
-    <h2> Editing Window </h2> <h5>Preview</h5>
-        <canvas style = "position:absolute; TOP:150px; LEFT:230px;"            
+    
+    <div class="canvasBorder"> 
+        <canvas 
             ng-mousemove="onMouseMove($event)"
             ng-mousedown="onMouseDown($event)"
-            id="GLCanvas" width="1000" height="600">
+            id="GLCanvas" width="1000" height="600" bgcolor="darkred">
             <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
             Your browser does not support the HTML5 canvas.
             <!-- this message will show only if WebGL clearing failed -->
         </canvas>
+    </div>
+    
+    
+        <!---VIEW LABELS --->
+        <div class="viewLabel" style = "top: 148px;">
+                  <h3>Floor</h3>
+         </div>
 
-        
-       <!-- DRAW SCENE HANDLE CHECKBOX-->
-       <br><br><br><br>
-        Draw Scene Handle: <input type="checkbox" ng-model="mShouldDrawHandle"><br>
-     
+      <div class="viewLabel" style = "top: 325px;">
+                  <h3>Floor + Ceiling</h3>
+          </div>
+ 
+        <div class="drawHandle">
+            <!--TODO: DRAW SCENE HANDLE CHECKBOX -->
+        </div>
         <br>
         
-        <!-- MENU FOR ADDING FURNITURE -->
-        <h3>Add Furniture</h3> 
-        
-        <button> <img height="25" width="25" ng-click = "addFurniture('Bed')" src="assets/bed.png" alt="Bed"/></button>Bed<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Ceiling Fan')" src="assets/ceiling_fan.png" alt="Ceiling Fan"/></button>Ceiling Fan<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Chair')" src="assets/chair.png" alt="Chair"/></button>Chair<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Couch')" src="assets/couch.png" alt="Couch"/></button>Couch<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Lamp')" src="assets/lamp.png" alt="Lamp"/></button>Lamp<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Plant')" src="assets/plant.png" alt="Plant"/></button>Plant<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Rug')" src="assets/rug.png" alt="Rug"/></button>Rug<br>
-        <button> <img height="25" width="25" ng-click = "addFurniture('Table')" src="assets/table.png" alt="Table"/></button>Table<br>
         
         <!-- TODO: color picker and/or texture picker -->
-        <div class="coloring">
-            TODO: COLORS & TEXTURES
-        </div>
+        
+        
+         <div class="dropdown" style="position: absolute; top: 160px; left: 1100px;">
+             <button class="dropbtn"><b>Add Furniture</b></button>
+                <div class="dropdown-content">
+                  <a ng-click = "addFurniture('Bed')">Bed</a>
+                  <a ng-click = "addFurniture('Ceiling Fan')">Ceiling Fan</a>
+                  <a ng-click = "addFurniture('Chair')">Chair</a>
+                  <a ng-click = "addFurniture('Couch')">Couch</a>
+                  <a ng-click = "addFurniture('Lamp')">Lamp</a>
+                  <a ng-click = "addFurniture('Plant')">Plant</a>
+                  <a ng-click = "addFurniture('Rug')">Rug</a>
+                  <a ng-click = "addFurniture('Table')">Table</a>
+                </div>
+          </div>  
+        
+        <div class="dropdown" style = "position:absolute; top: 160px; left:1300px;">
+            <button class="dropbtn"><b>Edit Texture</b></button>
+                <div class="dropdown-content">
+                  <a ng-click = "editTexture('Texture1')">Texture 1</a>
+                  <a ng-click = "editTexture('Texture2')">Texture 2</a>
+                  <a ng-click = "editTexture('Texture3')">Texture 3</a>
+                </div>
+          </div>
         
         <!--Delete Button -->
         <div class="delete">
             <input type ="button"  ng-model="mDelete" value="Delete Item" ng-click="deleteItem()">
         </div>
         <br>
-        
-        <!-----------instructions---------------------------------->
-        <h3>Instructions:</h3>
-        Use the YELLOW handle to <br>adjust the  <i>scale</i> of the <br>selected object
-        <br><br>
-        Use the PURPLE handle to <br>adjust the  <i>rotation</i> of the <br>selected object<br><br><br><br>
-        
-        <div class="currentObject">
-            Selected Object:<br>
-            {{ currScene.getName() }}
-        </div>
-        <!--------AUTHORS-------------
-        <div class="authors">
-        <b>Authors:</b> <br>
-        John Fitzgerald <br>
-        Griffin Howlett <br>
-        Darren Kriner   <br>
-        </div>
-        ----------------------------->
-        
-                   
-    </body>
+               
+           </body>
 </html>
