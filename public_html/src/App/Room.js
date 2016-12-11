@@ -49,12 +49,25 @@ Room.prototype.setFloorPattern = function (texture) {
     this.floorPattern.setTexture(texture);
 };
 
+Room.prototype.getFloorPatternScale = function() {
+    var txf = this.floorPattern.getTexXform();
+    return txf.getWidth();
+};
+
 Room.prototype.setFloorPatternScale = function (scale) {
-    this.floorPattern.getTexXform().setSize(scale,scale);
+    var txf = this.floorPattern.getTexXform();
+    var ratio = this.getSize()[1] / this.getSize()[0];
+    txf.setSize(scale , scale * ratio);
+};
+
+Room.prototype.getSize = function() {
+    var xf = this.floorPattern.getXform();
+    return [xf.getWidth(), xf.getHeight()];
 };
 
 Room.prototype.setSize = function(width, height) {
     this.floorPattern.getXform().setSize(width, height);
+    this.setFloorPatternScale(this.getFloorPatternScale());
     // TODO: move furniture within bounds
 };
 
