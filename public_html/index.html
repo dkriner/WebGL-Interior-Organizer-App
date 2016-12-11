@@ -124,6 +124,11 @@
         
         <input ng-model= "mCurrentColor" id="jscolor" class ="jscolor" ng-change="changeColor()" value="Change Color">
         <br>
+
+        <css-slider model="floorDesignScale" min="1" max="6" label="Carpet Scale: " callback="setFloorDesignScale()"></css-slider>
+
+        <label><b>Upload Floor Design:</b></label>
+        <input type="file" onchange="angular.element(this).scope().acceptTexFile(event)">
         
         <!----Item Dimensions--->
         <!---Label--->

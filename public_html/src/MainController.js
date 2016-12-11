@@ -38,6 +38,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mCameraY = 0;
     $scope.mWhichCamera = "Large";
     $scope.mDrawCeiling = true;
+    $scope.floorDesignScale = 3;
 
     $scope.mCameras = [];
     
@@ -261,7 +262,23 @@ myModule.controller("MainCtrl", function ($scope){
         //CHANGE TEXTURE OF SELECTED OBJECT
     };
 
-    
+    $scope.acceptTexFile = function (event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function () {
+            // hacky for now
+            $scope.mMyImage = new Image();
+            $scope.mMyImage.src = reader.result;
+            var texture = new Texture(reader.result)
+            $scope.mMyWorld.mRoom.setFloorPattern(texture);
+        };
+        $scope.mMyImagePath = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+    };
+
+    $scope.setFloorDesignScale = function () {
+        $scope.mMyWorld.mRoom.setFloorPatternScale($scope.floorDesignScale);
+    };
     
     $scope.checkViewSelection = function(canvasX, canvasY){
         if ($scope.mCameras[1].isMouseInViewport(canvasX, canvasY))

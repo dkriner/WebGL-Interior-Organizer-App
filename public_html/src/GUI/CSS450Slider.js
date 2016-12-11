@@ -14,8 +14,7 @@ angular.module("CSS450Slider", [])
         return {
 
             template:  "\
-             <div style='border: 1px solid #00ff00;\
-                        display: inline-block'>\n\
+             <div class='slider'>\n\
                {{mLabel}}\
                <input type='range' min={{mMin}} max={{mMax}}\
                       ng-change='sliderService()'\\n\

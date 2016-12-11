@@ -49,8 +49,8 @@ Room.prototype.setFloorPattern = function (texture) {
     this.floorPattern.setTexture(texture);
 };
 
-Room.prototype.setFloorPatternScale = function (x,y) {
-    this.floorPattern.getTexXform().setSize(x,y);
+Room.prototype.setFloorPatternScale = function (scale) {
+    this.floorPattern.getTexXform().setSize(scale,scale);
 };
 
 Room.prototype.setSize = function(width, height) {
