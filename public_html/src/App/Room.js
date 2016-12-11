@@ -26,7 +26,8 @@ function Room(shader, name, xPos, yPos, width, height) {
     // floor pattern
     this.floorPattern = new SquareRenderable(shader);
     // this.floorPattern.setColor([0.3, 0.3, 0.3, 1]);
-    this.setFloorPattern(new Texture('assets/sung.jpg'));
+    this.setFloorPattern(new Texture('assets/floor2.jpg'));
+    this.setFloorPatternScale(3,3);
     this.setSize(width, height);
     this.addToSet(this.floorPattern);
 }
@@ -46,6 +47,10 @@ Room.prototype.removeFurniture = function(item) {
 
 Room.prototype.setFloorPattern = function (texture) {
     this.floorPattern.setTexture(texture);
+};
+
+Room.prototype.setFloorPatternScale = function (x,y) {
+    this.floorPattern.getTexXform().setSize(x,y);
 };
 
 Room.prototype.setSize = function(width, height) {

@@ -8,6 +8,8 @@ attribute vec2 aTextureCoord; 	 // one texture coordinate
 uniform mat4 uModelTransform;
 uniform mat4 uViewProjTransform;
 
+uniform mat3 uTextureTransform;
+
 varying highp vec2 vTextureCoord;
 
 void main(void) {
@@ -15,5 +17,5 @@ void main(void) {
     // transform by uModelTransform and uViewProjTransform before
     // assign to gl_Position to pass the vertex to the fragment shader
     gl_Position = uViewProjTransform * uModelTransform * vec4(aVertexPosition, 1.0); 
-    vTextureCoord = aTextureCoord;
+    vTextureCoord = (uTextureTransform * vec3(aTextureCoord, 1)).xy;
 }

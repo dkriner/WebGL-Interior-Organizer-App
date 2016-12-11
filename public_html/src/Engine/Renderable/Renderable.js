@@ -16,6 +16,7 @@ function Renderable(shader) {
     this.mXform = new Transform(); // transform that moves this object around
     this.mColor = [1, 1, 1, 0];    // color of pixel
     this.mTexture = null;
+    this.mTexXform = new PivotedTransform();
     this.mParent = null;
 }
 
@@ -44,6 +45,7 @@ Renderable.prototype.computeAndLoadModelXform = function (parentMat) {
 
 Renderable.prototype.setTexture = function (tex) { this.mTexture = tex; };
 Renderable.prototype.getTexture = function () { return this.mTexture; };
+Renderable.prototype.getTexXform = function() { return this.mTexXform; };
 Renderable.prototype.getXform = function () { return this.mXform; };
 Renderable.prototype.setColor = function (color) { this.mColor = color; };
 Renderable.prototype.getColor = function () { return this.mColor; };

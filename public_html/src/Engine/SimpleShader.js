@@ -45,6 +45,7 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
     // Step D: Gets a reference to the attributes within the shaders.
     this.mShaderVertexPositionAttribute = gl.getAttribLocation(this.mCompiledShader, "aVertexPosition");
     this.mTextureCoord = gl.getAttribLocation(this.mCompiledShader, "aTextureCoord");
+    this.mTextureTransform = gl.getUniformLocation(this.mCompiledShader, "uTextureTransform");
     this.mPixelColor = gl.getUniformLocation(this.mCompiledShader, "uPixelColor");
     this.mModelTransform = gl.getUniformLocation(this.mCompiledShader, "uModelTransform");
     this.mViewProjTransform = gl.getUniformLocation(this.mCompiledShader, "uViewProjTransform");
@@ -58,7 +59,7 @@ function SimpleShader(vertexShaderPath, fragmentShaderPath) {
 SimpleShader.prototype.getShader = function () { return this.mCompiledShader; };
 
 // Activate the shader for rendering
-SimpleShader.prototype.activateShader = function (vertBuf, texBuf, pixelColor, vpMatrix) {
+SimpleShader.prototype.activateShader = function (vertBuf, texBuf, pixelColor, vpMatrix, texXform) {
     var gl = gEngine.Core.getGL();
     gl.useProgram(this.mCompiledShader);
     
@@ -90,6 +91,9 @@ SimpleShader.prototype.activateShader = function (vertBuf, texBuf, pixelColor, v
 
     // view projection matrix
     gl.uniformMatrix4fv(this.mViewProjTransform, false, vpMatrix);
+
+    // console.log(this.mTextureTransform, texXform);
+    gl.uniformMatrix3fv(this.mTextureTransform, false, texXform);
 };
 // Loads per-object model transform to the vertex shader
 SimpleShader.prototype.loadObjectTransform = function (modelTransform) {

@@ -16,6 +16,9 @@
 
 function PivotedTransform(xPos, yPos) {
     Transform.call(this);
+
+    if (xPos === undefined) xPos = 0;
+    if (yPos === undefined) yPos = 0;
     this.mPivot = vec2.fromValues(xPos, yPos);  // this is the pivot
 }
 gEngine.Core.inheritPrototype(PivotedTransform, Transform);
@@ -44,6 +47,21 @@ PivotedTransform.prototype.getXform = function () {
     mat4.rotateZ(matrix, matrix, this.getRotationInRad());
     mat4.scale(matrix, matrix, vec3.fromValues(this.getWidth(), this.getHeight(), 1.0));
     mat4.translate(matrix, matrix, vec3.fromValues(-this.getPivotXPos(), -this.getPivotYPos(), 0.0));
+
+    return matrix;
+};
+
+PivotedTransform.prototype.getXform2d = function () {
+    // Creates a blank identity matrix
+    var matrix = mat3.create();
+
+    // The matrices that WebGL uses are transposed, thus the typical matrix
+    // operations must be in reverse.
+    mat3.translate(matrix, matrix, vec2.fromValues(this.getXPos(), this.getYPos()));
+    mat3.translate(matrix, matrix, vec2.fromValues(this.getPivotXPos(), this.getPivotYPos()));
+    mat3.rotate(matrix, matrix, this.getRotationInRad());
+    mat3.scale(matrix, matrix, vec2.fromValues(this.getWidth(), this.getHeight()));
+    mat3.translate(matrix, matrix, vec2.fromValues(-this.getPivotXPos(), -this.getPivotYPos()));
 
     return matrix;
 };

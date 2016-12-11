@@ -31,7 +31,8 @@ CircleRenderable.prototype.draw = function (camera, parentMat) {
         vertexBuffer,
         texCoordBuffer,
         this.mColor,        // this is defined in the super class!
-        camera.getVPMatrix());  // always activate the shader first!
+        camera.getVPMatrix(),
+        this.getTexXform().getXform2d());  // always activate the shader first!
     this.computeAndLoadModelXform(parentMat);
     gl.drawArrays(gl.TRIANGLE_FAN, 0, vertexBuffer.vertCount);
 };
