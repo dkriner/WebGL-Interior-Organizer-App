@@ -15,8 +15,7 @@ var myModule = angular.module("appMyExample", ["CSS450Timer", "CSS450Slider", "C
 // registers the constructor for the controller
 // NOTE: the constructor is only called _AFTER_ the </body> tag is encountered
 //       this code does NOT run until the end of loading the HTML page
-myModule.controller("MainCtrl", function ($scope) 
-{
+myModule.controller("MainCtrl", function ($scope){
     // Initialize the graphics system
     gEngine.Core.initializeWebGL('GLCanvas');
     $scope.mCanvasMouse = new CanvasMouseSupport('GLCanvas');
@@ -58,8 +57,7 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.mLastWCPosY = 0;
 
     // small view support
-    $scope.setViewWC = function (camera) 
-    {
+    $scope.setViewWC = function (camera){
         var i;
         var cam = camera;
         
@@ -73,8 +71,7 @@ myModule.controller("MainCtrl", function ($scope)
         cam.setWCWidth(parseInt($scope.mWCWidths[i]));
     };
     
-    $scope.setViewWCCenter = function (camera) 
-    {
+    $scope.setViewWCCenter = function (camera){
         var i;
         var cam = camera;
         
@@ -91,8 +88,7 @@ myModule.controller("MainCtrl", function ($scope)
         );
     };
     
-    $scope.setViewport = function (camera) 
-    {
+    $scope.setViewport = function (camera){
         var i;
         var cam = camera;
         var viewPort = cam.getViewport();
@@ -134,8 +130,7 @@ myModule.controller("MainCtrl", function ($scope)
 //    $scope.mViewPorts.push([800, 450, 200, 150]);// size of VP window that we look through 
     
     // Create 3 cameras
-    for (var i = 0; i < $scope.mCameraNames.length; i++)
-    {
+    for (var i = 0; i < $scope.mCameraNames.length; i++){
         var cam = new Camera(
                     [$scope.mWCCenters[i][0], $scope.mWCCenters[i][1]],   // wc Center
                      $scope.mWCWidths[i],                                 // wc Wdith
@@ -173,8 +168,7 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.floorCeilingSquareArea.setColor([0,1,0,1]);
     
 
-    $scope.mainTimerHandler = function () 
-    {
+    $scope.mainTimerHandler = function (){
         // 1. update the world
         //$scope.mMyWorld.update();
         
@@ -214,8 +208,7 @@ myModule.controller("MainCtrl", function ($scope)
         
     };
 
-    $scope.computeWCPos = function (event) 
-    {
+    $scope.computeWCPos = function (event){
         var wcPos = [0, 0];
         $scope.mClientX = event.clientX;
         $scope.mClientY = event.clientY;
@@ -280,7 +273,6 @@ myModule.controller("MainCtrl", function ($scope)
         }
         else
             $scope.mMyWorld.addCeilingItem(scene);
-        
     };
     
     $scope.changeColor = function (){
@@ -292,9 +284,10 @@ myModule.controller("MainCtrl", function ($scope)
     };
 
     $scope.deleteItem = function () {
-        if ($scope.currScene.mParent)
+        if ($scope.currScene && $scope.currScene.mParent)
             $scope.currScene.mParent.removeChild($scope.currScene);
 
+        $scope.mMySceneHandle.setScene(null);
         $scope.currScene = null;
     };
     
@@ -302,7 +295,6 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.checkViewSelection = function(event){
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
             var canvasY = $scope.mCanvasMouse.getPixelYPos(event);     
-            
             
             if($scope.mCameras[1].isMouseInViewport(canvasX, canvasY)){
                 $scope.mFloorCeilingSelected =false;
@@ -315,9 +307,7 @@ myModule.controller("MainCtrl", function ($scope)
             
     };
 
-    $scope.onMouseDown = function (event) 
-    {
-        
+    $scope.onMouseDown = function (event){
         if (event.which === 1) { // left
             $scope.checkViewSelection(event);           //check if user is selecting a new view
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
@@ -326,14 +316,18 @@ myModule.controller("MainCtrl", function ($scope)
             var y = $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
             var dist = 0.4;
             
+            // scene handle code
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
                 $scope.handleMode = "Translate";
             else if ($scope.mMySceneHandle.mouseInRotHandle(x, y, dist))
                 $scope.handleMode = "Rotation";
             else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
                 $scope.handleMode = "Scale";
+            else $scope.handleMode = null;
+
+            if ($scope.handleMode) return;
             
-            
+            // scene selection code
             var msPos = [x,y];
             
             if(!$scope.mFloorCeilingSelected)
@@ -341,34 +335,22 @@ myModule.controller("MainCtrl", function ($scope)
             else
                 var newScene = getClickedScene(msPos, $scope.mMyWorld.mCeilingParent, dist);
             
-            if(newScene){
-                    $scope.currScene = newScene;
-                    $scope.mMySceneHandle.setScene(newScene);
-                    //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
-            }
-            
+            var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
+            $scope.currScene = newScene;
+            $scope.mMySceneHandle.setScene(newScene);
+            //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
             function getClickedScene(mousePos, scene, distAllowed){
-                
-              if(scene.mChildren){ 
-                for(var i = scene.mChildren.length - 1; i >= 0; i--){
-                    //console.log("in the loop!");
-                    var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
-                    if(clickedScene) return clickedScene;
-                    
+                if(scene.mChildren){ 
+                    for(var i = scene.mChildren.length - 1; i >= 0; i--){
+                        var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
+                        if(clickedScene) return clickedScene;
+                    }
                 }
-              }
-                
                 
                 var localMouse = mousePos;
-                //console.log("before Mouse: ", localMouse);
-                
-                if(scene.mParent)
-                    var localMouse = scene.mParent.wcToLocal(localMouse);   
-                
-                
-                //console.log("middle Mouse: ", localMouse);
-                
+                if (scene.mParent)
+                    localMouse = scene.mParent.wcToLocal(localMouse);
                 
                 // make mouse position relative to pivot
                 localMouse[0] -= scene.getXform().getPivot()[0];
@@ -376,52 +358,46 @@ myModule.controller("MainCtrl", function ($scope)
                 localMouse[1] -= scene.getXform().getPivot()[1];
                 localMouse[1] -= scene.getXform().getYPos();
                 
-                
-                 //console.log("after Mouse: ", localMouse);
-                
                 var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);
                     
                 if(distAllowed >= dist)
                     return scene;
                 
-               
                 return clickedScene;
-                
-                
             }
 
         }
     };
   
-    $scope.onMouseMove = function (event) 
-    {
+    $scope.onMouseMove = function (event){
         // TODO: fix bug where mouse position is off if 
         //       the page is reloaded while scrolled down
 
-        var currSceneForm = $scope.currScene.getXform();
         var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
         var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
         $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
         $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
+        var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
 
-        $scope.mMyWorld.mXfSq.getXform().setPosition($scope.mLastWCPosX, $scope.mLastWCPosY);
+        // mouse position square
+        $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
 
         // TODO: remove this kelvin code and GUI mosue over
         //$scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
+        
+        // scene handle code
+        if (event.which === 1 && $scope.handleMode && $scope.currScene) {
+            var currSceneForm = $scope.currScene.getXform();
+            // convert mouse position to parent's local coords 
+            if ($scope.currScene.mParent)
+                pos = $scope.currScene.mParent.wcToLocal(pos);
 
-        var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
+            // make mouse position relative to pivot
+            pos[0] -= $scope.currScene.getXform().getPivot()[0];
+            pos[0] -= $scope.currScene.getXform().getXPos();
+            pos[1] -= $scope.currScene.getXform().getPivot()[1];
+            pos[1] -= $scope.currScene.getXform().getYPos();
 
-        // convert mouse position to parent's local coords 
-        if ($scope.currScene.mParent) 
-            pos = $scope.currScene.mParent.wcToLocal(pos);
-
-        // make mouse position relative to pivot
-        pos[0] -= $scope.currScene.getXform().getPivot()[0];
-        pos[0] -= $scope.currScene.getXform().getXPos();
-        pos[1] -= $scope.currScene.getXform().getPivot()[1];
-        pos[1] -= $scope.currScene.getXform().getYPos();
-
-        if (event.which === 1 && $scope.handleMode) {
             if ($scope.handleMode === "Translate") {
                 // assign position to mouse coords offset from pivot
                 pos[0] += $scope.currScene.getXform().getXPos();

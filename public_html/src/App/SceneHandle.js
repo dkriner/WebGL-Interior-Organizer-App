@@ -61,6 +61,8 @@ gEngine.Core.inheritPrototype(SceneHandle, SceneNode);
 
 // syncrhonize with the target sceneNode
 SceneHandle.prototype.update = function () { 
+    if (!this.mScene) return;
+
     // set position
     var sceneForm = this.mScene.getXform();
     var posWC = this.mScene.localToWC(sceneForm.getPivot());
@@ -75,7 +77,7 @@ SceneHandle.prototype.update = function () {
 };
 
 SceneHandle.prototype.setScene = function (scene) {
-    this.setName(scene.getName + " Handle");
+    this.setName(scene ? scene.getName + " Handle" : "Handle");
     this.mScene = scene;
     this.update();
 };
@@ -105,12 +107,16 @@ SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,maxDist) {
 };
 
 SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,maxDist) {
+    if (!this.mScene) return false;
+
     var dist = Math.sqrt(Math.pow(wcX - targetX, 2) + Math.pow(wcY - targetY, 2));
     return dist <= maxDist;
 };
 
 
 SceneHandle.prototype.draw = function (aCamera, parentMat) {
+    if (!this.mScene) return false;
+    
     this.update();
     SceneNode.prototype.draw.call(this, aCamera, parentMat);
 };
