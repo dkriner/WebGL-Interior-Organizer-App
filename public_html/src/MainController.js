@@ -172,11 +172,6 @@ myModule.controller("MainCtrl", function ($scope)
     $scope.floorCeilingSquareArea = new SquareArea($scope.mCameras[2]);
     $scope.floorCeilingSquareArea.setColor([0,1,0,1]);
     
-   
-
-
-
-
 
     $scope.mainTimerHandler = function () 
     {
@@ -189,7 +184,7 @@ myModule.controller("MainCtrl", function ($scope)
         // ********************************************
         //        draw large view and handles
         // ********************************************
-        $scope.mMyWorld.draw($scope.mCameras[0]);
+        $scope.mMyWorld.draw($scope.mCameras[0], $scope.mFloorCeilingSelected);
         
         if ($scope.mShouldDrawHandle)
             $scope.mMySceneHandle.draw($scope.mCameras[0]);
@@ -204,14 +199,14 @@ myModule.controller("MainCtrl", function ($scope)
         // ********************************************
         
         //$scope.mMyWorld.draw($scope.mCameras[2]);
-        $scope.floorCeilingSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, $scope.mFloorCeilingSelected);
+        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mFloorCeilingSelected);
         //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
         // ********************************************
         //              draw small floor 
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[1]);
-        $scope.floorSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mFloorSelected);
+        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, $scope.mFloorSelected);
         
         
         
@@ -278,10 +273,13 @@ myModule.controller("MainCtrl", function ($scope)
         // TODO: make scenehandle work with renderables too
         var scene = new SceneNode($scope.mMyWorld.mConstColorShader, selection, false);
         scene.addToSet(item);
-        
-        
-        
-        $scope.mMyWorld.addFurniture(scene);
+                
+        if(selection !== 'Ceiling Fan'){
+            $scope.mMyWorld.addFurniture(scene);
+            $scope.mMyWorld.addCeilingItem(scene);
+        }
+        else
+            $scope.mMyWorld.addCeilingItem(scene);
         
     };
     
@@ -307,12 +305,12 @@ myModule.controller("MainCtrl", function ($scope)
             
             
             if($scope.mCameras[1].isMouseInViewport(canvasX, canvasY)){
-                $scope.mFloorCeilingSelected =true;
-                $scope.mFloorSelected = false;
+                $scope.mFloorCeilingSelected =false;
+                $scope.mFloorSelected = true;
             }
             else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY)){
-                $scope.mFloorSelected = true;
-                $scope.mFloorCeilingSelected = false;
+                $scope.mFloorSelected = false;
+                $scope.mFloorCeilingSelected = true;
             }
             
     };
@@ -337,7 +335,11 @@ myModule.controller("MainCtrl", function ($scope)
             
             
             var msPos = [x,y];
-            var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
+            
+            if(!$scope.mFloorCeilingSelected)
+                var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
+            else
+                var newScene = getClickedScene(msPos, $scope.mMyWorld.mCeilingParent, dist);
             
             if(newScene){
                     $scope.currScene = newScene;

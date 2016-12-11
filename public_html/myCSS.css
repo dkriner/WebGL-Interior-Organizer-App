@@ -171,4 +171,10 @@ Canvas stuff
                 top: 194px;
                 left: 1390px;
             }
+            
+            .dimensions{
+                position: absolute;
+                background-color: black;
+                color: darkorange;
+            }
        
