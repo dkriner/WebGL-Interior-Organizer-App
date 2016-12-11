@@ -10,12 +10,10 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 
+// TODO: remove shader param ( no point )
 function SceneNode(shader, name, drawPivot, xPos, yPos) {
-    if (xPos === undefined)
-        xPos = 0;
-    if (yPos === undefined)
-        yPos = 0;
-
+    if (xPos === undefined) xPos = 0;
+    if (yPos === undefined) yPos = 0;
     
     this.mName = name;
     this.mSet = [];

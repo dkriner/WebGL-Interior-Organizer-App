@@ -44,9 +44,9 @@ myModule.controller("MainCtrl", function ($scope){
     // this is the model
     $scope.mMyWorld = new World();
 
-    $scope.currScene = $scope.mMyWorld.mRoomParent; // start by editing entire room
-    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mConstColorShader, $scope.currScene);
-    $scope.mSelectedXform = $scope.mMyWorld.parentXform();
+    $scope.currScene = null;
+    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mShader, $scope.currScene);
+    // $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     //$scope.mSelectedEcho = $scope.eSelection[0].label;
 
     $scope.mHandleMode = null;
@@ -230,20 +230,27 @@ myModule.controller("MainCtrl", function ($scope){
 //        $scope.setSmallViewWCCenter();
 //    };
     
+    // add furniture item
     $scope.addFurniture = function (selection) {
-        var item = new SquareRenderable($scope.mMyWorld.mConstColorShader);
+        var item = new SquareRenderable($scope.mMyWorld.mShader);
         item.setTexture($scope.mMyWorld.textures[selection]);
         item.getXform().setSize(2, 2);
 
         // create scene for sceneHandle functionality
         // TODO: make scenehandle work with renderables too
-        var scene = new SceneNode($scope.mMyWorld.mConstColorShader, selection, false);
+        var scene = new SceneNode($scope.mMyWorld.mShader, selection, false);
         scene.addToSet(item);
         
-        // TODO: expand this to all celining items
-        if (selection == 'Ceiling Fan')
-            $scope.mMyWorld.addCeilingItem(scene);
-        else $scope.mMyWorld.addFurniture(scene);
+        $scope.mMyWorld.mRoom.addFurniture(scene);
+    };
+
+    // delete furniture item
+    $scope.deleteItem = function () {
+        if ($scope.currScene && $scope.currScene.mParent)
+            $scope.currScene.mParent.removeChild($scope.currScene);
+
+        $scope.mMySceneHandle.setScene(null);
+        $scope.currScene = null;
     };
     
     $scope.changeColor = function (){
@@ -254,13 +261,7 @@ myModule.controller("MainCtrl", function ($scope){
         //CHANGE TEXTURE OF SELECTED OBJECT
     };
 
-    $scope.deleteItem = function () {
-        if ($scope.currScene && $scope.currScene.mParent)
-            $scope.currScene.mParent.removeChild($scope.currScene);
-
-        $scope.mMySceneHandle.setScene(null);
-        $scope.currScene = null;
-    };
+    
     
     $scope.checkViewSelection = function(canvasX, canvasY){
         if ($scope.mCameras[1].isMouseInViewport(canvasX, canvasY))
@@ -293,22 +294,23 @@ myModule.controller("MainCtrl", function ($scope){
             
             // scene selection code            
             var newScene = null;
-            if ($scope.mDrawCeiling) newScene = getClickedScene([x,y], $scope.mMyWorld.mCeilingParent, dist);
-            console.log(newScene);
-            if (!newScene) newScene = getClickedScene([x,y], $scope.mMyWorld.mRoomParent, dist);
-            console.log(newScene);
+            if ($scope.mDrawCeiling) newScene = getClickedChild([x,y], $scope.mMyWorld.mRoom.ceiling, dist);
+            if (!newScene) newScene = getClickedChild([x,y], $scope.mMyWorld.mRoom.floor, dist);
             
             $scope.currScene = newScene;
             $scope.mMySceneHandle.setScene(newScene);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
-            function getClickedScene(mousePos, scene, distAllowed){
+            // returns child in scene that was clicked or null
+            function getClickedChild(mousePos, scene, distAllowed, _isChild){
                 if(scene.mChildren){ 
                     for(var i = scene.mChildren.length - 1; i >= 0; i--){
-                        var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
+                        var clickedScene = getClickedChild(mousePos, scene.mChildren[i], distAllowed, true);
                         if (clickedScene) return clickedScene;
                     }
                 }
+
+                if (!_isChild) return; // return if this is root scene
                 
                 var localMouse = mousePos;
                 if (scene.mParent)

@@ -22,7 +22,7 @@ gEngine.Core.inheritPrototype(CircleRenderable, Renderable);
 
 // Ovreride the super-class "draw()" method!
 CircleRenderable.prototype.draw = function (camera, parentMat) {
-    Renderable.prototype.draw.call(this, camera, parentMat);
+    Renderable.prototype.draw.call(this, camera);
 
     var gl = gEngine.Core.getGL();
     var vertexBuffer = gEngine.VertexBuffer.getGLVertexRefCIRCLE();

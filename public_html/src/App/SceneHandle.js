@@ -10,12 +10,10 @@
 
 // renderable representing the scale (vertical) and rotation (horizontal) handle bars 
 function SceneHandle(shader, scene) {
-    SceneNode.call(this, shader, scene.getName() + " Handle", false);
-    var obj, xf, mForm = this.getXform();
-    var barWidth = 0.1, barLen = 1;
-    
-    this.mScene = scene;
-    this.update();
+    SceneNode.call(this, shader, "Handle", false);
+    this.setScene(scene);
+
+    var obj, xf, barWidth = 0.1, barLen = 1;
 
     // The vertical handle bar
     this.yBar = obj = new SquareRenderable(shader);  

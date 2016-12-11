@@ -22,7 +22,7 @@ gEngine.Core.inheritPrototype(SquareRenderable, Renderable);
 
 // Ovreride the super-class "draw()" method!
 SquareRenderable.prototype.draw = function (camera, parentMat) {
-    Renderable.prototype.draw.call(this, camera, parentMat);
+    Renderable.prototype.draw.call(this, camera);
 
     var gl = gEngine.Core.getGL();
     var vertexBuffer = gEngine.VertexBuffer.getGLVertexRefSQUARE();
@@ -33,7 +33,7 @@ SquareRenderable.prototype.draw = function (camera, parentMat) {
         this.mColor,        // this is defined in the super class!
         camera.getVPMatrix());  // always activate the shader first!
     this.computeAndLoadModelXform(parentMat);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexBuffer.vertCount);
 };
 
 //SquareRenderable.prototype.isMouseWithin = function (wcX, wcY, dist){
