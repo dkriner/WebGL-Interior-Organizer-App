@@ -52,7 +52,7 @@
 
     </head>
 
-    <body 
+<body 
          ng-app="appMyExample" 
          ng-controller="MainCtrl">
         
@@ -61,13 +61,15 @@
                timeron="true"
                callback="mainTimerHandler"></css-timer>
                
+    
+    <!--------Title Text------------------------->
     <div class="name">
         <h1>Interior Organizer</h1>
         <h2>Design Your Own Home!</h2>
     </div>
    
     
-    
+    <!----------CANVAS------------------------------->
     <div class="canvasBorder"> 
         <canvas 
             ng-mousemove="onMouseMove($event)"
@@ -82,22 +84,15 @@
     
         <!---VIEW LABELS --->
         <div class="viewLabel" style = "top: 148px;">
-                  <h3>Floor</h3>
+                  <h3>Floor + Ceiling</h3>
          </div>
 
       <div class="viewLabel" style = "top: 325px;">
-                  <h3>Floor + Ceiling</h3>
+                  <h3>Floor</h3>
           </div>
- 
-        <div class="drawHandle">
-            <!--TODO: DRAW SCENE HANDLE CHECKBOX -->
-        </div>
-        <br>
         
-        
-        <!-- TODO: color picker and/or texture picker -->
-        
-        
+
+        <!-------Add Furniture Dropdown----------------->
          <div class="dropdown" style="position: absolute; top: 160px; left: 1100px;">
              <button class="dropbtn"><b>Add Furniture</b></button>
                 <div class="dropdown-content">
@@ -112,6 +107,7 @@
                 </div>
           </div>  
         
+        <!----Edit Texture Dropdown---->
         <div class="dropdown" style = "position:absolute; top: 160px; left:1250px;">
             <button class="dropbtn"><b>Edit Texture</b></button>
                 <div class="dropdown-content">
@@ -127,15 +123,35 @@
         </div>
         
         <!----Color Picker---->
-        <button class="dropbtn" style="top: 58px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px"><b>Edit Color</b></button>
+        <button class="dropbtn" style="top: 75px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px"><b>Edit Color</b></button>
         
         <input ng-model= "mCurrentColor" id="jscolor" class ="jscolor" ng-change="changeColor()" value="Change Color">
         <br>
         
+        <!----Item Dimensions--->
+        <!---Label--->
+        <button class="dropbtn" style="top: 120px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px;"><b>Item Dimensions</b></button>
+        
+        <!----input boxes----->
+        <input class="dimensions" style= "top: 270px; left: 1450px; width: 80px; " type="text" id="xDimension" ng-model="mItemXDim">
+        <input class="dimensions" style= "top: 300px; left: 1450px; width: 80px; " type="text" id="yDimension" ng-model="mItemYDim">
+        
+        <!----input labels----->
+        <div class="authors" style="left: 1390px; top: 270px; font-size: 18px">
+            Width
+        </div>
+        <div class="authors" style="left: 1390px; top: 300px; font-size: 18px">
+            Height
+        </div>
+        
+        
+        <!-----Credits------>
         <div class="authors" style="left: 20px; top: 800px;">
             Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner
         </div>
         
+
+        <!------Directions---->
         <div class="directions">
             <b> Directions: </b> <br>
             >Select from the drop-down to add a furniture element to the canvas. <br>
@@ -144,5 +160,7 @@
             >Select between the 2 view options to show floor fixings only, or all furnishings both floor and ceiling level.
         </div>
                
-           </body>
+</body>
+
+
 </html>

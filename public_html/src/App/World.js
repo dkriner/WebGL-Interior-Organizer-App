@@ -34,6 +34,8 @@ function World() {
     this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
                                     centerOfRoom[0], centerOfRoom[1]);
                                     
+    this.mCeilingParent = new SceneNode(this.mConstColorShader, "Ceiling", false,
+                                    centerOfRoom[0], centerOfRoom[1]);                                
     
     
     var xfRoomPXf = this.mRoomParent.getXform();
@@ -50,37 +52,12 @@ function World() {
     xf.setSize(14.75, 11);
     xf.setPosition(centerOfRoom[0], centerOfRoom[1]);
     this.mRoomParent.addToSet(obj);
+    this.mCeilingParent.addToSet(obj);
     
     // ********************************************
     //                  the beds
     // ********************************************
-    this.mArrayOfBeds = [];
-    var initBedSize = [5, 7];
-    
-    var bedColor = [[0.8, 0, 0, 1], 
-                    [0, 1, 0, 1], 
-                    [0, 0, 1, 1]];
-    
-    var bedNames = ["Bed Gen2Main", "Bed Gen2Slider", "Bed Gen3Baby"];
 
-    // ****************** Bed Gen2Main ******************
-    this.mBedParent = new SceneNode(this.mConstColorShader, "Root", false, 
-                                    firstBedPos[0], firstBedPos[1]);
-    this.mRoomParent.addAsChild(this.mBedParent);
-    
-    this.mBed1 = new Bed(this.mConstColorShader, bedNames[0], 
-                        firstBedPos[0], firstBedPos[1], bedColor[0], initBedSize);
-    this.mBedParent.addAsChild(this.mBed1);
-
-    // ****************** Bed Gen2Slider ******************
-    this.mBed2 = new Bed(this.mConstColorShader, bedNames[1], 
-                        firstBedPos[0] + 5, firstBedPos[1], bedColor[1], initBedSize);
-    this.mBedParent.addAsChild(this.mBed2);
-    
-    // ****************** Bed Gen3Baby ******************
-    this.mBed3 = new Bed(this.mConstColorShader, bedNames[2], 
-                        firstBedPos[0] + 4, firstBedPos[1] - 5.75, bedColor[2], initBedSize);
-    this.mBed1.addAsChild(this.mBed3);
 
     // ********************************************
     //                  the textures
@@ -107,19 +84,18 @@ function World() {
 //World.prototype.toggleArmRotate = function () {
 //    this.mArmShouldRotate = !this.mArmShouldRotate; };
 
-World.prototype.draw = function (camera) {
+World.prototype.draw = function (camera, drawCeiling) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
     
     // determine what gets drawn based on the camera
-    if (camera.mName === "Large")
-        this.mRoomParent.draw(camera);
-    else if (camera.mName === "Floor+Ceiling")
+  
+    if (camera.mName === "Floor+Ceiling" || drawCeiling)
     {
-        this.mRoomParent.draw(camera);
-        //this.mCeilingParent.draw(camera);
+        //this.mRoomParent.draw(camera);
+        this.mCeilingParent.draw(camera);
     }
-    else if (camera.mName === "Floor")
+    else 
         this.mRoomParent.draw(camera);
 };
 
@@ -127,7 +103,9 @@ World.prototype.addFurniture = function(item) {
     this.mRoomParent.addAsChild(item);
 };
 
-
+World.prototype.addCeilingItem = function(item) {
+    this.mCeilingParent.addAsChild(item);
+};
 
 World.prototype.removeFurniture = function(item) {
     this.mRoomParent.removeChild(item);
