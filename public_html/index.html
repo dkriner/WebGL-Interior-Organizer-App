@@ -112,7 +112,7 @@
                 </div>
           </div>  
         
-        <div class="dropdown" style = "position:absolute; top: 160px; left:1300px;">
+        <div class="dropdown" style = "position:absolute; top: 160px; left:1250px;">
             <button class="dropbtn"><b>Edit Texture</b></button>
                 <div class="dropdown-content">
                   <a ng-click = "editTexture('Texture1')">Texture 1</a>
@@ -122,10 +122,27 @@
           </div>
         
         <!--Delete Button -->
-        <div class="delete">
-            <input type ="button"  ng-model="mDelete" value="Delete Item" ng-click="deleteItem()">
+        <div class="viewLabel" style="top: 550px">
+            <button class="dropbtn" ng-click="deleteItem()" ><b>Delete Item</b></button>
         </div>
+        
+        <!----Color Picker---->
+        <button class="dropbtn" style="top: 58px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px"><b>Edit Color</b></button>
+        
+        <input ng-model= "mCurrentColor" id="jscolor" class ="jscolor" ng-change="changeColor()" value="Change Color">
         <br>
+        
+        <div class="authors" style="left: 20px; top: 800px;">
+            Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner
+        </div>
+        
+        <div class="directions">
+            <b> Directions: </b> <br>
+            >Select from the drop-down to add a furniture element to the canvas. <br>
+            >Click on the center of the item to change its scale, rotation, and translation. <br>
+            >Edit the texture and/or color of a selected item with the tools above. <br>
+            >Select between the 2 view options to show floor fixings only, or all furnishings both floor and ceiling level.
+        </div>
                
            </body>
 </html>

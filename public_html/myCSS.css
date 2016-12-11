@@ -28,7 +28,7 @@ Canvas stuff
                 height: 600px;
             }
             canvas{
-                border-radius: 15px 15px 150px 15px;       
+                border-radius: 0px 15px 150px 0px;       
             }
             
             /*
@@ -75,16 +75,25 @@ Canvas stuff
             
             /*Old stuff, may reuse*/
             .authors{
-                font-family: "Georgia";
+                font-family: Century Gothic, sans-serif;
+                color: yellow;
                 position: absolute;
                 left: 0px;
                 top: 750px;
-                font-size: 10px;
+                font-size: 12px;
+            }
+            .directions{
+                font-family: Century Gothic, sans-serif;
+                color: yellow;
+                position: absolute;
+                left: 1100px;
+                top: 700px;
+                font-size: 16px;
             }
             .delete{
                 position: absolute;
                 top: 650px;
-                left: 1090px;
+                left: 9000px;
             }
             .coloring{
                 position: absolute;
@@ -155,5 +164,11 @@ Canvas stuff
                 position: absolute;
                 top: 200px;
                 left: 1200px;
+            }
+            
+            .jscolor{
+                position: absolute;
+                top: 194px;
+                left: 1390px;
             }
        

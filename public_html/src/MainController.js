@@ -285,6 +285,10 @@ myModule.controller("MainCtrl", function ($scope)
         
     };
     
+    $scope.changeColor = function (){
+        //CHANGE THE COLOR (TINT) OF THE SELECTED FURNITURE ITEM
+    };
+    
     $scope.editTexture = function(selection){
         //CHANGE TEXTURE OF SELECTED OBJECT
     };
