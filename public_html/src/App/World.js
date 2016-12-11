@@ -36,24 +36,17 @@ function World() {
     // ********************************************
     // TODO: move this to somewhere more global
     this.textures = {
-        "Bed": new Texture('assets/bed.png'),
+        "Bed 1": new Texture('assets/bed1.png'),
         "Bed 2": new Texture('assets/bed2.png'),
-        "Bed 3": new Texture('assets/bed3.png'),
-        "Lamp": new Texture('assets/lamp.png'),
-        "Lamp 2": new Texture('assets/lamp2.png'),
-        "Plant": new Texture('assets/plant.png'),
-        "Plant 2": new Texture('assets/plant2.png'),
-        "Chair": new Texture('assets/chair.png'),
+        "Lamp 1": new Texture('assets/lamp1.png'),
+        "Plant 1": new Texture('assets/plant1.png'),
+        "Chair 1": new Texture('assets/chair1.png'),
         "Chair 2": new Texture('assets/chair2.png'),
-        "Chair 3": new Texture('assets/chair2.png'),
-        "Couch": new Texture('assets/couch.png'),
+        "Couch 1": new Texture('assets/couch1.png'),
         "Couch 2": new Texture('assets/couch2.png'),
-        "Couch 3": new Texture('assets/couch3.png'),
-        "Ceiling Fan": new Texture('assets/ceiling_fan.png'),
-        "Rug": new Texture('assets/rug.png'),
-        "Rug 2": new Texture('assets/rug2.png'),
-        "Table": new Texture('assets/table.png'),
-        "Table 2": new Texture('assets/table2.png')
+        "Ceiling Fan 1": new Texture('assets/ceiling_fan1.png'),
+        "Rug 1": new Texture('assets/rug1.png'),
+        "Table 1": new Texture('assets/table1.png')
     };
 }
 
