@@ -75,22 +75,17 @@ SquareArea.prototype.initBorder = function(camera)
     this.mCenterPos.getXform().setPosition(xPos, yPos);
 };
 
-SquareArea.prototype.draw = function (camera, world, selected) 
+SquareArea.prototype.draw = function (camera, world, isSelected) 
 {
     camera.setupViewProjection();
-    // BORDER
     this.initBorder(camera);
     
     world.draw(camera);
     
-    if(selected)
-    for (var i=0; i<this.mBorders.length; i++)
-    {
-        this.mBorders[i].draw(camera);
-    }
+    if (isSelected)
+        for (var i=0; i<this.mBorders.length; i++)
+            this.mBorders[i].draw(camera);
     
     // PIVOT RED SQUARE IN CENTRE
     //this.mCenterPos.draw(camera);
-    
-
 };

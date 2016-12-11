@@ -29,7 +29,6 @@ function World() {
     // ********************************************
     //                  the room
     // ********************************************
-    var firstBedPos = [-4, 4];
     var centerOfRoom = [0, 3];
     this.mRoomParent = new SceneNode(this.mConstColorShader, "Root", true, 
                                     centerOfRoom[0], centerOfRoom[1]);
@@ -44,15 +43,13 @@ function World() {
     // ********************************************
     //                   floor
     // ********************************************
-    var obj = new SquareRenderable(this.mConstColorShader);
-    // obj.setColor([0.3, 0.3, 0.3, 1]);
-    obj.setTexture(new Texture('assets/sung.jpg'));
-    
-    var xf = obj.getXform();
+    this.mFloorPattern = new SquareRenderable(this.mConstColorShader);
+    // this.mFloorPattern.setColor([0.3, 0.3, 0.3, 1]);
+    this.mFloorPattern.setTexture(new Texture('assets/sung.jpg'));
+
+    var xf = this.mFloorPattern.getXform();
     xf.setSize(14.75, 11);
     xf.setPosition(centerOfRoom[0], centerOfRoom[1]);
-    this.mRoomParent.addToSet(obj);
-    this.mCeilingParent.addToSet(obj);
     
     // ********************************************
     //                  the beds
@@ -88,21 +85,17 @@ World.prototype.draw = function (camera, drawCeiling) {
     // Step F: Starts the drawing by activating the camera
     camera.setupViewProjection();
     
-    // determine what gets drawn based on the camera
-  
-    if (camera.mName === "Floor+Ceiling" || drawCeiling)
-    {
-        //this.mRoomParent.draw(camera);
-        this.mCeilingParent.draw(camera);
-    }
-    else 
-        this.mRoomParent.draw(camera);
+    this.mFloorPattern.draw(camera);
+    this.mRoomParent.draw(camera);
+    if (drawCeiling) this.mCeilingParent.draw(camera);
 };
 
 World.prototype.addFurniture = function(item) {
+    // TODO: add to floor or ceiling based on item
     this.mRoomParent.addAsChild(item);
 };
 
+// TODO: remove this function
 World.prototype.addCeilingItem = function(item) {
     this.mCeilingParent.addAsChild(item);
 };

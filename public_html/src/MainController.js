@@ -37,8 +37,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mCameraX = 0;
     $scope.mCameraY = 0;
     $scope.mWhichCamera = "Large";
-    $scope.mFloorSelected = true;
-    $scope.mFloorCeilingSelected = false;
+    $scope.mDrawCeiling = true;
 
     $scope.mCameras = [];
     
@@ -51,7 +50,6 @@ myModule.controller("MainCtrl", function ($scope){
     //$scope.mSelectedEcho = $scope.eSelection[0].label;
 
     $scope.mHandleMode = null;
-    $scope.mShouldDrawHandle = true;
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
@@ -139,14 +137,6 @@ myModule.controller("MainCtrl", function ($scope){
                      $scope.mCameraNames[i]);                             // camera name
 
         cam.setBackgroundColor([0.6, 0, 0, 1]);
-
-          // TODO: determine problem in the three functions listed below
-//        if (cam.mName !== "Large")
-//        {
-//            $scope.setViewWC(cam);
-//            $scope.setViewWCCenter(cam);
-//            $scope.setViewport(cam);
-//        }
         
         $scope.mCameras.push(cam);  // acces cameras through array
     }
@@ -155,80 +145,63 @@ myModule.controller("MainCtrl", function ($scope){
     //                 square areas
     // ********************************************
     // Large viewport
-    $scope.largeVPSquareArea = new SquareArea($scope.mCameras[0]);
-    $scope.largeVPSquareArea.setColor([0,1,0,1]);
+    // $scope.largeVPSquareArea = new SquareArea($scope.mCameras[0]);
+    // $scope.largeVPSquareArea.setColor([0,1,0,1]);
 
     // Floor (small viewport)
     $scope.floorSquareArea = new SquareArea($scope.mCameras[1]);
     $scope.floorSquareArea.setColor([0,1,0,1]);
-    
 
     // Floor+Ceiling (small viewport)
     $scope.floorCeilingSquareArea = new SquareArea($scope.mCameras[2]);
     $scope.floorCeilingSquareArea.setColor([0,1,0,1]);
-    
 
     $scope.mainTimerHandler = function (){
-        // 1. update the world
-        //$scope.mMyWorld.update();
-        
-        // Step E: Clear the canvas
-        gEngine.Core.clearCanvas([0.6, 0, 0, 1]);        // Clear the canvas
+        gEngine.Core.clearCanvas([0.6, 0, 0, 1]);
 
         // ********************************************
         //        draw large view and handles
         // ********************************************
-        $scope.mMyWorld.draw($scope.mCameras[0], $scope.mFloorCeilingSelected);
-        
-        if ($scope.mShouldDrawHandle)
-            $scope.mMySceneHandle.draw($scope.mCameras[0]);
+        $scope.mMyWorld.draw($scope.mCameras[0], $scope.mDrawCeiling);
+        $scope.mMySceneHandle.draw($scope.mCameras[0]);
 
-        
-        $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);           // Draw mouse box (in case of browser zooming-in allignment bug)
+        // Draw mouse box (in case of browser zooming-in allignment bug)
+        $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);
         // TODO: determine why drawing square area blocks future drawing from inside the square
-        //$scope.largeVPSquareArea.draw($scope.mCameras[0]);
+        // $scope.largeVPSquareArea.draw($scope.mCameras[0]);
 
         // ********************************************
         //         draw small floor + ceiling
         // ********************************************
         
         //$scope.mMyWorld.draw($scope.mCameras[2]);
-        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mFloorCeilingSelected);
+        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mDrawCeiling);
         //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
         // ********************************************
         //              draw small floor 
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[1]);
-        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, $scope.mFloorSelected);
-        
-        
-        
-        
-        
+        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, !$scope.mDrawCeiling);
     };
 
     $scope.computeWCPos = function (event){
         var wcPos = [0, 0];
         $scope.mClientX = event.clientX;
         $scope.mClientY = event.clientY;
-        
         $scope.mCanvasX = $scope.mCanvasMouse.getPixelXPos(event);
         $scope.mCanvasY = $scope.mCanvasMouse.getPixelYPos(event);
-        if(!$scope.isDragging)
-        {
-            $scope.useCam = $scope.mCameras[0]; // assume using this camera
-            $scope.mWhichCamera = "Large";
-            
-            if ($scope.mCameras[1].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
-                $scope.useCam = $scope.mCameras[1];
-                $scope.mWhichCamera = "Floor";
-            }
-            else if ($scope.mCameras[2].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
-                $scope.useCam = $scope.mCameras[2];
-                $scope.mWhichCamera = "Floor+Ceiling";
-                
-            }
+ 
+        $scope.useCam = $scope.mCameras[0]; // assume using this camera
+        $scope.mWhichCamera = "Large";
+        
+        if ($scope.mCameras[1].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+            $scope.useCam = $scope.mCameras[1];
+            $scope.mWhichCamera = "Floor";
+        }
+        else if ($scope.mCameras[2].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+            $scope.useCam = $scope.mCameras[2];
+            $scope.mWhichCamera = "Floor+Ceiling"; 
         }
         
         // these are "private functions" on the camera, 
@@ -266,13 +239,11 @@ myModule.controller("MainCtrl", function ($scope){
         // TODO: make scenehandle work with renderables too
         var scene = new SceneNode($scope.mMyWorld.mConstColorShader, selection, false);
         scene.addToSet(item);
-                
-        if(selection !== 'Ceiling Fan'){
-            $scope.mMyWorld.addFurniture(scene);
+        
+        // TODO: expand this to all celining items
+        if (selection == 'Ceiling Fan')
             $scope.mMyWorld.addCeilingItem(scene);
-        }
-        else
-            $scope.mMyWorld.addCeilingItem(scene);
+        else $scope.mMyWorld.addFurniture(scene);
     };
     
     $scope.changeColor = function (){
@@ -291,30 +262,23 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.currScene = null;
     };
     
-    
-    $scope.checkViewSelection = function(event){
-            var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
-            var canvasY = $scope.mCanvasMouse.getPixelYPos(event);     
-            
-            if($scope.mCameras[1].isMouseInViewport(canvasX, canvasY)){
-                $scope.mFloorCeilingSelected =false;
-                $scope.mFloorSelected = true;
-            }
-            else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY)){
-                $scope.mFloorSelected = false;
-                $scope.mFloorCeilingSelected = true;
-            }
-            
+    $scope.checkViewSelection = function(canvasX, canvasY){
+        if ($scope.mCameras[1].isMouseInViewport(canvasX, canvasY))
+            $scope.mDrawCeiling = false;
+        else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY))
+            $scope.mDrawCeiling = true;    
     };
 
     $scope.onMouseDown = function (event){
-        if (event.which === 1) { // left
-            $scope.checkViewSelection(event);           //check if user is selecting a new view
+        if (event.which === 1) { // left          
             var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
             var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
             var x = $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
             var y = $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
             var dist = 0.4;
+
+            //check if user is selecting a new view
+            $scope.checkViewSelection(canvasX, canvasY); 
             
             // scene handle code
             if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
@@ -327,15 +291,13 @@ myModule.controller("MainCtrl", function ($scope){
 
             if ($scope.handleMode) return;
             
-            // scene selection code
-            var msPos = [x,y];
+            // scene selection code            
+            var newScene = null;
+            if ($scope.mDrawCeiling) newScene = getClickedScene([x,y], $scope.mMyWorld.mCeilingParent, dist);
+            console.log(newScene);
+            if (!newScene) newScene = getClickedScene([x,y], $scope.mMyWorld.mRoomParent, dist);
+            console.log(newScene);
             
-            if(!$scope.mFloorCeilingSelected)
-                var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
-            else
-                var newScene = getClickedScene(msPos, $scope.mMyWorld.mCeilingParent, dist);
-            
-            var newScene = getClickedScene(msPos, $scope.mMyWorld.mRoomParent, dist);
             $scope.currScene = newScene;
             $scope.mMySceneHandle.setScene(newScene);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
@@ -344,7 +306,7 @@ myModule.controller("MainCtrl", function ($scope){
                 if(scene.mChildren){ 
                     for(var i = scene.mChildren.length - 1; i >= 0; i--){
                         var clickedScene = getClickedScene(mousePos, scene.mChildren[i], distAllowed);
-                        if(clickedScene) return clickedScene;
+                        if (clickedScene) return clickedScene;
                     }
                 }
                 
@@ -363,7 +325,7 @@ myModule.controller("MainCtrl", function ($scope){
                 if(distAllowed >= dist)
                     return scene;
                 
-                return clickedScene;
+                return null; // no scene clicked
             }
 
         }
