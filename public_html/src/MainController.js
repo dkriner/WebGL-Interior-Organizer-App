@@ -175,14 +175,14 @@ myModule.controller("MainCtrl", function ($scope){
         // ********************************************
         
         //$scope.mMyWorld.draw($scope.mCameras[2]);
-        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mDrawCeiling);
+        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mDrawCeiling, true);
         //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
         // ********************************************
         //              draw small floor 
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[1]);
-        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, !$scope.mDrawCeiling);
+        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, !$scope.mDrawCeiling, false);
     };
 
     $scope.computeWCPos = function (event){

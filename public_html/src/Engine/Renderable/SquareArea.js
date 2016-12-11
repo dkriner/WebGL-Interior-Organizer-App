@@ -75,12 +75,12 @@ SquareArea.prototype.initBorder = function(camera)
     this.mCenterPos.getXform().setPosition(xPos, yPos);
 };
 
-SquareArea.prototype.draw = function (camera, world, isSelected) 
+SquareArea.prototype.draw = function (camera, world, isSelected, drawCeiling) 
 {
     camera.setupViewProjection();
     this.initBorder(camera);
     
-    world.draw(camera);
+    world.draw(camera, drawCeiling);
     
     if (isSelected)
         for (var i=0; i<this.mBorders.length; i++)
