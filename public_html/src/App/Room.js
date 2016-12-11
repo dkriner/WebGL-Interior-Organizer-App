@@ -35,7 +35,7 @@ gEngine.Core.inheritPrototype(Room, SceneNode);
 
 Room.prototype.addFurniture = function(item) {
     // TODO: expand logic to any ceiling item via flag
-    if (item.getName() == 'Ceiling Fan')
+    if (item.getName() == 'Ceiling Fan 1')
         this.ceiling.addAsChild(item);
     else this.floor.addAsChild(item);
 };
