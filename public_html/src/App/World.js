@@ -48,7 +48,7 @@ function World() {
         "Chair 3": new Texture('assets/chair2.png'),
         "Couch": new Texture('assets/couch.png'),
         "Couch 2": new Texture('assets/couch2.png'),
-        "Couch 3": new Texture('assets/couch2.png'),
+        "Couch 3": new Texture('assets/couch3.png'),
         "Ceiling Fan": new Texture('assets/ceiling_fan.png'),
         "Rug": new Texture('assets/rug.png'),
         "Rug 2": new Texture('assets/rug2.png'),
