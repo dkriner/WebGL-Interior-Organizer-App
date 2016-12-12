@@ -1,6 +1,6 @@
 
 // create webgl texture from url
-function Texture (url) {
+function Texture (url, callback) {
     var gl = gEngine.Core.getGL();
     this.glTexture = gl.createTexture();
     this.image = new Image();
@@ -14,6 +14,8 @@ function Texture (url) {
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
+        
+        if (callback) callback();
     }
 }
 

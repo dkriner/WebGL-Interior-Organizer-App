@@ -19,13 +19,6 @@ myModule.controller("MainCtrl", function ($scope){
     // Initialize the graphics system
     gEngine.Core.initializeWebGL('GLCanvas');
     $scope.mCanvasMouse = new CanvasMouseSupport('GLCanvas');
-    
-    // Radio button selection support
-//    $scope.eSelection = [
-//        {label: "Bed"},
-//        {label: "Ceiling Fan"}
-//        //add more
-//    ];
 
     // All the mouse coordinate points
     $scope.mClientX = 0;
@@ -234,8 +227,11 @@ myModule.controller("MainCtrl", function ($scope){
     // add furniture item
     $scope.addFurniture = function (selection) {
         var item = new SquareRenderable($scope.mMyWorld.mShader);
+        var texImg = $scope.mMyWorld.textures[selection].image;
+        var ratio = texImg.naturalHeight / texImg.naturalWidth;
         item.setTexture($scope.mMyWorld.textures[selection]);
-        item.getXform().setSize(2, 2);
+        // TODO: set size relative to real world units
+        item.getXform().setSize(3, 3 * ratio);
 
         // create scene for sceneHandle functionality
         // TODO: make scenehandle work with renderables too
@@ -263,17 +259,14 @@ myModule.controller("MainCtrl", function ($scope){
     };
 
     $scope.acceptTexFile = function (event) {
-        var input = event.target;
         var reader = new FileReader();
         reader.onload = function () {
-            // hacky for now
             $scope.mMyImage = new Image();
             $scope.mMyImage.src = reader.result;
             var texture = new Texture(reader.result)
             $scope.mMyWorld.mRoom.setFloorPattern(texture);
         };
-        $scope.mMyImagePath = input.files[0];
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(event.target.files[0]);
     };
 
     $scope.setFloorDesignScale = function () {
@@ -346,7 +339,6 @@ myModule.controller("MainCtrl", function ($scope){
                 
                 return null; // no scene clicked
             }
-
         }
     };
   
