@@ -23,6 +23,10 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.ceiling = new SceneNode(shader, "Ceiling", false, 0,0);
     this.addAsChild(this.ceiling);
 
+    this.wall = new SquareRenderable(shader);
+    this.wall.setColor([132/255, 85/255, 14/255, 1]); // brown
+    this.addToSet(this.wall);
+
     // floor pattern
     this.floorPattern = new SquareRenderable(shader);
     // this.floorPattern.setColor([0.3, 0.3, 0.3, 1]);
@@ -68,12 +72,15 @@ Room.prototype.getSize = function() {
 Room.prototype.setSize = function(width, height) {
     this.floorPattern.getXform().setSize(width, height);
     this.setFloorPatternScale(this.getFloorPatternScale());
+    var wallWidth = 0.3;
+    this.wall.getXform().setSize(width + wallWidth*2, height + wallWidth*2);
     // TODO: move furniture within bounds
 };
 
 Room.prototype.draw = function (camera, drawCeiling) {
     camera.setupViewProjection();
     
+    this.wall.draw(camera, this.getXform().getXform());
     this.floorPattern.draw(camera, this.getXform().getXform());
     this.floor.draw(camera, this.getXform().getXform());
     if (drawCeiling) this.ceiling.draw(camera, this.getXform().getXform());

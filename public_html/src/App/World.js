@@ -25,7 +25,7 @@ function World() {
     // ********************************************
     // TODO: expand to more than one room
     // TODO: add floors
-    this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 14.75, 11);  
+    this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);  
     this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
     this.mHouse.addAsChild(this.mRoom);
     
