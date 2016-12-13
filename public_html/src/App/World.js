@@ -74,10 +74,8 @@ function World() {
 
 World.prototype.draw = function (camera, drawCeiling) {
     camera.setupViewProjection();
-    
-    // TODO: draw whole house and pass drawCeiling down
+    this.mRoom.setDrawCeiling(drawCeiling);
     this.mHouse.draw(camera);
-    // this.mRoom.draw(camera, drawCeiling);
 };
 
 World.prototype.update = function () {

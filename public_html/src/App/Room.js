@@ -20,6 +20,7 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.addAsChild(this.floor);
 
     // ceiling
+    this.drawCeiling = true;
     this.ceiling = new SceneNode(shader, "Ceiling", false, 0,0);
     this.addAsChild(this.ceiling);
 
@@ -50,6 +51,10 @@ Room.prototype.removeFurniture = function(item) {
     this.ceiling.removeChild(item);
 };
 
+Room.prototype.setDrawCeiling = function(shouldDraw) {
+    this.drawCeiling = shouldDraw;
+};
+
 Room.prototype.setFloorPattern = function (texture) {
     this.floorPattern.setTexture(texture);
 };
@@ -78,10 +83,10 @@ Room.prototype.setSize = function(width, height) {
     // TODO: move furniture within bounds
 };
 
-Room.prototype.draw = function (camera, drawCeiling) {
+Room.prototype.draw = function (camera) {
     this.wall.draw(camera, this.getXform().getXform());
     this.floorPattern.draw(camera, this.getXform().getXform());
     this.floor.draw(camera, this.getXform().getXform());
-    if (drawCeiling) this.ceiling.draw(camera, this.getXform().getXform());
+    if (this.drawCeiling) this.ceiling.draw(camera, this.getXform().getXform());
 };
 
