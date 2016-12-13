@@ -244,7 +244,7 @@ myModule.controller("MainCtrl", function ($scope){
     // add room
     $scope.addRoom = function (name) {
         this.mNewRoom = new Room($scope.mMyWorld.mShader, name, 0, 3, 12, 8);  
-        $scope.mMyWorld.currentRoom = this.mNewRoom;
+        $scope.mMyWorld.mCurrentRoom = this.mNewRoom;
         $scope.mMyWorld.mRooms.push(this.mNewRoom);
         $scope.mMyWorld.mHouse.addAsChild(this.mNewRoom);
     };
