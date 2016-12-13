@@ -21,11 +21,13 @@ function World() {
     this.mXfSq.getXform().setSize(0.2, 0.2);
 
     // ********************************************
-    //               the room / house
+    //               the rooms / house
     // ********************************************
-    // TODO: expand to more than one room
     // TODO: add floors
-    this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);  
+    this.mRooms = [];
+    // initial room
+    this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);
+    this.mRooms.push(this.mRoom);
     this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
 
     // viewport background
@@ -40,6 +42,9 @@ function World() {
 
     this.mHouse.addToSet(this.mBackground);
     this.mHouse.addAsChild(this.mRoom);
+    
+    // used for currently selcted room
+    this.mCurrentRoom = this.mRoom;
     
     // var xfRoomPXf = this.mFloorParent.getXform();
     // xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
@@ -73,7 +78,12 @@ function World() {
 
 World.prototype.draw = function (camera, drawCeiling) {
     camera.setupViewProjection();
-    this.mRoom.setDrawCeiling(drawCeiling);
+
+    for(var i = 0; i < this.mRooms.length; i++)
+    {
+        this.mRooms[i].setDrawCeiling(drawCeiling);
+    }
+    
     this.mHouse.draw(camera);
 };
 

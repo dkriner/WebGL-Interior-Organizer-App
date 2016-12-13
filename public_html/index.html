@@ -84,11 +84,23 @@
                   <h3>Floor + Ceiling</h3>
          </div>
 
-      <div class="viewLabel" style = "top: 325px;">
+        <div class="viewLabel" style = "top: 325px;">
                   <h3>Floor</h3>
           </div>
         
+        <div class="viewLabel" style = "top: 502px;">
+                  <h3>House</h3>
+          </div>
+        <!-------Add Room Dropdown----------------->
+         <div class="dropdown" style="position: absolute; top: 215px; left: 1100px;">
+             <button class="droproom"><b>Add Room</b></button>
+                <div class="dropdown-content">
+                    <a ng-click = "addRoom('Room 1')">Room1</a>
+                    <a ng-click = "addRoom('Room 2')">Room2</a>
+                </div>
+          </div>  
 
+        
         <!-------Add Furniture Dropdown----------------->
          <div class="dropdown" style="position: absolute; top: 160px; left: 1100px;">
              <button class="dropbtn"><b>Add Furniture</b></button>
@@ -167,8 +179,8 @@
         <button class="incrBtn" style="top: 450px; left: 1250px;" ng-click="decYPos()">  <b>-</b> </button>
         
         <!-----Room Size Echo Boxes------------>
-        <input class="dimensions" style= "top: 550px; left: 1130px;  " type="text" id="customRoomX" ng-model="mRoomX" ng-change="customResizeRoom()">
-        <input class="dimensions" style= "top: 575px; left: 1130px;  " type="text" id="customRoomY" ng-model="mRoomY" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 550px; left: 1130px;  " type="text" id="customRoomX" ng-model="mMyWorld.mCurrentRoom.mRoomX" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 575px; left: 1130px;  " type="text" id="customRoomY" ng-model="mMyWorld.mCurrentRoom.mRoomY" ng-change="customResizeRoom()">
         
         <!-----Room size fine tuners------>
         <button class="incrBtn" style="top: 550px; left: 1220px;" ng-click="resizeRoom(0.1,0)">  <b>+</b> </button>

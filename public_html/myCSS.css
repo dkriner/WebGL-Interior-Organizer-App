@@ -113,6 +113,21 @@ Canvas stuff
                 top: 600px;
                 left: 1050px;
             }
+            
+            /*ADD ROOM DROPDOWN*/
+            
+            .droproom {
+                background-color: black;
+                color: darkorange;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+                position: absolute;
+                width: 160px
+               
+            }
+            
             /*ADD FURNITURE DROPDOWN*/
             
             .dropbtn {

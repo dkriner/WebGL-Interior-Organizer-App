@@ -36,6 +36,11 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.setFloorPatternScale(3,3);
     this.setSize(width, height);
     this.addToSet(this.floorPattern);
+    
+    var roomSize = this.getSize();
+    this.mRoomX = roomSize[0];
+    this.mRoomY = roomSize[1];
+    
 }
 gEngine.Core.inheritPrototype(Room, SceneNode);
 

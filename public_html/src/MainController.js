@@ -36,9 +36,8 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mItemYDim = 0.0;
     $scope.mItemXPos = 0.0;
     $scope.mItemYPos = 0.0;
-    $scope.mRoomX = 0.0;
-    $scope.mRoomY = 0.0;
-
+//    $scope.mRoomX = 0.0;
+//    $scope.mRoomY = 0.0;
     $scope.mCameras = [];
     
     // this is the model
@@ -53,9 +52,9 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
-    var roomSize = $scope.mMyWorld.mRoom.getSize();
-    $scope.mRoomX = roomSize[0];
-    $scope.mRoomY = roomSize[1];
+//    var roomSize = $scope.mMyWorld.mCurrentRoom.getSize();
+//    $scope.mRoomX = roomSize[0];
+//    $scope.mRoomY = roomSize[1];
     
 
     // small view support
@@ -69,6 +68,8 @@ myModule.controller("MainCtrl", function ($scope){
             i = 1;
         else if (cam.mName === $scope.mCameraNames[2])
             i = 2;
+        else if (cam.mName === $scope.mCameraNames[3])
+            i = 3;
                 
         cam.setWCWidth(parseInt($scope.mWCWidths[i]));
     };
@@ -83,6 +84,8 @@ myModule.controller("MainCtrl", function ($scope){
             i = 1;
         else if (cam.mName === $scope.mCameraNames[2])
             i = 2;
+        else if (cam.mName === $scope.mCameraNames[3])
+            i = 3;
         
         cam.setWCCenter(
             parseInt($scope.mWCCenters[i][0]),
@@ -101,38 +104,29 @@ myModule.controller("MainCtrl", function ($scope){
             i = 1;
         else if (cam.mName === $scope.mCameraNames[2])
             i = 2;
+        else if (cam.mName === $scope.mCameraNames[3])
+            i = 3;
         
         for (var j=0; j<4; j++)
             viewPort[i] = parseInt($scope.mViewPorts[i][j]);
     };
 
-    $scope.mCameraNames = ["Large", "Floor", "Floor+Ceiling"];
-    $scope.mWCWidths = [15, 15, 15];
+    $scope.mCameraNames = ["Large", "Floor", "Floor+Ceiling", "House"];
+    $scope.mWCWidths = [15, 15, 15, 15];
     $scope.mWCCenters = [[0, 3], 
                          [0, 3], 
+                         [0, 3],
                          [0, 3]
-                
 
                         ];
     $scope.mViewPorts = [[0, 0, 800, 600],
                          [800, 250, 200, 155], 
-                         [800, 425, 200, 155]
+                         [800, 425, 200, 155],
+                         [800, 75, 200, 155]
 
                         ];
 
-//    $scope.mWCWidths.push(15);
-//    $scope.mWCCenters.push([0, 3]);
-//    $scope.mViewPorts.push([0, 0, 800, 600]);
-//
-//    $scope.mWCWidths.push($scope.mWCWidths[0]);  // WC coordinates
-//    $scope.mWCCenters.push([$scope.mWCCenters[0][0]], $scope.mWCCenters[0][1]);
-//    $scope.mViewPorts.push([800, 250, 200, 150]);// size of VP window that we look through
-//    
-//    $scope.mWCWidths.push($scope.mWCWidths[0]);  // WC coordinates
-//    $scope.mWCCenters.push([$scope.mWCCenters[0][0]], $scope.mWCCenters[0][1]); // center of VP window (in WC coord) that we're looking through
-//    $scope.mViewPorts.push([800, 450, 200, 150]);// size of VP window that we look through 
-    
-    // Create 3 cameras
+    // Create 4 cameras
     for (var i = 0; i < $scope.mCameraNames.length; i++){
         var cam = new Camera(
                     [$scope.mWCCenters[i][0], $scope.mWCCenters[i][1]],   // wc Center
@@ -149,9 +143,6 @@ myModule.controller("MainCtrl", function ($scope){
     // ********************************************
     //                 square areas
     // ********************************************
-    // Large viewport
-    // $scope.largeVPSquareArea = new SquareArea($scope.mCameras[0]);
-    // $scope.largeVPSquareArea.setColor([0,1,0,1]);
 
     // Floor (small viewport)
     $scope.floorSquareArea = new SquareArea($scope.mCameras[1]);
@@ -160,6 +151,10 @@ myModule.controller("MainCtrl", function ($scope){
     // Floor+Ceiling (small viewport)
     $scope.floorCeilingSquareArea = new SquareArea($scope.mCameras[2]);
     $scope.floorCeilingSquareArea.setColor([0,1,0,1]);
+
+    // House (small viewport)
+    $scope.houseSquareArea = new SquareArea($scope.mCameras[3]);
+    $scope.houseSquareArea.setColor([0,1,0,1]);
 
     $scope.mainTimerHandler = function (){
         gEngine.Core.clearCanvas([0.6, 0, 0, 1]);
@@ -188,6 +183,12 @@ myModule.controller("MainCtrl", function ($scope){
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[1]);
         $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, !$scope.mDrawCeiling, false);
+        
+        // ********************************************
+        //                draw house
+        // ********************************************
+        //$scope.mMyWorld.draw($scope.mCameras[3]);
+        $scope.houseSquareArea.draw($scope.mCameras[3], $scope.mMyWorld, !$scope.mDrawCeiling, false);
     };
 
     $scope.computeWCPos = function (event){
@@ -199,15 +200,19 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mCanvasY = $scope.mCanvasMouse.getPixelYPos(event);
  
         $scope.useCam = $scope.mCameras[0]; // assume using this camera
-        $scope.mWhichCamera = "Large";
+        $scope.mWhichCamera = $scope.mCameraNames[0];
         
         if ($scope.mCameras[1].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
             $scope.useCam = $scope.mCameras[1];
-            $scope.mWhichCamera = "Floor";
+            $scope.mWhichCamera = $scope.mCameraNames[1];
         }
         else if ($scope.mCameras[2].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
             $scope.useCam = $scope.mCameras[2];
-            $scope.mWhichCamera = "Floor+Ceiling"; 
+            $scope.mWhichCamera = $scope.mCameraNames[2]; 
+        }
+        else if ($scope.mCameras[3].isMouseInViewport($scope.mCanvasX, $scope.mCanvasY)) {
+            $scope.useCam = $scope.mCameras[3];
+            $scope.mWhichCamera = $scope.mCameraNames[3];
         }
         
         // these are "private functions" on the camera, 
@@ -236,6 +241,14 @@ myModule.controller("MainCtrl", function ($scope){
 //        $scope.setSmallViewWCCenter();
 //    };
     
+    // add room
+    $scope.addRoom = function (name) {
+        this.mNewRoom = new Room($scope.mMyWorld.mShader, name, 0, 3, 12, 8);  
+        $scope.mMyWorld.currentRoom = this.mNewRoom;
+        $scope.mMyWorld.mRooms.push(this.mNewRoom);
+        $scope.mMyWorld.mHouse.addAsChild(this.mNewRoom);
+    };
+    
     // add furniture item
     $scope.addFurniture = function (selection) {
         var item = new SquareRenderable($scope.mMyWorld.mShader);
@@ -246,7 +259,7 @@ myModule.controller("MainCtrl", function ($scope){
         // TODO: set size relative to real world units
         item.getXform().setSize(3, 3 * ratio);
         
-        $scope.mMyWorld.mRoom.addFurniture(item);
+        $scope.mMyWorld.mCurrentRoom.addFurniture(item);
     };
     
 
@@ -299,7 +312,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.incrXPos = function(){
           if($scope.currSelection){
                 var itemPos = [$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()];
-                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mRoomX], [-4,4], [0,$scope.mRoomY]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 
                 $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos()+0.01, $scope.currSelection.getXform().getYPos());
                 $scope.mItemXPos = (itemRoomCoords[0]+0.01).toFixed(2);
@@ -309,7 +322,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.incrYPos = function(){
         if($scope.currSelection){
                 var itemPos = [$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()];
-                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mRoomX], [-4,4], [0,$scope.mRoomY]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 
                 $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()+0.01);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
@@ -319,7 +332,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.decXPos = function(){
         if($scope.currSelection){
                 var itemPos = [$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()];
-                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mRoomX], [-4,4], [0,$scope.mRoomY]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 
                 $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos()-0.01, $scope.currSelection.getXform().getYPos());
                 $scope.mItemXPos = (itemRoomCoords[0]-0.01).toFixed(2);
@@ -329,7 +342,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.decYPos = function(){
         if($scope.currSelection){
                 var itemPos = [$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()];
-                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mRoomX], [-4,4], [0,$scope.mRoomY]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale(itemPos, [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 
                 $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()-0.01);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
@@ -365,7 +378,7 @@ myModule.controller("MainCtrl", function ($scope){
            
             
             if(x){
-                scenePos = $scope.currSelection.wcToRoomScale(scenePos, [-6,6], [0,$scope.mRoomX], [-4,4], [0,$scope.mRoomY]);
+                scenePos = $scope.currSelection.wcToRoomScale(scenePos, [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 sceneForm.setPosition(x, scenePos[1]);
             }
             
@@ -379,7 +392,7 @@ myModule.controller("MainCtrl", function ($scope){
     
     $scope.resizeRoom = function(xStep, yStep){
         
-        var room = $scope.mMyWorld.mRoom;
+        var room = $scope.mMyWorld.mCurrentRoom;
         var roomSize = room.getSize();
         
         if(xStep !== 0)
@@ -389,14 +402,15 @@ myModule.controller("MainCtrl", function ($scope){
             room.setSize(roomSize[0], roomSize[1] + yStep);
         
         roomSize = room.getSize();
-        $scope.mRoomX = roomSize[0].toFixed(2);
-        $scope.mRoomY = roomSize[1].toFixed(2);
+        room.mRoomX = roomSize[0].toFixed(2);
+        room.mRoomY = roomSize[1].toFixed(2);
   
     };
     $scope.customResizeRoom = function(){
         var x = parseFloat(document.getElementById('customRoomX').value, 10);
         var y = parseFloat(document.getElementById('customRoomY').value, 10);
-        var room = $scope.mMyWorld.mRoom;
+        var room = $scope.mMyWorld.mCurrentRoom;
+
         var roomSize = room.getSize();
         
         if(x)
@@ -437,13 +451,13 @@ myModule.controller("MainCtrl", function ($scope){
             $scope.mMyImage = new Image();
             $scope.mMyImage.src = reader.result;
             var texture = new Texture(reader.result);
-            $scope.mMyWorld.mRoom.setFloorPattern(texture);
+            $scope.mMyWorld.mCurrentRoom.setFloorPattern(texture);
         };
         reader.readAsDataURL(event.target.files[0]);
     };
 
     $scope.setFloorDesignScale = function () {
-        $scope.mMyWorld.mRoom.setFloorPatternScale($scope.floorDesignScale);
+        $scope.mMyWorld.mCurrentRoom.setFloorPatternScale($scope.floorDesignScale);
     };
     
     $scope.checkViewSelection = function(canvasX, canvasY){
@@ -476,8 +490,8 @@ myModule.controller("MainCtrl", function ($scope){
             
             // scene selection code            
             var newScene = null;
-            if ($scope.mDrawCeiling) newScene = getClickedChild([x,y], $scope.mMyWorld.mRoom.ceiling, dist);
-            if (!newScene) newScene = getClickedChild([x,y], $scope.mMyWorld.mRoom.floor, dist);
+            if ($scope.mDrawCeiling) newScene = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.ceiling, dist);
+            if (!newScene) newScene = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.floor, dist);
             
             if(newScene){
                 $scope.mItemXDim = newScene.getXform().getWidth();
