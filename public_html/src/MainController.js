@@ -42,8 +42,8 @@ myModule.controller("MainCtrl", function ($scope){
     // this is the model
     $scope.mMyWorld = new World();
 
-    $scope.currScene = null;
-    $scope.mMyTransHandle = new TransformHandle($scope.mMyWorld.mShader, $scope.currScene);
+    $scope.currSelection = null;
+    $scope.mMyTransHandle = new TransformHandle($scope.mMyWorld.mShader, $scope.currSelection);
     // $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     //$scope.mSelectedEcho = $scope.eSelection[0].label;
 
@@ -244,23 +244,23 @@ myModule.controller("MainCtrl", function ($scope){
     
     /*
     $scope.changeSceneWidth = function(){
-        if($scope.currScene){
+        if($scope.currSelection){
             var newWidth = document.getElementById('xDimension').value;
-            $scope.currScene.getXform().setSize(newWidth, $scope.currScene.getXform().getHeight());
+            $scope.currSelection.getXform().setSize(newWidth, $scope.currSelection.getXform().getHeight());
             $scope.mItemXDim = newWidth;
         }
     };
     $scope.changeSceneLength = function(){
-        if($scope.currScene){
+        if($scope.currSelection){
             var newLength = document.getElementById('yDimension').value;
-            $scope.currScene.getXform().setSize($scope.currScene.getXform().getWidth(), newLength);
+            $scope.currSelection.getXform().setSize($scope.currSelection.getXform().getWidth(), newLength);
             $scope.mItemYDim = newLength;
         }
     };
     $scope.changeSceneX = function() {
-        if($scope.currScene){
+        if($scope.currSelection){
             var newX = document.getElementById('xPos').value;           //value the user entered (X)
-            var sceneForm = $scope.currScene.getXform();        //xform
+            var sceneForm = $scope.currSelection.getXform();        //xform
             //new room coordinates
             sceneForm.setPosition(newX, sceneForm.getYPos());    
             
@@ -274,8 +274,8 @@ myModule.controller("MainCtrl", function ($scope){
     */
     //Fine tuners call these functions for making small adjustments to items
     $scope.incrXDim = function(){ 
-        if($scope.currScene){
-            var sceneForm = $scope.currScene.getXform();
+        if($scope.currSelection){
+            var sceneForm = $scope.currSelection.getXform();
             if(sceneForm.getWidth() >= 0)
                 sceneForm.setSize(sceneForm.getWidth() + 0.01, sceneForm.getHeight());
             else
@@ -284,8 +284,8 @@ myModule.controller("MainCtrl", function ($scope){
         }
     };
     $scope.incrYDim = function(){
-        if($scope.currScene){
-            var sceneForm = $scope.currScene.getXform();
+        if($scope.currSelection){
+            var sceneForm = $scope.currSelection.getXform();
             if(sceneForm.getHeight() >= 0)
                 sceneForm.setSize(sceneForm.getWidth(), sceneForm.getHeight() + 0.01);
             else
@@ -294,8 +294,8 @@ myModule.controller("MainCtrl", function ($scope){
         }
     };
     $scope.decXDim = function(){
-        if($scope.currScene){
-            var sceneForm = $scope.currScene.getXform();
+        if($scope.currSelection){
+            var sceneForm = $scope.currSelection.getXform();
             if(sceneForm.getWidth() >= 0)
                 sceneForm.setSize(sceneForm.getWidth() - 0.01, sceneForm.getHeight());
             else
@@ -306,8 +306,8 @@ myModule.controller("MainCtrl", function ($scope){
         
     };
     $scope.decYDim = function(){
-        if($scope.currScene){
-            var sceneForm = $scope.currScene.getXform();
+        if($scope.currSelection){
+            var sceneForm = $scope.currSelection.getXform();
             if(sceneForm.getHeight() >= 0)
                 sceneForm.setSize(sceneForm.getWidth(), sceneForm.getHeight() - 0.01);
             else
@@ -317,37 +317,37 @@ myModule.controller("MainCtrl", function ($scope){
         
     };
     $scope.incrXPos = function(){
-          if($scope.currScene){
-                var itemRoomCoords = $scope.currScene.wcToRoomScale([$scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()]);
+          if($scope.currSelection){
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()]);
                 
-                $scope.currScene.getXform().setPosition($scope.currScene.getXform().getXPos()+0.01, $scope.currScene.getXform().getYPos());
+                $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos()+0.01, $scope.currSelection.getXform().getYPos());
                 $scope.mItemXPos = (itemRoomCoords[0]+0.01).toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
             }
     };
     $scope.incrYPos = function(){
-        if($scope.currScene){
-                var itemRoomCoords = $scope.currScene.wcToRoomScale([$scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()]);
+        if($scope.currSelection){
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()]);
                 
-                $scope.currScene.getXform().setPosition($scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()+0.01);
+                $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()+0.01);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = (itemRoomCoords[1]+0.01).toFixed(2);
             }
     };
     $scope.decXPos = function(){
-        if($scope.currScene){
-                var itemRoomCoords = $scope.currScene.wcToRoomScale([$scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()]);
+        if($scope.currSelection){
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()]);
                 
-                $scope.currScene.getXform().setPosition($scope.currScene.getXform().getXPos()-0.01, $scope.currScene.getXform().getYPos());
+                $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos()-0.01, $scope.currSelection.getXform().getYPos());
                 $scope.mItemXPos = (itemRoomCoords[0]-0.01).toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
             }
     };
     $scope.decYPos = function(){
-        if($scope.currScene){
-                var itemRoomCoords = $scope.currScene.wcToRoomScale([$scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()]);
+        if($scope.currSelection){
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()]);
                 
-                $scope.currScene.getXform().setPosition($scope.currScene.getXform().getXPos(), $scope.currScene.getXform().getYPos()-0.01);
+                $scope.currSelection.getXform().setPosition($scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()-0.01);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = (itemRoomCoords[1]-0.01).toFixed(2);
             }
@@ -355,11 +355,11 @@ myModule.controller("MainCtrl", function ($scope){
 
     // delete furniture item
     $scope.deleteItem = function () {
-        if ($scope.currScene && $scope.currScene.mParent)
-            $scope.currScene.mParent.removeChild($scope.currScene);
+        if ($scope.currSelection && $scope.currSelection.mParent)
+            $scope.currSelection.mParent.removeChild($scope.currSelection);
 
         $scope.mMyTransHandle.setTransformable(null);
-        $scope.currScene = null;
+        $scope.currSelection = null;
         $scope.mItemXDim = 0.0;
         $scope.mItemYDim = 0.0;
         $scope.mItemXPos = 0.0;
@@ -434,7 +434,7 @@ myModule.controller("MainCtrl", function ($scope){
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
             }
             
-            $scope.currScene = newScene;
+            $scope.currSelection = newScene;
             $scope.mMyTransHandle.setTransformable(newScene);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
@@ -486,9 +486,9 @@ myModule.controller("MainCtrl", function ($scope){
         //$scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
         
         // scene handle code
-        if (event.which === 1 && $scope.handleMode && $scope.currScene) {
+        if (event.which === 1 && $scope.handleMode && $scope.currSelection) {
             
-            var currSceneForm = $scope.currScene.getXform();
+            var currSelectionForm = $scope.currSelection.getXform();
             // convert mouse position to parent's local coords 
             
             //update item info UI
@@ -497,22 +497,22 @@ myModule.controller("MainCtrl", function ($scope){
             
 
         
-            if ($scope.currScene.mParent)
-                pos = $scope.currScene.mParent.wcToLocal(pos);
+            if ($scope.currSelection.mParent)
+                pos = $scope.currSelection.mParent.wcToLocal(pos);
 
             // make mouse position relative to pivot
-            pos[0] -= $scope.currScene.getXform().getPivot()[0];
-            pos[0] -= $scope.currScene.getXform().getXPos();
-            pos[1] -= $scope.currScene.getXform().getPivot()[1];
-            pos[1] -= $scope.currScene.getXform().getYPos();
+            pos[0] -= $scope.currSelection.getXform().getPivot()[0];
+            pos[0] -= $scope.currSelection.getXform().getXPos();
+            pos[1] -= $scope.currSelection.getXform().getPivot()[1];
+            pos[1] -= $scope.currSelection.getXform().getYPos();
 
             if ($scope.handleMode === "Translate") {
                 // assign position to mouse coords offset from pivot
-                pos[0] += $scope.currScene.getXform().getXPos();
-                pos[1] += $scope.currScene.getXform().getYPos();
-                currSceneForm.setPosition(pos[0], pos[1]);
+                pos[0] += $scope.currSelection.getXform().getXPos();
+                pos[1] += $scope.currSelection.getXform().getYPos();
+                currSelectionForm.setPosition(pos[0], pos[1]);
                 
-                var itemRoomCoords = $scope.currScene.wcToRoomScale([currSceneForm.getXPos(), currSceneForm.getYPos()]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([currSelectionForm.getXPos(), currSelectionForm.getYPos()]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
                 
@@ -522,7 +522,7 @@ myModule.controller("MainCtrl", function ($scope){
                 // TODO: figure out why this doesn't work when parent is scaled
                 // // calculate mouse position angle to pivot
                 // var rot = Math.PI/2 - Math.atan2(pos[0],pos[1]);
-                // currSceneForm.setRotationInRad(rot);
+                // currSelectionForm.setRotationInRad(rot);
 
                 // TODO: and why this does work
                 var relPos = [ // mouse position relative to scene handle center
@@ -531,16 +531,16 @@ myModule.controller("MainCtrl", function ($scope){
                 ];
 
                 var rot = Math.PI/2 - Math.atan2(relPos[0],relPos[1]);
-                if ($scope.currScene.mParent) 
-                    rot -= $scope.currScene.mParent.getWCRotation();
-                currSceneForm.setRotationInRad(rot);
+                if ($scope.currSelection.mParent) 
+                    rot -= $scope.currSelection.mParent.getWCRotation();
+                currSelectionForm.setRotationInRad(rot);
             }
             else if ($scope.handleMode === "Scale") {
                 // TODO: figure out why this doesn't work when scene rotated
-                // currSceneForm.setSize(pos[0]+1,pos[1]);
+                // currSelectionForm.setSize(pos[0]+1,pos[1]);
                 
-                $scope.mItemXDim = Math.abs(currSceneForm.getWidth().toFixed(2));
-                $scope.mItemYDim = Math.abs(currSceneForm.getHeight().toFixed(2));
+                $scope.mItemXDim = Math.abs(currSelectionForm.getWidth().toFixed(2));
+                $scope.mItemYDim = Math.abs(currSelectionForm.getHeight().toFixed(2));
 
                 // TODO: and why this does work
                 var relPos = [ // mouse position relative to scene handle center
@@ -554,7 +554,7 @@ myModule.controller("MainCtrl", function ($scope){
 
                 // TOOD: clamp scale
 
-                currSceneForm.setSize(relPosWC[0]+1,relPosWC[1]);
+                currSelectionForm.setSize(relPosWC[0]+1,relPosWC[1]);
             }
         }
         else $scope.handleMode = null;
