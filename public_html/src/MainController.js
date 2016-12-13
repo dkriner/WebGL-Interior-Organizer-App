@@ -244,6 +244,7 @@ myModule.controller("MainCtrl", function ($scope){
         var texImg = $scope.mMyWorld.textures[selection].image;
         var ratio = texImg.naturalHeight / texImg.naturalWidth;
         item.setTexture($scope.mMyWorld.textures[selection]);
+        item.setName(selection);
         // TODO: set size relative to real world units
         item.getXform().setSize(3, 3 * ratio);
         
