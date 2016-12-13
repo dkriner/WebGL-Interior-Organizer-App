@@ -23,6 +23,7 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.ceiling = new SceneNode(shader, "Ceiling", false, 0,0);
     this.addAsChild(this.ceiling);
 
+    // wall
     this.wall = new SquareRenderable(shader);
     this.wall.setColor([132/255, 85/255, 14/255, 1]); // brown
     this.addToSet(this.wall);

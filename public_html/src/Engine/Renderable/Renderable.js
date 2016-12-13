@@ -12,8 +12,9 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function Renderable(shader) {
+    this.mName = name;
     this.mShader = shader;         // the shader for shading this object
-    this.mXform = new Transform(); // transform that moves this object around
+    this.mXform = new PivotedTransform(); // transform that moves this object around
     this.mColor = [1, 1, 1, 0];    // color of pixel
     this.mTexture = null;
     this.mTexXform = new PivotedTransform();
@@ -32,6 +33,39 @@ Renderable.prototype.draw = function (camera) {
     else Texture.prototype.deactivate();
 };
 
+// converts world coords to scene's local coord system
+Renderable.prototype.localToWC = function(coords) {
+    var m = this._getXFormStack();
+    return vec2.transformMat4(vec2.create(), coords, m);
+};
+
+// converts local scene coords to world coord system
+Renderable.prototype.wcToLocal = function(coords) {
+    var m = mat4.invert(mat4.create(), this._getXFormStack());
+    return vec2.transformMat4(vec2.create(), coords, m);
+};
+
+// get concatenation of this and all parent scenes xforms
+Renderable.prototype._getXFormStack = function() {
+    var currNode = this;
+    var m = currNode.getXform().getXform();
+    while (currNode.mParent) {
+        var parentMat = currNode.mParent.getXform().getXform();
+        mat4.multiply(m, parentMat, m);
+        currNode = currNode.mParent;
+    } 
+    return m;
+};
+
+// get concatenation of this and all parent scenes rotation
+Renderable.prototype.getWCRotation = function() {
+    var rot = 0, currNode = this;
+    do rot += currNode.getXform().getRotationInRad();
+    while (currNode = currNode.mParent);
+    while (rot > 2*Math.PI) rot -= 2*Math.PI;
+    return rot;
+};
+
 Renderable.prototype.computeXform = function (parentMat) {
     var m = this.mXform.getXform();
     if (parentMat !== undefined)
@@ -43,6 +77,8 @@ Renderable.prototype.computeAndLoadModelXform = function (parentMat) {
     this.mShader.loadObjectTransform(m);
 };
 
+Renderable.prototype.setName = function (n) { this.mName = n; };
+Renderable.prototype.getName = function () { return this.mName; };
 Renderable.prototype.setTexture = function (tex) { this.mTexture = tex; };
 Renderable.prototype.getTexture = function () { return this.mTexture; };
 Renderable.prototype.getTexXform = function() { return this.mTexXform; };

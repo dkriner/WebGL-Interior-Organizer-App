@@ -9,9 +9,9 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 // renderable representing the scale (vertical) and rotation (horizontal) handle bars 
-function SceneHandle(shader, scene) {
+function TransformHandle(shader, transformable) {
     SceneNode.call(this, shader, "Handle", false);
-    this.setScene(scene);
+    this.setTransformable(transformable);
 
     var obj, xf, barWidth = 0.1, barLen = 1;
 
@@ -55,32 +55,32 @@ function SceneHandle(shader, scene) {
     xf.setPosition(0,0);
     this.addToSet(obj);
 }
-gEngine.Core.inheritPrototype(SceneHandle, SceneNode);
+gEngine.Core.inheritPrototype(TransformHandle, SceneNode);
 
-// syncrhonize with the target sceneNode
-SceneHandle.prototype.update = function () { 
-    if (!this.mScene) return;
+// syncrhonize with the target transformableNode
+TransformHandle.prototype.update = function () { 
+    if (!this.mTransformable) return;
 
     // set position
-    var sceneForm = this.mScene.getXform();
-    var posWC = this.mScene.localToWC(sceneForm.getPivot());
+    var transformableForm = this.mTransformable.getXform();
+    var posWC = this.mTransformable.localToWC(transformableForm.getPivot());
     this.getXform().setPosition(posWC[0],posWC[1]);
 
     // set rotation
-    var rot = this.mScene.getWCRotation();
-    // var rot = 0, currNode = this.mScene;
+    var rot = this.mTransformable.getWCRotation();
+    // var rot = 0, currNode = this.mTransformable;
     // do rot += currNode.getXform().getRotationInRad();
     // while (currNode = currNode.mParent);
     this.getXform().setRotationInRad(rot);
 };
 
-SceneHandle.prototype.setScene = function (scene) {
-    this.setName(scene ? scene.getName + " Handle" : "Handle");
-    this.mScene = scene;
+TransformHandle.prototype.setTransformable = function (transformable) {
+    this.setName(transformable ? transformable.getName + " Handle" : "Handle");
+    this.mTransformable = transformable;
     this.update();
 };
 
-SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY,maxDist) {
+TransformHandle.prototype.mouseInTransHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.transTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
@@ -88,7 +88,7 @@ SceneHandle.prototype.mouseInTransHandle = function (wcX,wcY,maxDist) {
     return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY,maxDist) {
+TransformHandle.prototype.mouseInScaleHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.yBarTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
@@ -96,7 +96,7 @@ SceneHandle.prototype.mouseInScaleHandle = function (wcX,wcY,maxDist) {
     return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,maxDist) {
+TransformHandle.prototype.mouseInRotHandle = function (wcX,wcY,maxDist) {
     var tipPos = this.xBarTip.getXform().getPosition();
     var posWC = vec2.fromValues(0, 0);
     vec2.transformMat4(posWC, tipPos, this.getXform().getXform());
@@ -104,16 +104,16 @@ SceneHandle.prototype.mouseInRotHandle = function (wcX,wcY,maxDist) {
     return this._mouseWithin(posWC[0], posWC[1], wcX, wcY, maxDist);
 };
 
-SceneHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,maxDist) {
-    if (!this.mScene) return false;
+TransformHandle.prototype._mouseWithin = function (targetX,targetY,wcX,wcY,maxDist) {
+    if (!this.mTransformable) return false;
 
     var dist = Math.sqrt(Math.pow(wcX - targetX, 2) + Math.pow(wcY - targetY, 2));
     return dist <= maxDist;
 };
 
 
-SceneHandle.prototype.draw = function (aCamera, parentMat) {
-    if (!this.mScene) return false;
+TransformHandle.prototype.draw = function (aCamera, parentMat) {
+    if (!this.mTransformable) return false;
     
     this.update();
     SceneNode.prototype.draw.call(this, aCamera, parentMat);

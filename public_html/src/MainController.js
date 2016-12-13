@@ -43,7 +43,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mMyWorld = new World();
 
     $scope.currScene = null;
-    $scope.mMySceneHandle = new SceneHandle($scope.mMyWorld.mShader, $scope.currScene);
+    $scope.mMyTransHandle = new TransformHandle($scope.mMyWorld.mShader, $scope.currScene);
     // $scope.mSelectedXform = $scope.mMyWorld.parentXform();
     //$scope.mSelectedEcho = $scope.eSelection[0].label;
 
@@ -162,7 +162,7 @@ myModule.controller("MainCtrl", function ($scope){
         //        draw large view and handles
         // ********************************************
         $scope.mMyWorld.draw($scope.mCameras[0], $scope.mDrawCeiling);
-        $scope.mMySceneHandle.draw($scope.mCameras[0]);
+        $scope.mMyTransHandle.draw($scope.mCameras[0]);
 
         // Draw mouse box (in case of browser zooming-in allignment bug)
         $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);
@@ -237,15 +237,8 @@ myModule.controller("MainCtrl", function ($scope){
         item.setTexture($scope.mMyWorld.textures[selection]);
         // TODO: set size relative to real world units
         item.getXform().setSize(3, 3 * ratio);
-
-        // create scene for sceneHandle functionality
-        // TODO: make scenehandle work with renderables too
-        var scene = new SceneNode($scope.mMyWorld.mShader, selection, false);
-        scene.addToSet(item);
         
-        $scope.mMyWorld.mRoom.addFurniture(scene);
-        //$scope.mItemXDim = scene.getXform().getWidth();
-        //$scope.mItemYDim = scene.getXform().getHeight();
+        $scope.mMyWorld.mRoom.addFurniture(item);
     };
     
     
@@ -365,7 +358,7 @@ myModule.controller("MainCtrl", function ($scope){
         if ($scope.currScene && $scope.currScene.mParent)
             $scope.currScene.mParent.removeChild($scope.currScene);
 
-        $scope.mMySceneHandle.setScene(null);
+        $scope.mMyTransHandle.setTransformable(null);
         $scope.currScene = null;
         $scope.mItemXDim = 0.0;
         $scope.mItemYDim = 0.0;
@@ -417,11 +410,11 @@ myModule.controller("MainCtrl", function ($scope){
             $scope.checkViewSelection(canvasX, canvasY); 
             
             // scene handle code
-            if ($scope.mMySceneHandle.mouseInTransHandle(x, y, dist))
+            if ($scope.mMyTransHandle.mouseInTransHandle(x, y, dist))
                 $scope.handleMode = "Translate";
-            else if ($scope.mMySceneHandle.mouseInRotHandle(x, y, dist))
+            else if ($scope.mMyTransHandle.mouseInRotHandle(x, y, dist))
                 $scope.handleMode = "Rotation";
-            else if ($scope.mMySceneHandle.mouseInScaleHandle(x, y, dist))
+            else if ($scope.mMyTransHandle.mouseInScaleHandle(x, y, dist))
                 $scope.handleMode = "Scale";
             else $scope.handleMode = null;
 
@@ -442,7 +435,7 @@ myModule.controller("MainCtrl", function ($scope){
             }
             
             $scope.currScene = newScene;
-            $scope.mMySceneHandle.setScene(newScene);
+            $scope.mMyTransHandle.setTransformable(newScene);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
             // returns child in scene that was clicked or null
@@ -533,8 +526,8 @@ myModule.controller("MainCtrl", function ($scope){
 
                 // TODO: and why this does work
                 var relPos = [ // mouse position relative to scene handle center
-                    $scope.mLastWCPosX - $scope.mMySceneHandle.getXform().getXPos(),
-                    $scope.mLastWCPosY - $scope.mMySceneHandle.getXform().getYPos()
+                    $scope.mLastWCPosX - $scope.mMyTransHandle.getXform().getXPos(),
+                    $scope.mLastWCPosY - $scope.mMyTransHandle.getXform().getYPos()
                 ];
 
                 var rot = Math.PI/2 - Math.atan2(relPos[0],relPos[1]);
@@ -551,12 +544,12 @@ myModule.controller("MainCtrl", function ($scope){
 
                 // TODO: and why this does work
                 var relPos = [ // mouse position relative to scene handle center
-                    $scope.mLastWCPosX - $scope.mMySceneHandle.getXform().getXPos(),
-                    $scope.mLastWCPosY - $scope.mMySceneHandle.getXform().getYPos()
+                    $scope.mLastWCPosX - $scope.mMyTransHandle.getXform().getXPos(),
+                    $scope.mLastWCPosY - $scope.mMyTransHandle.getXform().getYPos()
                 ];
 
                 var rotMat = mat4.create(); // reverse the scene's rotation
-                mat4.rotateZ(rotMat, rotMat, -$scope.mMySceneHandle.getXform().getRotationInRad());
+                mat4.rotateZ(rotMat, rotMat, -$scope.mMyTransHandle.getXform().getRotationInRad());
                 var relPosWC = vec2.transformMat4(vec2.create(), relPos, rotMat);
 
                 // TOOD: clamp scale
