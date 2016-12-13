@@ -68,7 +68,6 @@ function World() {
         "Rug 2": new Texture('assets/rug2.png'),
         "Table": new Texture('assets/table.png'),
         "Table 2": new Texture('assets/table2.png')
-
     };
 }
 

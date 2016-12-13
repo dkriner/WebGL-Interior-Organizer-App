@@ -66,8 +66,9 @@ Room.prototype.getFloorPatternScale = function() {
 
 Room.prototype.setFloorPatternScale = function (scale) {
     var txf = this.floorPattern.getTexXform();
-    var ratio = this.getSize()[1] / this.getSize()[0];
-    txf.setSize(scale , scale * ratio);
+    var yRatio = this.getSize()[1]  / this.getSize()[0];
+    // offset distortion caused by squarerenderable scaling
+    txf.setSize(this.getSize()[0] / scale, this.getSize()[1] / scale);
 };
 
 Room.prototype.getSize = function() {
