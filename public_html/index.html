@@ -134,53 +134,57 @@
         <label style="color: darkorange;"><b>Upload Floor Design:</b></label>
         <input style="color: darkorange" type="file" onchange="angular.element(this).scope().acceptTexFile(event)">
         
-        <!-----------Ruler Images-------------->
+        <!-----------Ruler Images--------------
         <img src="assets/rulertop.png" alt="Top ruler" style="position: absolute; top: 698px; left: 100px; width: 670px">
         <img src="assets/rulerside.png" alt="Side ruler" style="position: absolute; top: 240px; left: 60px; height: 460px;;">
+        ->
         
         <!----Item Dimensions--->
         <!---Label--->
         <button class="dropbtn" style="top: 120px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px;"><b>Item Dimensions</b></button>
         
-        <!----input boxes----->
-        <input class="dimensions" style= "top: 315px; left: 1500px; " type="text" id="xDimension" ng-model="mItemXDim" ng-change="changeSceneWidth()">
-        <input class="dimensions" style= "top: 340px; left: 1500px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="changeSceneLength()">
+        <!----Item Size Echo boxes----->
+        <input class="dimensions" style= "top: 315px; left: 1500px; " type="text" id="xDimension" ng-model="mItemXDim" ng-change="customResizeItem()">
+        <input class="dimensions" style= "top: 340px; left: 1500px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="customResizeItem()">
         
-        <!-----fine tuners----->
+        <!-----item size fine tuners----->
         <button class="incrBtn" style="top: 315px; left: 1585px;" ng-click="incrXDim()"> <b>+</b> </button>
         <button class="incrBtn" style="top: 315px; left: 1605px;" ng-click="decXDim()">  <b>-</b> </button>
         <button class="incrBtn" style="top: 340px; left: 1585px;" ng-click="incrYDim()"> <b>+</b> </button>
         <button class="incrBtn" style="top: 340px; left: 1605px;" ng-click="decYDim()">  <b>-</b> </button>
         
-        <input class="dimensions" style= "top: 425px; left: 1500px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="changeSceneX()">
-        <input class="dimensions" style= "top: 450px; left: 1500px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="changeSceneY()">
+        <!---------Item position Echo Boxes---------->
+        <input class="dimensions" style= "top: 425px; left: 1500px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="customMoveItem()">
+        <input class="dimensions" style= "top: 450px; left: 1500px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="customMoveItem()">
         
-        <!----fine tuners---->
+        <!----item size fine tuners---->
         <button class="incrBtn" style="top: 425px; left: 1585px;" ng-click="incrXPos()">  <b>+</b> </button>
         <button class="incrBtn" style="top: 425px; left: 1605px;" ng-click="decXPos()">  <b>-</b> </button>
         <button class="incrBtn" style="top: 450px; left: 1585px;" ng-click="incrYPos()">  <b>+</b> </button>
         <button class="incrBtn" style="top: 450px; left: 1605px;" ng-click="decYPos()">  <b>-</b> </button>
         
+        <!-----Room Size Echo Boxes------------>
+        <input class="dimensions" style= "top: 550px; left: 1500px;  " type="text" id="customRoomX" ng-model="mRoomX" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 575px; left: 1500px;  " type="text" id="customRoomY" ng-model="mRoomY" ng-change="customResizeRoom()">
+        
+        <!-----Room size fine tuners------>
+        <button class="incrBtn" style="top: 550px; left: 1585px;" ng-click="resizeRoom(0.1,0)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 550px; left: 1605px;" ng-click="resizeRoom(-0.1,0)">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 575px; left: 1585px;" ng-click="resizeRoom(0,0.1)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 575px; left: 1605px;" ng-click="resizeRoom(0,-0.1)">  <b>-</b> </button>
+        
         <!----input labels----->
-        <div class="authors" style="left: 1390px; top: 270px; font-size: 18px">
-            <b> Item Size </b><i>[ft.]</i>  
-        </div>
-        <div class="authors" style="left: 1390px; top: 390px; font-size: 18px">
-            <b> Item Position </b><i>[ft.]</i>  
-        </div>
-        <div class="simpleText" style="top: 315px;">
-            Width <br> Length 
-        </div>
-        <div class="simpleText" style="top: 425px;">
-            X <br> Y 
-        </div>
-       
+        <div class="authors" style="left: 1390px; top: 270px; font-size: 18px"> <b> Item Size </b><i>[ft.]</i>      </div>
+        <div class="simpleText" style="top: 315px;"> Width <br> Length                                              </div>
         
+        <div class="authors" style="left: 1390px; top: 390px; font-size: 18px"> <b> Item Position </b><i>[ft.]</i>  </div>
+        <div class="simpleText" style="top: 425px;"> X <br> Y                                                       </div>
         
+        <div class="authors" style="left: 1390px; top: 500px; font-size: 18px;"> <b> Room Size </b> <i>[ft.]</i>    </div>
+        <div class="simpleText" style="top: 550px;"> X <br> Y                                                       </div>
+
         <!-----Credits------>
-        <div class="authors" style="left: 20px; top: 800px;">
-            Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner
-        </div>
+        <div class="authors" style="left: 20px; top: 800px;"> Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner </div>
         
 
         <!------Directions---->
