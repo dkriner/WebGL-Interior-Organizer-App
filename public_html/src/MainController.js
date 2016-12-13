@@ -212,6 +212,9 @@ myModule.controller("MainCtrl", function ($scope){
         var wcPos = [0, 0];
         $scope.mLastWCPosX = wcPos[0] = $scope.useCam.mouseWCX($scope.mCanvasX);
         $scope.mLastWCPosY = wcPos[1] = $scope.useCam.mouseWCY($scope.mCanvasY);
+
+        // console.log("test", $scope.mLastWCPosX, $scope.mLastWCPosY, wcPos)
+
         return wcPos;
     };
 
@@ -469,47 +472,43 @@ myModule.controller("MainCtrl", function ($scope){
     };
   
     $scope.onMouseMove = function (event){
-        $scope.computeWCPos(event); // convert mouse position
-        var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
+        var lastPos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
+        var pos = $scope.computeWCPos(event);
+        var relPos;
 
         // mouse position square
         $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
         
         // scene handle code
         if (event.which === 1 && $scope.handleMode && $scope.currSelection) {
-            
             var currSelectionForm = $scope.currSelection.getXform();
-            // convert mouse position to parent's local coords 
-            
-            //update item info UI
-            
-            
-            
 
-        
+            // convert mouse position to parent's local coords 
             if ($scope.currSelection.mParent)
-                pos = $scope.currSelection.mParent.wcToLocal(pos);
+                relPos = $scope.currSelection.mParent.wcToLocal(pos);
 
             // make mouse position relative to pivot
-            pos[0] -= $scope.currSelection.getXform().getPivot()[0];
-            pos[0] -= $scope.currSelection.getXform().getXPos();
-            pos[1] -= $scope.currSelection.getXform().getPivot()[1];
-            pos[1] -= $scope.currSelection.getXform().getYPos();
+            relPos[0] -= $scope.currSelection.getXform().getPivot()[0];
+            relPos[0] -= $scope.currSelection.getXform().getXPos();
+            relPos[1] -= $scope.currSelection.getXform().getPivot()[1];
+            relPos[1] -= $scope.currSelection.getXform().getYPos();
 
             if ($scope.handleMode === "Translate") {
                 // assign position to mouse coords offset from pivot
-                pos[0] += $scope.currSelection.getXform().getXPos();
-                pos[1] += $scope.currSelection.getXform().getYPos();
-                currSelectionForm.setPosition(pos[0], pos[1]);
+                relPos[0] += $scope.currSelection.getXform().getXPos();
+                relPos[1] += $scope.currSelection.getXform().getYPos();
+                currSelectionForm.setPosition(relPos[0], relPos[1]);
                 
                 var itemRoomCoords = $scope.currSelection.wcToRoomScale([currSelectionForm.getXPos(), currSelectionForm.getYPos()]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
+
+                // TOOD: clamp position to whichever room the mouse is in (last in if on wall)
             }
             else if ($scope.handleMode === "Rotation") {
                 // TODO: figure out why this doesn't work when parent is scaled
                 // // calculate mouse position angle to pivot
-                // var rot = Math.PI/2 - Math.atan2(pos[0],pos[1]);
+                // var rot = Math.PI/2 - Math.atan2(relPos[0],relPos[1]);
                 // currSelectionForm.setRotationInRad(rot);
 
                 // TODO: and why this does work
@@ -525,24 +524,26 @@ myModule.controller("MainCtrl", function ($scope){
             }
             else if ($scope.handleMode === "Scale") {
                 // TODO: figure out why this doesn't work when scene rotated
-                // currSelectionForm.setSize(pos[0]+1,pos[1]);
-                
-                $scope.mItemXDim = Math.abs(currSelectionForm.getWidth().toFixed(2));
-                $scope.mItemYDim = Math.abs(currSelectionForm.getHeight().toFixed(2));
+                // currSelectionForm.setSize(relPos[0]+1,relPos[1]);
 
                 // TODO: and why this does work
                 var relPos = [ // mouse position relative to scene handle center
-                    $scope.mLastWCPosX - $scope.mMyTransHandle.getXform().getXPos(),
-                    $scope.mLastWCPosY - $scope.mMyTransHandle.getXform().getYPos()
+                    pos[0] - lastPos[0],
+                    pos[1] - lastPos[1]
+                    // $scope.mLastWCPosX - $scope.mMyTransHandle.getXform().getXPos(),
+                    // $scope.mLastWCPosY - $scope.mMyTransHandle.getXform().getYPos()
                 ];
 
                 var rotMat = mat4.create(); // reverse the scene's rotation
                 mat4.rotateZ(rotMat, rotMat, -$scope.mMyTransHandle.getXform().getRotationInRad());
                 var relPosWC = vec2.transformMat4(vec2.create(), relPos, rotMat);
 
-                // TOOD: clamp scale
+                // TODO: clamp scale 
 
-                currSelectionForm.setSize(relPosWC[0]+1,relPosWC[1]);
+                currSelectionForm.setSize(currSelectionForm.getWidth() + relPosWC[0]*2, currSelectionForm.getHeight() + relPosWC[1]);
+
+                $scope.mItemXDim = Math.abs(currSelectionForm.getWidth().toFixed(2));
+                $scope.mItemYDim = Math.abs(currSelectionForm.getHeight().toFixed(2));
             }
         }
         else $scope.handleMode = null;
