@@ -13,7 +13,7 @@ and open the template in the editor.
 Canvas stuff
 */
             body{
-                background: #990000;
+              
                 background: linear-gradient(#660000, #FF3300);
                 height: 1000px;
             }
@@ -78,9 +78,10 @@ Canvas stuff
                 font-family: Century Gothic, sans-serif;
                 color: yellow;
                 position: absolute;
-                left: 0px;
-                top: 750px;
-                font-size: 12px; 
+                left: 300px;
+                top: 10px;
+                font-size: 12px;
+                z-index: 1;
             }
             .simpleText{
                 font-family: Century Gothic, sans-serif;
@@ -93,9 +94,9 @@ Canvas stuff
                 font-family: Century Gothic, sans-serif;
                 color: yellow;
                 position: absolute;
-                left: 1100px;
-                top: 700px;
-                font-size: 16px;
+                left: 20px;
+                top: 800px;
+                font-size: 12px;
             }
             .delete{
                 position: absolute;
@@ -121,27 +122,29 @@ Canvas stuff
                 font-size: 16px;
                 border: none;
                 cursor: pointer;
-                position: relative;
-           
+                position: absolute;
+                width: 160px
+               
             }
 
             /* The container <div> - needed to position the dropdown content */
             .dropdown {
-                position: relative;
-                left: 20px;
-                top: 70px;
+                position: absolute;
                 display: inline-block;
-                cursor: pointer
+                cursor: pointer;
+                
             }
 
             /* Dropdown Content (Hidden by Default) */
             .dropdown-content {
                 display: none;
-                position: relative;
+                position: absolute;
                 cursor: pointer;
                 background-color: #999999;
                 min-width: 160px;
                 box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 2;
+                top: 55px;
             }
 
             /* Links inside the dropdown */
@@ -184,6 +187,7 @@ Canvas stuff
                 background-color: black;
                 color: darkorange;
                 width: 80px;
+                border: none;
             }
 
             .slider {
@@ -199,6 +203,6 @@ Canvas stuff
                 cursor: pointer;
                 position: absolute;
                 width: 20px;
-                height: 20px;
+                height: 17px;
             }
        

@@ -107,7 +107,7 @@
                 </div>
           </div>  
         
-        <!----Edit Texture Dropdown---->
+        <!----Edit Texture Dropdown----
         <div class="dropdown" style = "position:absolute; top: 160px; left:1250px;">
             <button class="dropbtn"><b>Edit Texture</b></button>
                 <div class="dropdown-content">
@@ -116,11 +116,17 @@
                   <a ng-click = "editTexture('Texture3')">Texture 3</a>
                 </div>
           </div>
+        -->
+        
+        
+        
+        <!--Layer ordering buttons------->
+        <button class="dropbtn" style= "top: 650px; left: 1100px;" ng-click="bringForward()" ><b>Bring Forward</b></button>
+        <button class="dropbtn" style= "top: 720px; left: 1100px;" ng-click="sendBackward()" ><b>Send Backward</b></button>
         
         <!--Delete Button -->
-        <div class="viewLabel" style="top: 550px">
-            <button class="dropbtn" ng-click="deleteItem()" ><b>Delete Item</b></button>
-        </div>
+        <button class="dropbtn" style= "top: 790px; left: 1100px;" ng-click="deleteItem()" ><b>Delete Item</b></button>
+        
         
         <!----Color Picker----
         <button class="dropbtn" style="top: 75px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px"><b>Edit Color</b></button>
@@ -139,61 +145,58 @@
         <img src="assets/rulerside.png" alt="Side ruler" style="position: absolute; top: 240px; left: 60px; height: 460px;;">
         ->
         
-        <!----Item Dimensions--->
-        <!---Label--->
-        <button class="dropbtn" style="top: 120px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px;"><b>Item Dimensions</b></button>
-        
+
         <!----Item Size Echo boxes----->
-        <input class="dimensions" style= "top: 315px; left: 1500px; " type="text" id="xDimension" ng-model="mItemXDim" ng-change="customResizeItem()">
-        <input class="dimensions" style= "top: 340px; left: 1500px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="customResizeItem()">
+        <input class="dimensions" style= "top: 315px; left: 1130px; " type="text" id="xDimension" ng-model="mItemXDim" ng-change="customResizeItem()">
+        <input class="dimensions" style= "top: 340px; left: 1130px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="customResizeItem()">
         
         <!-----item size fine tuners----->
-        <button class="incrBtn" style="top: 315px; left: 1585px;" ng-click="incrXDim()"> <b>+</b> </button>
-        <button class="incrBtn" style="top: 315px; left: 1605px;" ng-click="decXDim()">  <b>-</b> </button>
-        <button class="incrBtn" style="top: 340px; left: 1585px;" ng-click="incrYDim()"> <b>+</b> </button>
-        <button class="incrBtn" style="top: 340px; left: 1605px;" ng-click="decYDim()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 315px; left: 1220px;" ng-click="incrXDim()"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 315px; left: 1250px;" ng-click="decXDim()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1220px;" ng-click="incrYDim()"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1250px;" ng-click="decYDim()">  <b>-</b> </button>
         
         <!---------Item position Echo Boxes---------->
-        <input class="dimensions" style= "top: 425px; left: 1500px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="customMoveItem()">
-        <input class="dimensions" style= "top: 450px; left: 1500px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="customMoveItem()">
+        <input class="dimensions" style= "top: 425px; left: 1130px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="customMoveItem()">
+        <input class="dimensions" style= "top: 450px; left: 1130px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="customMoveItem()">
         
         <!----item size fine tuners---->
-        <button class="incrBtn" style="top: 425px; left: 1585px;" ng-click="incrXPos()">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 425px; left: 1605px;" ng-click="decXPos()">  <b>-</b> </button>
-        <button class="incrBtn" style="top: 450px; left: 1585px;" ng-click="incrYPos()">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 450px; left: 1605px;" ng-click="decYPos()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 425px; left: 1220px;" ng-click="incrXPos()">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 425px; left: 1250px;" ng-click="decXPos()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1220px;" ng-click="incrYPos()">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1250px;" ng-click="decYPos()">  <b>-</b> </button>
         
         <!-----Room Size Echo Boxes------------>
-        <input class="dimensions" style= "top: 550px; left: 1500px;  " type="text" id="customRoomX" ng-model="mRoomX" ng-change="customResizeRoom()">
-        <input class="dimensions" style= "top: 575px; left: 1500px;  " type="text" id="customRoomY" ng-model="mRoomY" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 550px; left: 1130px;  " type="text" id="customRoomX" ng-model="mRoomX" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 575px; left: 1130px;  " type="text" id="customRoomY" ng-model="mRoomY" ng-change="customResizeRoom()">
         
         <!-----Room size fine tuners------>
-        <button class="incrBtn" style="top: 550px; left: 1585px;" ng-click="resizeRoom(0.1,0)">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 550px; left: 1605px;" ng-click="resizeRoom(-0.1,0)">  <b>-</b> </button>
-        <button class="incrBtn" style="top: 575px; left: 1585px;" ng-click="resizeRoom(0,0.1)">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 575px; left: 1605px;" ng-click="resizeRoom(0,-0.1)">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 550px; left: 1220px;" ng-click="resizeRoom(0.1,0)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 550px; left: 1250px;" ng-click="resizeRoom(-0.1,0)">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 575px; left: 1220px;" ng-click="resizeRoom(0,0.1)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 575px; left: 1250px;" ng-click="resizeRoom(0,-0.1)">  <b>-</b> </button>
         
         <!----input labels----->
-        <div class="authors" style="left: 1390px; top: 270px; font-size: 18px"> <b> Item Size </b><i>[ft.]</i>      </div>
-        <div class="simpleText" style="top: 315px;"> Width <br> Length                                              </div>
+        <div class="authors" style="left: 1100px; top: 270px; font-size: 18px"> <b> Item Size </b><i>[ft.]</i>      </div>
+        <div class="simpleText" style="left: 1100px; top: 315px;"> X <br> Y                                              </div>
         
-        <div class="authors" style="left: 1390px; top: 390px; font-size: 18px"> <b> Item Position </b><i>[ft.]</i>  </div>
-        <div class="simpleText" style="top: 425px;"> X <br> Y                                                       </div>
+        <div class="authors" style="left: 1100px; top: 390px; font-size: 18px"> <b> Item Position </b><i>[ft.]</i>  </div>
+        <div class="simpleText" style="left: 1100px; top: 425px;"> X <br> Y                                                       </div>
         
-        <div class="authors" style="left: 1390px; top: 500px; font-size: 18px;"> <b> Room Size </b> <i>[ft.]</i>    </div>
-        <div class="simpleText" style="top: 550px;"> X <br> Y                                                       </div>
+        <div class="authors" style="left: 1100px; top: 500px; font-size: 18px;"> <b> Room Size </b> <i>[ft.]</i>    </div>
+        <div class="simpleText" style="left: 1100px; top: 550px;"> X <br> Y                                                       </div>
 
         <!-----Credits------>
-        <div class="authors" style="left: 20px; top: 800px;"> Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner </div>
+        <div class="authors"> Created by: John Fitzgerald, Griffin Howlett, and Darren Kriner </div>
         
 
         <!------Directions---->
         <div class="directions">
-            <b> Directions: </b> <br>
-            >Select from the drop-down to add a furniture element to the canvas. <br>
-            >Click on the center of the item to change its scale, rotation, and translation. <br>
-            >Edit the texture and/or color of a selected item with the tools above.* <br>
-            >Select between the 2 view options to specify which types of fixtures to show.
+             Directions: <br>
+            1)Adjust the room size to your preference using the controls<br>
+            2)Using the drop-down on the top right to add furniture<br>
+            3)Select between the 2 viewports to filter what sort of furnishings to show <br>
+            [...]
         </div>
                
 </body>

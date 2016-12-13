@@ -56,7 +56,7 @@ myModule.controller("MainCtrl", function ($scope){
     var roomSize = $scope.mMyWorld.mRoom.getSize();
     $scope.mRoomX = roomSize[0];
     $scope.mRoomY = roomSize[1];
-    console.log(roomSize[0] + "   "  + roomSize[1]);
+    
 
     // small view support
     $scope.setViewWC = function (camera){
@@ -528,6 +528,13 @@ myModule.controller("MainCtrl", function ($scope){
         var pos = $scope.computeWCPos(event);
         var relPos;
 
+        //if($scope.currSelection){
+            //var itemPos = [$scope.currSelection.getXform().getXPos(), $scope.currSelection.getXform().getYPos()];
+            //itemPos = $scope.currSelection.localToWC(itemPos);
+            //console.log("WC X: " + itemPos[0] + " Y: " + itemPos[1]);
+        //}
+
+        
         // mouse position square
         $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
         
