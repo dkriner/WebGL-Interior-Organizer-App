@@ -185,7 +185,8 @@ myModule.controller("MainCtrl", function ($scope){
     };
 
     $scope.computeWCPos = function (event){
-        var wcPos = [0, 0];
+        // TODO: fix bug where mouse position is off if 
+        //       the page is reloaded while scrolled down
         $scope.mClientX = event.clientX;
         $scope.mClientY = event.clientY;
         $scope.mCanvasX = $scope.mCanvasMouse.getPixelXPos(event);
@@ -208,10 +209,9 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mViewportX = $scope.useCam._viewportX($scope.mCanvasX);
         $scope.mViewportY = $scope.useCam._viewportY($scope.mCanvasY);
         
-        wcPos[0] = $scope.useCam.mouseWCX($scope.mCanvasX);
-        wcPos[1] = $scope.useCam.mouseWCY($scope.mCanvasY);
-        $scope.mCameraX = wcPos[0];
-        $scope.mCameraY = wcPos[1];
+        var wcPos = [0, 0];
+        $scope.mLastWCPosX = wcPos[0] = $scope.useCam.mouseWCX($scope.mCanvasX);
+        $scope.mLastWCPosY = wcPos[1] = $scope.useCam.mouseWCY($scope.mCanvasY);
         return wcPos;
     };
 
@@ -399,15 +399,14 @@ myModule.controller("MainCtrl", function ($scope){
     };
 
     $scope.onMouseDown = function (event){
-        if (event.which === 1) { // left          
-            var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
-            var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-            var x = $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
-            var y = $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
+        if (event.which === 1) { // left     
+            $scope.computeWCPos(event); // convert mouse position    
+            var x = $scope.mLastWCPosX;
+            var y = $scope.mLastWCPosY;
             var dist = 0.4;
 
             //check if user is selecting a new view
-            $scope.checkViewSelection(canvasX, canvasY); 
+            $scope.checkViewSelection($scope.mCanvasX, $scope.mCanvasY); 
             
             // scene handle code
             if ($scope.mMyTransHandle.mouseInTransHandle(x, y, dist))
@@ -470,20 +469,11 @@ myModule.controller("MainCtrl", function ($scope){
     };
   
     $scope.onMouseMove = function (event){
-        // TODO: fix bug where mouse position is off if 
-        //       the page is reloaded while scrolled down
-
-        var canvasX = $scope.mCanvasMouse.getPixelXPos(event);
-        var canvasY = $scope.mCanvasMouse.getPixelYPos(event);
-        $scope.mLastWCPosX = this.mCameras[0].mouseWCX(canvasX);
-        $scope.mLastWCPosY = this.mCameras[0].mouseWCY(canvasY);
+        $scope.computeWCPos(event); // convert mouse position
         var pos = [$scope.mLastWCPosX, $scope.mLastWCPosY];
 
         // mouse position square
         $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
-        
-        // TODO: remove this kelvin code and GUI mosue over
-        //$scope.mMyWorld.detectMouseOver($scope.mLastWCPosX, $scope.mLastWCPosY, (event.which===1));
         
         // scene handle code
         if (event.which === 1 && $scope.handleMode && $scope.currSelection) {
@@ -515,8 +505,6 @@ myModule.controller("MainCtrl", function ($scope){
                 var itemRoomCoords = $scope.currSelection.wcToRoomScale([currSelectionForm.getXPos(), currSelectionForm.getYPos()]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
-                
-            
             }
             else if ($scope.handleMode === "Rotation") {
                 // TODO: figure out why this doesn't work when parent is scaled
