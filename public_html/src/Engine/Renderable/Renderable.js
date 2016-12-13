@@ -33,16 +33,32 @@ Renderable.prototype.draw = function (camera) {
     else Texture.prototype.deactivate();
 };
 
-// converts world coords to scene's local coord system
+// converts local scene coords to world coord system
 Renderable.prototype.localToWC = function(coords) {
     var m = this._getXFormStack();
     return vec2.transformMat4(vec2.create(), coords, m);
 };
 
-// converts local scene coords to world coord system
+// converts world coords to scene's local coord system
 Renderable.prototype.wcToLocal = function(coords) {
     var m = mat4.invert(mat4.create(), this._getXFormStack());
     return vec2.transformMat4(vec2.create(), coords, m);
+};
+
+//changes from WC to the Room scale (12x8 ft)
+//used for position of objects
+Renderable.prototype.wcToRoomScale = function(coords){
+    
+    var r1 = [-6, 6];
+    var r2 = [0, 12];
+    var outputX = (coords[0] - r1[0])*(r2[1] - r2[0])/(r1[1]-r1[0])+r2[0];
+    
+    r1 = [-4,4];
+    r2 = [0,8];
+    var outputY = (coords[1] - r1[0])*(r2[1] - r2[0])/(r1[1]-r1[0])+r2[0];
+    
+    return [outputX, outputY];
+    
 };
 
 // get concatenation of this and all parent scenes xforms

@@ -73,13 +73,13 @@ SceneNode.prototype.getChildAt = function (index) {
     return this.mChildren[index];
 };
 
-// converts world coords to scene's local coord system
+// converts local scene coords to world coord system
 SceneNode.prototype.localToWC = function(coords) {
     var m = this._getXFormStack();
     return vec2.transformMat4(vec2.create(), coords, m);
 };
 
-// converts local scene coords to world coord system
+// converts world coords to scene's local coord system
 SceneNode.prototype.wcToLocal = function(coords) {
     var m = mat4.invert(mat4.create(), this._getXFormStack());
     return vec2.transformMat4(vec2.create(), coords, m);
