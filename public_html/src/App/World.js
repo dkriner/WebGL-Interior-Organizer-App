@@ -47,7 +47,16 @@ function World() {
         "Couch 2": new Texture('assets/couch2.png'),
         "Ceiling Fan 1": new Texture('assets/ceiling_fan1.png'),
         "Rug 1": new Texture('assets/rug1.png'),
-        "Table 1": new Texture('assets/table1.png')
+        "Table 1": new Texture('assets/table1.png'),
+        "Chair 3": new Texture('assets/chair3.png'),
+        "Couch": new Texture('assets/couch.png'),
+        "Couch 3": new Texture('assets/couch3.png'),
+        "Ceiling Fan": new Texture('assets/ceiling_fan.png'),
+        "Rug": new Texture('assets/rug.png'),
+        "Rug 2": new Texture('assets/rug2.png'),
+        "Table": new Texture('assets/table.png'),
+        "Table 2": new Texture('assets/table2.png')
+
     };
 }
 

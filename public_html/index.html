@@ -122,32 +122,59 @@
             <button class="dropbtn" ng-click="deleteItem()" ><b>Delete Item</b></button>
         </div>
         
-        <!----Color Picker---->
+        <!----Color Picker----
         <button class="dropbtn" style="top: 75px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px"><b>Edit Color</b></button>
         
         <input ng-model= "mCurrentColor" id="jscolor" class ="jscolor" ng-change="changeColor()" value="Change Color">
         <br>
+        --><br><br>
 
-        <css-slider model="floorDesignScale" min="1" max="6" label="Carpet Scale: " callback="setFloorDesignScale()"></css-slider>
+        <css-slider style="color: darkorange; font-style: oblique;" model="floorDesignScale" min="1" max="100" label="Carpet Scale:" callback="setFloorDesignScale()"></css-slider>
 
-        <label><b>Upload Floor Design:</b></label>
-        <input type="file" onchange="angular.element(this).scope().acceptTexFile(event)">
+        <label style="color: darkorange;"><b>Upload Floor Design:</b></label>
+        <input style="color: darkorange" type="file" onchange="angular.element(this).scope().acceptTexFile(event)">
+        
+        <!-----------Ruler Images-------------->
+        <img src="assets/rulertop.png" alt="Top ruler" style="position: absolute; top: 698px; left: 100px; width: 670px">
+        <img src="assets/rulerside.png" alt="Side ruler" style="position: absolute; top: 240px; left: 60px; height: 460px;;">
         
         <!----Item Dimensions--->
         <!---Label--->
         <button class="dropbtn" style="top: 120px; left: 1380px; cursor: default; height: 30px; width: 150px; padding: 0px;"><b>Item Dimensions</b></button>
         
         <!----input boxes----->
-        <input class="dimensions" style= "top: 270px; left: 1450px; width: 80px; " type="text" id="xDimension" ng-model="mItemXDim">
-        <input class="dimensions" style= "top: 300px; left: 1450px; width: 80px; " type="text" id="yDimension" ng-model="mItemYDim">
+        <input class="dimensions" style= "top: 315px; left: 1500px; " type="text" id="xDimension" ng-model="mItemXDim" ng-change="changeSceneWidth()">
+        <input class="dimensions" style= "top: 340px; left: 1500px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="changeSceneLength()">
+        
+        <!-----fine tuners----->
+        <button class="incrBtn" style="top: 315px; left: 1585px;" ng-click="incrXDim()"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 315px; left: 1605px;" ng-click="decXDim()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1585px;" ng-click="incrYDim()"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1605px;" ng-click="decYDim()">  <b>-</b> </button>
+        
+        <input class="dimensions" style= "top: 425px; left: 1500px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="changeSceneX()">
+        <input class="dimensions" style= "top: 450px; left: 1500px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="changeSceneY()">
+        
+        <!----fine tuners---->
+        <button class="incrBtn" style="top: 425px; left: 1585px;" ng-click="incrXPos()">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 425px; left: 1605px;" ng-click="decXPos()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1585px;" ng-click="incrYPos()">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1605px;" ng-click="decYPos()">  <b>-</b> </button>
         
         <!----input labels----->
         <div class="authors" style="left: 1390px; top: 270px; font-size: 18px">
-            Width
+            <b> Item Size </b><i>[ft.]</i>  
         </div>
-        <div class="authors" style="left: 1390px; top: 300px; font-size: 18px">
-            Height
+        <div class="authors" style="left: 1390px; top: 390px; font-size: 18px">
+            <b> Item Position </b><i>[ft.]</i>  
         </div>
+        <div class="simpleText" style="top: 315px;">
+            Width <br> Length 
+        </div>
+        <div class="simpleText" style="top: 425px;">
+            X <br> Y 
+        </div>
+       
         
         
         <!-----Credits------>
@@ -161,8 +188,8 @@
             <b> Directions: </b> <br>
             >Select from the drop-down to add a furniture element to the canvas. <br>
             >Click on the center of the item to change its scale, rotation, and translation. <br>
-            >Edit the texture and/or color of a selected item with the tools above. <br>
-            >Select between the 2 view options to show floor fixings only, or all furnishings both floor and ceiling level.
+            >Edit the texture and/or color of a selected item with the tools above.* <br>
+            >Select between the 2 view options to specify which types of fixtures to show.
         </div>
                
 </body>

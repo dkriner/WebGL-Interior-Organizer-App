@@ -85,6 +85,24 @@ SceneNode.prototype.wcToLocal = function(coords) {
     return vec2.transformMat4(vec2.create(), coords, m);
 };
 
+
+//changes from WC to the Room scale (12x8 ft)
+//used for position of objects
+SceneNode.prototype.wcToRoomScale = function(coords){
+    
+    var r1 = [-6, 6];
+    var r2 = [0, 12];
+    var outputX = (coords[0] - r1[0])*(r2[1] - r2[0])/(r1[1]-r1[0])+r2[0];
+    
+    r1 = [-4,4];
+    r2 = [0,8];
+    var outputY = (coords[1] - r1[0])*(r2[1] - r2[0])/(r1[1]-r1[0])+r2[0];
+    
+    return [outputX, outputY];
+    
+};
+
+
 // get concatenation of this and all parent scenes xforms
 SceneNode.prototype._getXFormStack = function() {
     var currNode = this;
