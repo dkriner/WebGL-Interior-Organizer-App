@@ -122,30 +122,20 @@ SceneNode.prototype.getWCRotation = function() {
 };
 
 SceneNode.prototype.draw = function (aCamera, parentMat) {
-    var i;
     var xfMat = this.mXform.getXform();
     if (parentMat !== undefined)
         mat4.multiply(xfMat, parentMat, xfMat);
     
     // Draw our own!
-    for (i = 0; i < this.mSet.length; i++) {
-        
+    for (var i = 0; i < this.mSet.length; i++)
         this.mSet[i].draw(aCamera, xfMat); // pass to each renderable
-    }
     
     // now draw the children
-    for (i = 0; i < this.mChildren.length; i++) {
-
-        
+    for (var i = 0; i < this.mChildren.length; i++)
         this.mChildren[i].draw(aCamera, xfMat); // pass to each renderable
-        
-        
-        
-        
-    }
     
     // for debugging, let's draw the pivot position
-    if (this.mPivotPos !== null && aCamera.mName === "Large") {
+    if (this.mPivotPos !== null) {
         var pxf = this.getXform();
         var t = pxf.getPosition();
         var p = pxf.getPivot();

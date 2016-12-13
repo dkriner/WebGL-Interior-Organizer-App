@@ -79,8 +79,6 @@ Room.prototype.setSize = function(width, height) {
 };
 
 Room.prototype.draw = function (camera, drawCeiling) {
-    camera.setupViewProjection();
-    
     this.wall.draw(camera, this.getXform().getXform());
     this.floorPattern.draw(camera, this.getXform().getXform());
     this.floor.draw(camera, this.getXform().getXform());

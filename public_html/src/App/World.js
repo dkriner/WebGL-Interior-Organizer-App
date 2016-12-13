@@ -27,6 +27,18 @@ function World() {
     // TODO: add floors
     this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);  
     this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
+
+    // viewport background
+    this.mBackground = new SquareRenderable(this.mShader);
+    this.mBackground.setTexture(new Texture('assets/blueprint.jpg'));
+    window.test = this.mBackground.getTexXform();
+    this.mBackground.getTexXform().setPosition(0.4,0.8);
+    this.mBackground.getTexXform().setSize(1, 1);
+    this.mBackground.getXform().setSize(14.75, 11);
+    // this.mBackground.getXform().setSize(25, 25);
+    this.mBackground.getXform().setPosition(0, 3);
+
+    this.mHouse.addToSet(this.mBackground);
     this.mHouse.addAsChild(this.mRoom);
     
     // var xfRoomPXf = this.mFloorParent.getXform();
@@ -64,7 +76,8 @@ World.prototype.draw = function (camera, drawCeiling) {
     camera.setupViewProjection();
     
     // TODO: draw whole house and pass drawCeiling down
-    this.mRoom.draw(camera, drawCeiling);
+    this.mHouse.draw(camera);
+    // this.mRoom.draw(camera, drawCeiling);
 };
 
 World.prototype.update = function () {

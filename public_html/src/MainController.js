@@ -219,8 +219,6 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mLastWCPosX = wcPos[0] = $scope.useCam.mouseWCX($scope.mCanvasX);
         $scope.mLastWCPosY = wcPos[1] = $scope.useCam.mouseWCY($scope.mCanvasY);
 
-        // console.log("test", $scope.mLastWCPosX, $scope.mLastWCPosY, wcPos)
-
         return wcPos;
     };
 
@@ -422,7 +420,6 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mItemYDim = 0.0;
         $scope.mItemXPos = 0.0;
         $scope.mItemYPos = 0.0;
-        
     };
     
     $scope.changeColor = function (){
