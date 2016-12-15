@@ -35,8 +35,8 @@ function World() {
     this.mBackground = new SquareRenderable(this.mShader);
     this.mBackground.setTexture(new Texture('assets/blueprint.jpg'));
     this.mBackground.getTexXform().setPosition(0.4,0.8);
-    this.mBackground.getTexXform().setSize(1, 1);
-    this.mBackground.getXform().setSize(14.75, 11);
+    this.mBackground.getTexXform().setSize(10000, 10000);
+    this.mBackground.getXform().setSize(100000, 100000);
     // this.mBackground.getXform().setSize(25, 25);
     this.mBackground.getXform().setPosition(0, 3);
 
