@@ -21,14 +21,21 @@ Canvas stuff
                 position: absolute;
                 top: 150px;
                 left: 15px;
+
                 border-radius: 15px 15px 15px 5px;
+
+    
+
                 background: darkorange;
                 padding: 20px;
                 width: 1000px;
                 height: 600px;
             }
             canvas{
+
                 border-radius: 0px 15px 15px 0px;       
+                   
+
             }
             
             canvas:hover {

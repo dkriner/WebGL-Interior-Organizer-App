@@ -316,6 +316,9 @@ myModule.controller("MainCtrl", function ($scope){
             $scope.mItemYDim = Math.abs((sceneForm.getHeight()).toFixed(2));
             $scope.mItemXDim = Math.abs((sceneForm.getWidth()).toFixed(2));
             
+            //var coords = $scope.currSelection.localToWC([-0.5, -0.5]);
+            //console.log(coords[0] + "    " + coords[1]);
+            
         }
     };
     
@@ -720,7 +723,7 @@ myModule.controller("MainCtrl", function ($scope){
       window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
       window.ontouchmove  = preventDefault; // mobile
       document.onkeydown  = preventDefaultForScrollKeys;
-    }
+    };
 
     $scope.enableScroll = function enableScroll() {
         if (window.removeEventListener)
@@ -729,7 +732,7 @@ myModule.controller("MainCtrl", function ($scope){
         window.onwheel = null; 
         window.ontouchmove = null;  
         document.onkeydown = null;  
-    }
+    };
 
     $scope.$watch('currSelection', function(newVal){
         $scope.mMyTransHandle.setTransformable(newVal);
