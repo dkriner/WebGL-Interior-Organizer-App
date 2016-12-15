@@ -82,6 +82,19 @@ Renderable.prototype.getWCRotation = function() {
     return rot;
 };
 
+Renderable.prototype.isClicked = function(mousePos) {
+    var localMouse = this.mParent? this.mParent.wcToLocal(mousePos) : mousePos;         
+    // make mouse position relative to pivot
+    localMouse[0] -= this.getXform().getPivot()[0];
+    localMouse[0] -= this.getXform().getXPos();
+    localMouse[1] -= this.getXform().getPivot()[1];
+    localMouse[1] -= this.getXform().getYPos();
+    var distFromPiv = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]); 
+    var distAllowed = 0.4;
+
+    return distAllowed >= distFromPiv
+};
+
 Renderable.prototype.computeXform = function (parentMat) {
     var m = this.mXform.getXform();
     if (parentMat !== undefined)

@@ -561,66 +561,48 @@ myModule.controller("MainCtrl", function ($scope){
             //check if user is selecting a new view
             $scope.checkViewSelection($scope.mCanvasX, $scope.mCanvasY); 
             
-            // scene handle code
+            // xform handle code
             if ($scope.mMyTransHandle.mouseInTransHandle(x, y, dist))
-                $scope.handleMode = "Translate";
+                return $scope.handleMode = "Translate";
             else if ($scope.mMyTransHandle.mouseInRotHandle(x, y, dist))
-                $scope.handleMode = "Rotation";
+                return $scope.handleMode = "Rotation";
             else if ($scope.mMyTransHandle.mouseInScaleHandle(x, y, dist))
-                $scope.handleMode = "Scale";
+                return $scope.handleMode = "Scale";
             else $scope.handleMode = null;
 
-            if ($scope.handleMode) return;
+            // room activation code
+            $scope.mCurrentRoom = getClickedChild([x,y], $scope.mMyWorld.mHouse) || $scope.mCurrentRoom;
             
-            // scene selection code            
-            var newScene = null;
-            if ($scope.mDrawCeiling) newScene = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.ceiling, dist);
-            if (!newScene) newScene = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.floor, dist);
+            // furniture / room selection code            
+            var clickedItem = null;
+            if ($scope.mDrawCeiling) clickedItem = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.ceiling);
+            if (!clickedItem) clickedItem = getClickedChild([x,y], $scope.mMyWorld.mCurrentRoom.floor);
+            if (!clickedItem) clickedItem = getClickedChild([x,y], $scope.mMyWorld.mHouse);
             
-            if(newScene){
-                $scope.mItemXDim = newScene.getXform().getWidth();
-                $scope.mItemYDim = newScene.getXform().getHeight();
+            if (clickedItem){
+                $scope.mItemXDim = clickedItem.getXform().getWidth();
+                $scope.mItemYDim = clickedItem.getXform().getHeight();
                 
-                var itemRoomCoords = newScene.wcToRoomScale([newScene.getXform().getXPos(), newScene.getXform().getYPos()]);
+                var itemRoomCoords = clickedItem.wcToRoomScale([clickedItem.getXform().getXPos(), clickedItem.getXform().getYPos()]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
             }
             
-            $scope.currSelection = newScene;
-            $scope.mMyTransHandle.setTransformable(newScene);
+            $scope.currSelection = clickedItem;
+            $scope.mMyTransHandle.setTransformable(clickedItem);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
             // returns child in scene that was clicked or null
-            function getClickedChild(mousePos, scene, distAllowed, _isChild){
-                if (scene.mChildren) { 
-                    for (var i = scene.mChildren.length - 1; i >= 0; i--){
-                        var clickedScene = getClickedChild(mousePos, scene.mChildren[i], distAllowed, true);
-                        if (clickedScene) return clickedScene;
-                    }
-                }
-                if (scene.mSet) { 
-                    for (var i = scene.mSet.length - 1; i >= 0; i--){
-                        var clickedScene = getClickedChild(mousePos, scene.mSet[i], distAllowed, true);
-                        if (clickedScene) return clickedScene;
-                    }
+            function getClickedChild(mousePos, scene, _isChild){
+                var children = (scene.mSet && scene.mSet.concat(scene.mChildren)) || [];
+                for (var i = children.length - 1; i >= 0; i--){
+                    var clickedScene = getClickedChild(mousePos, children[i], true);
+                    if (clickedScene) return clickedScene;
                 }
 
-                if (!_isChild) return; // return if this is root scene
-                
-                var localMouse = mousePos;
-                if (scene.mParent)
-                    localMouse = scene.mParent.wcToLocal(localMouse);
-                
-                // make mouse position relative to pivot
-                localMouse[0] -= scene.getXform().getPivot()[0];
-                localMouse[0] -= scene.getXform().getXPos();
-                localMouse[1] -= scene.getXform().getPivot()[1];
-                localMouse[1] -= scene.getXform().getYPos();
-                
-                var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);    
-                if (distAllowed >= dist) return scene;
-                
-                return null; // no scene clicked
+                // if (!_isChild) return null; // return if this is root scene
+                // else 
+                return scene.isClicked(mousePos)? scene : null;
             }
         }
     };

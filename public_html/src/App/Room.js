@@ -91,6 +91,18 @@ Room.prototype.setSize = function(width, height) {
     // TODO: move furniture within bounds
 };
 
+Room.prototype.isClicked = function(mousePos) {
+    // var localMouse = this.mParent? this.mParent.wcToLocal(mousePos) : mousePos;         
+    // // make mouse position relative to pivot
+    // localMouse[0] -= this.getXform().getPivot()[0];
+    // localMouse[0] -= this.getXform().getXPos();
+    // localMouse[1] -= this.getXform().getPivot()[1];
+    // localMouse[1] -= this.getXform().getYPos();
+    // var distFromPiv = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]); 
+
+    // if (distAllowed >= distFromPiv) return scene;
+};
+
 Room.prototype.draw = function (camera) {
     this.wall.draw(camera, this.getXform().getXform());
     this.floorPattern.draw(camera, this.getXform().getXform());

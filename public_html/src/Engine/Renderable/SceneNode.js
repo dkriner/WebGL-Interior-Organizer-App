@@ -128,6 +128,10 @@ SceneNode.prototype.getWCRotation = function() {
     return rot;
 };
 
+SceneNode.prototype.isClicked = function(mousePos) {
+    return false; // scenes are just transforms, they don't have a click area
+};
+
 SceneNode.prototype.draw = function (aCamera, parentMat) {
     var xfMat = this.mXform.getXform();
     if (parentMat !== undefined)
