@@ -586,6 +586,16 @@ myModule.controller("MainCtrl", function ($scope){
         // mouse position square
         $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
         
+        // panning the camera
+        if (event.which === 1 && (!$scope.handleMode) && (!$scope.currSelection)) {
+            relPos = [
+                pos[0] - lastPos[0],
+                pos[1] - lastPos[1]
+            ];
+
+            $scope.mCameras[0].setWCCenter($scope.mCameras[0].getWCCenter()[0] - relPos[0]/1.5, $scope.mCameras[0].getWCCenter()[1] - relPos[1]/1.5);
+        }
+
         // scene handle code
         if (event.which === 1 && $scope.handleMode && $scope.currSelection) {
             var currSelectionForm = $scope.currSelection.getXform();
