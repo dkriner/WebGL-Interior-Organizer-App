@@ -85,9 +85,9 @@ Renderable.prototype.getWCRotation = function() {
 Renderable.prototype.isClicked = function(mousePos) {
     // in local coords, renderable vertices are [-0.5,-0.5] to [0.5,0.5]
     var localMouse = this.wcToLocal(mousePos);
-    var range = 0.4;
-    var withinX = localMouse[0] >= -0.4 && localMouse[0] <= 0.4;
-    var withinY = localMouse[1] >= -0.4 && localMouse[1] <= 0.4;
+    var range = 0.5;
+    var withinX = localMouse[0] >= -range && localMouse[0] <= range;
+    var withinY = localMouse[1] >= -range && localMouse[1] <= range;
     return withinX && withinY;
 };
 

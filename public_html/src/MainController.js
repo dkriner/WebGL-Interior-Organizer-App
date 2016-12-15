@@ -670,11 +670,9 @@ myModule.controller("MainCtrl", function ($scope){
                 // currSelectionForm.setSize(relPos[0]+1,relPos[1]);
 
                 // TODO: and why this does work
-                var relPos = [ // mouse position relative to scene handle center
+                var relPos = [
                     pos[0] - lastPos[0],
                     pos[1] - lastPos[1]
-                    // $scope.mLastWCPosX - $scope.mMyTransHandle.getXform().getXPos(),
-                    // $scope.mLastWCPosY - $scope.mMyTransHandle.getXform().getYPos()
                 ];
 
                 var rotMat = mat4.create(); // reverse the scene's rotation

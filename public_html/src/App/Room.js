@@ -27,7 +27,9 @@ function Room(shader, name, xPos, yPos, width, height) {
     // wall
     this.wall = new SquareRenderable(shader);
     this.wall.setColor([132/255, 85/255, 14/255, 1]); // brown
-    // this.addToSet(this.wall);
+    // set parent for coordinate translation ops but keep 
+    // it out of the node heirarchy (prevent manipulation)
+    this.wall.mParent = this;
 
     // floor pattern
     this.floorPattern = new SquareRenderable(shader);
@@ -35,8 +37,10 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.setFloorPattern(new Texture('assets/floor2.jpg'));
     this.setFloorPatternScale(3,3);
     this.setSize(width, height);
-    // this.addToSet(this.floorPattern);
-    
+    // set parent for coordinate translation ops but keep 
+    // it out of the node heirarchy (prevent manipulation)
+    this.floorPattern.mParent = this; 
+
     var roomSize = this.getSize();
     this.mRoomX = roomSize[0];
     this.mRoomY = roomSize[1];
