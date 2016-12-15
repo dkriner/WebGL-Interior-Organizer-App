@@ -247,12 +247,24 @@ myModule.controller("MainCtrl", function ($scope){
 //    };
     
     // add room
-    $scope.addRoom = function (name) {
-        this.mNewRoom = new Room($scope.mMyWorld.mShader, name, 0, 3, 12, 8);  
+    $scope.addRoom = function () 
+    {
+        var numRooms = $scope.mMyWorld.mRooms.length + 1;
+        var roomName = "Room " + numRooms;
+        
+        this.mNewRoom = new Room($scope.mMyWorld.mShader, roomName, 0, 3, 12, 8);  
         $scope.mMyWorld.mCurrentRoom = this.mNewRoom;
         $scope.mMyWorld.mRooms.push(this.mNewRoom);
         $scope.mMyWorld.mHouse.addAsChild(this.mNewRoom);
     };
+    
+    // delete room
+    $scope.deleteRoom = function () 
+    {
+        // TODO: determine how the user knows which room is being deleted
+        
+    };
+    
     
     // add furniture item
     $scope.addFurniture = function (selection) {

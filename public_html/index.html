@@ -91,14 +91,17 @@
         <div class="viewLabel" style = "top: 502px;">
                   <h3>House</h3>
           </div>
-        <!-------Add Room Dropdown----------------->
-         <div class="dropdown" style="position: absolute; top: 215px; left: 1100px;">
+        
+        <!-------Add/Delete Room Buttons----------------->
+        <button class="dropbtn" style= "top: 215px; left: 1100px;" ng-click="addRoom()"><b>Add Room</b></button>
+        <button class="dropbtn" style= "top: 215px; left: 1265px;" ng-click="deleteRoom()"><b>Delete Room</b></button>
+<!--        <div class="dropdown" style="position: absolute; top: 215px; left: 1100px;">
              <button class="droproom"><b>Add Room</b></button>
                 <div class="dropdown-content">
                     <a ng-click = "addRoom('Room 1')">Room1</a>
                     <a ng-click = "addRoom('Room 2')">Room2</a>
                 </div>
-          </div>  
+          </div>  -->
 
         
         <!-------Add Furniture Dropdown----------------->
