@@ -16,6 +16,8 @@
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
         <script type="text/javascript" src="src/lib/gl-matrix.js"></script>
         <script type="text/javascript" src="src/lib/webgl-obj-loader.js"></script>
+        <script type="text/javascript" src="src/lib/hamster.js"></script>
+        <script type="text/javascript" src="src/lib/mousewheel.js"></script>
 
         <!-- Engine code: Graphics Support -->
         <!-- Core of Engine -->
@@ -71,6 +73,9 @@
         <canvas 
             ng-mousemove="onMouseMove($event)"
             ng-mousedown="onMouseDown($event)"
+            msd-wheel="onMouseWheel($event,$delta,$deltaX,$deltaY)"
+            ng-mouseover="disableScroll()" 
+            ng-mouseleave="enableScroll()"
             id="GLCanvas" width="1000" height="600" >
             <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
             Your browser does not support the HTML5 canvas.

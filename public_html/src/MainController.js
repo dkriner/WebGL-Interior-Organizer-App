@@ -10,7 +10,7 @@
 "use strict";
 
 // Creates the "backend" logical support for appMyExample
-var myModule = angular.module("appMyExample", ["CSS450Timer", "CSS450Slider", "CSS450Xform"]);
+var myModule = angular.module("appMyExample", ["CSS450Timer", "CSS450Slider", "CSS450Xform", "monospaced.mousewheel"]);
 
 // registers the constructor for the controller
 // NOTE: the constructor is only called _AFTER_ the </body> tag is encountered
@@ -523,6 +523,11 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mDrawCeiling = drawCeiling;
     };
 
+    $scope.onMouseWheel = function (event,delta,x,y){
+        // console.log($event,$delta,$deltaX,$deltaY);
+        $scope.mCameras[0].setWCWidth(Math.max($scope.mCameras[0].getWCWidth() - delta / 20, 6));
+    };
+
     $scope.onMouseDown = function (event){
         if (event.which === 1) { // left     
             $scope.computeWCPos(event); // convert mouse position    
@@ -678,6 +683,42 @@ myModule.controller("MainCtrl", function ($scope){
         }
         else $scope.handleMode = null;
     };
+
+    // left: 37, up: 38, right: 39, down: 40,
+    // spacebar: 32, pageup: 33, pagedown: 34, end: 35, home: 36
+    var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+
+    function preventDefault(e) {
+      e = e || window.event;
+      if (e.preventDefault)
+          e.preventDefault();
+      e.returnValue = false;  
+    }
+
+    function preventDefaultForScrollKeys(e) {
+        if (keys[e.keyCode]) {
+            preventDefault(e);
+            return false;
+        }
+    }
+
+    $scope.disableScroll = function disableScroll() {
+      if (window.addEventListener) // older FF
+          window.addEventListener('DOMMouseScroll', preventDefault, false);
+      window.onwheel = preventDefault; // modern standard
+      window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+      window.ontouchmove  = preventDefault; // mobile
+      document.onkeydown  = preventDefaultForScrollKeys;
+    }
+
+    $scope.enableScroll = function enableScroll() {
+        if (window.removeEventListener)
+            window.removeEventListener('DOMMouseScroll', preventDefault, false);
+        window.onmousewheel = document.onmousewheel = null; 
+        window.onwheel = null; 
+        window.ontouchmove = null;  
+        document.onkeydown = null;  
+    }
 
     $scope.$watch('currSelection', function(newVal){
         $scope.mMyTransHandle.setTransformable(newVal);
