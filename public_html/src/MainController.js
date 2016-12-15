@@ -41,6 +41,7 @@ myModule.controller("MainCtrl", function ($scope){
 //   $scope.mRoomX = 0.0;
 //    $scope.mRoomY = 0.0;
     $scope.mCameras = [];
+    $scope.mZoom = 1;
     $scope.mRoomBorderSelection = "Floor+Ceiling";
     
     // this is the model
@@ -523,9 +524,18 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mDrawCeiling = drawCeiling;
     };
 
+    // camera zooming
     $scope.onMouseWheel = function (event,delta,x,y){
+        var newZoom = Math.max($scope.mZoom - delta / 400, 0.7);
+
+        var bgForm = $scope.mMyWorld.mBackground.getTexXform();
+        bgForm.setWidth(bgForm.getWidth() / (newZoom / $scope.mZoom));
+        bgForm.setHeight(bgForm.getHeight() / (newZoom / $scope.mZoom));
+
+        $scope.mZoom = newZoom;
+
         for (var i = 0; i< 3; i++)
-            $scope.mCameras[i].setWCWidth(Math.max($scope.mCameras[i].getWCWidth() - delta / 20, 6));
+            $scope.mCameras[i].setWCWidth(15 * $scope.mZoom);
     };
 
     $scope.onMouseDown = function (event){
