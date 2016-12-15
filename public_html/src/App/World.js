@@ -24,30 +24,22 @@ function World() {
     //               the rooms / house
     // ********************************************
     // TODO: add floors
-    this.mRooms = [];
-    // initial room
-    this.mRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);
-    this.mRooms.push(this.mRoom);
-    this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
-
+    
     // viewport background
     this.mBackground = new SquareRenderable(this.mShader);
     this.mBackground.setTexture(new Texture('assets/blueprint.jpg'));
-    window.test = this.mBackground.getTexXform();
     this.mBackground.getTexXform().setPosition(0.4,0.8);
     this.mBackground.getTexXform().setSize(1, 1);
     this.mBackground.getXform().setSize(14.75, 11);
     // this.mBackground.getXform().setSize(25, 25);
     this.mBackground.getXform().setPosition(0, 3);
 
+    // initial rooms / house
+    this.mCurrentRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);
+    this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
     this.mHouse.addToSet(this.mBackground);
-    this.mHouse.addAsChild(this.mRoom);
-    
-    // used for currently selcted room
-    this.mCurrentRoom = this.mRoom;
-    
-    // var xfRoomPXf = this.mFloorParent.getXform();
-    // xfRoomPXf.setPivot(centerOfRoom[0], centerOfRoom[1]);
+    this.mHouse.addAsChild(this.mCurrentRoom);
+    this.mRooms = this.mHouse.mChildren;
 
     // ********************************************
     //                   textures

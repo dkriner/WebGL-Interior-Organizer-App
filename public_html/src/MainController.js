@@ -252,10 +252,9 @@ myModule.controller("MainCtrl", function ($scope){
         var numRooms = $scope.mMyWorld.mRooms.length + 1;
         var roomName = "Room " + numRooms;
         
-        this.mNewRoom = new Room($scope.mMyWorld.mShader, roomName, 0, 3, 12, 8);  
-        $scope.mMyWorld.mCurrentRoom = this.mNewRoom;
-        $scope.mMyWorld.mRooms.push(this.mNewRoom);
-        $scope.mMyWorld.mHouse.addAsChild(this.mNewRoom);
+        var newRoom = new Room($scope.mMyWorld.mShader, roomName, 0, 3, 12, 8);  
+        $scope.mMyWorld.mCurrentRoom = newRoom;
+        $scope.mMyWorld.mHouse.addAsChild(newRoom);
     };
     
     // delete room
@@ -267,13 +266,11 @@ myModule.controller("MainCtrl", function ($scope){
         {
             var rooms = $scope.mMyWorld.mRooms;
             var house = $scope.mMyWorld.mHouse;
-            var currentRoomIndex = rooms.indexOf($scope.mMyWorld.mCurrentRoom);
-
-            rooms.splice(currentRoomIndex, 1);              // delete from array
-            house.removeChild($scope.mMyWorld.mCurrentRoom);// delete from house
+ 
+            house.removeChild($scope.mMyWorld.mCurrentRoom); // delete from house
             
-            var newRoomIndex = house.mChildren.length - 1;
-            $scope.mMyWorld.mCurrentRoom = $scope.mMyWorld.mHouse.getChildAt(newRoomIndex); // update current room
+            // TODO: don't require active room
+            $scope.mMyWorld.mCurrentRoom = rooms[rooms.length -1] // update current room
         }
     };
     
