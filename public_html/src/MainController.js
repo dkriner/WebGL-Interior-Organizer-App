@@ -39,6 +39,7 @@ myModule.controller("MainCtrl", function ($scope){
 //    $scope.mRoomX = 0.0;
 //    $scope.mRoomY = 0.0;
     $scope.mCameras = [];
+    $scope.mRoomBorderSelection = "Floor+Ceiling";
     
     // this is the model
     $scope.mMyWorld = new World();
@@ -112,6 +113,7 @@ myModule.controller("MainCtrl", function ($scope){
     };
 
     $scope.mCameraNames = ["Large", "Floor", "Floor+Ceiling", "House"];
+    $scope.mRoomBorderSelection = $scope.mCameraNames[2];
     $scope.mWCWidths = [15, 15, 15, 15];
     $scope.mWCCenters = [[0, 3], 
                          [0, 3], 
@@ -175,20 +177,23 @@ myModule.controller("MainCtrl", function ($scope){
         // ********************************************
         
         //$scope.mMyWorld.draw($scope.mCameras[2]);
-        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, $scope.mDrawCeiling, true);
+        $scope.floorCeilingSquareArea.draw($scope.mCameras[2], $scope.mMyWorld, 
+                                           $scope.mCameraNames[2], $scope.mRoomBorderSelection, true);
         //$scope.floorCeilingSquareArea.draw($scope.mCameras[2]);
         
         // ********************************************
         //              draw small floor 
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[1]);
-        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, !$scope.mDrawCeiling, false);
+        $scope.floorSquareArea.draw($scope.mCameras[1], $scope.mMyWorld, 
+                                    $scope.mCameraNames[1], $scope.mRoomBorderSelection, false);
         
         // ********************************************
         //                draw house
         // ********************************************
         //$scope.mMyWorld.draw($scope.mCameras[3]);
-        $scope.houseSquareArea.draw($scope.mCameras[3], $scope.mMyWorld, !$scope.mDrawCeiling, false);
+        $scope.houseSquareArea.draw($scope.mCameras[3], $scope.mMyWorld, 
+                                    $scope.mCameraNames[3], $scope.mRoomBorderSelection, false);
     };
 
     $scope.computeWCPos = function (event){
@@ -462,9 +467,20 @@ myModule.controller("MainCtrl", function ($scope){
     
     $scope.checkViewSelection = function(canvasX, canvasY){
         if ($scope.mCameras[1].isMouseInViewport(canvasX, canvasY))
+        {
+            $scope.mRoomBorderSelection = $scope.mCameraNames[1];
             $scope.mDrawCeiling = false;
+        }
         else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY))
-            $scope.mDrawCeiling = true;    
+        {
+            $scope.mRoomBorderSelection = $scope.mCameraNames[2];
+            $scope.mDrawCeiling = true;
+        }
+        else if ($scope.mCameras[3].isMouseInViewport(canvasX, canvasY))
+        {
+            $scope.mRoomBorderSelection = $scope.mCameraNames[3];
+            $scope.mDrawCeiling = true;
+        }
     };
 
     $scope.onMouseDown = function (event){
