@@ -166,24 +166,24 @@
         <input class="dimensions" style= "top: 340px; left: 1130px; " type="text" id="yDimension" ng-model="mItemYDim" ng-change="customResizeItem()">
         
         <!-----item size fine tuners----->
-        <button class="incrBtn" style="top: 315px; left: 1220px;" ng-click="incrXDim()"> <b>+</b> </button>
-        <button class="incrBtn" style="top: 315px; left: 1250px;" ng-click="decXDim()">  <b>-</b> </button>
-        <button class="incrBtn" style="top: 340px; left: 1220px;" ng-click="incrYDim()"> <b>+</b> </button>
-        <button class="incrBtn" style="top: 340px; left: 1250px;" ng-click="decYDim()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 315px; left: 1220px;" ng-click="changeItemDim(0.01,0)"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 315px; left: 1250px;" ng-click="changeItemDim(-0.01,0)">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1220px;" ng-click="changeItemDim(0,0.01)"> <b>+</b> </button>
+        <button class="incrBtn" style="top: 340px; left: 1250px;" ng-click="changeItemDim(0,-0.01)">  <b>-</b> </button>
         
         <!---------Item position Echo Boxes---------->
         <input class="dimensions" style= "top: 425px; left: 1130px;  " type="text" id="xPos" ng-model="mItemXPos" ng-change="customMoveItem()">
         <input class="dimensions" style= "top: 450px; left: 1130px;  " type="text" id="yPos" ng-model="mItemYPos" ng-change="customMoveItem()">
         
         <!----item size fine tuners---->
-        <button class="incrBtn" style="top: 425px; left: 1220px;" ng-click="incrXPos()">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 425px; left: 1250px;" ng-click="decXPos()">  <b>-</b> </button>
-        <button class="incrBtn" style="top: 450px; left: 1220px;" ng-click="incrYPos()">  <b>+</b> </button>
-        <button class="incrBtn" style="top: 450px; left: 1250px;" ng-click="decYPos()">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 425px; left: 1220px;" ng-click="changeXPos(0.01, 0)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 425px; left: 1250px;" ng-click="changeXPos(-0.01, 0)">  <b>-</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1220px;" ng-click="changeXPos(0, 0.01)">  <b>+</b> </button>
+        <button class="incrBtn" style="top: 450px; left: 1250px;" ng-click="changeXPos(0, -0.01)">  <b>-</b> </button>
         
         <!-----Room Size Echo Boxes------------>
-        <input class="dimensions" style= "top: 550px; left: 1130px;  " type="text" id="customRoomX" ng-model="mMyWorld.mCurrentRoom.mRoomX" ng-change="customResizeRoom()">
-        <input class="dimensions" style= "top: 575px; left: 1130px;  " type="text" id="customRoomY" ng-model="mMyWorld.mCurrentRoom.mRoomY" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 550px; left: 1130px;  " type="text" id="customRoomX" ng-model="mCurrentRoom.mRoomX" ng-change="customResizeRoom()">
+        <input class="dimensions" style= "top: 575px; left: 1130px;  " type="text" id="customRoomY" ng-model="mCurrentRoom.mRoomY" ng-change="customResizeRoom()">
         
         <!-----Room size fine tuners------>
         <button class="incrBtn" style="top: 550px; left: 1220px;" ng-click="resizeRoom(0.1,0)">  <b>+</b> </button>
