@@ -548,8 +548,8 @@ myModule.controller("MainCtrl", function ($scope){
                 
 
                 var roomSize = $scope.mCurrentRoom.getSize();
-                $scope.mItemXPos = ($scope.currSelection.getXform().getXPos() + roomSize[0]/2).toFixed(2);
-                $scope.mItemYPos = ($scope.currSelection.getXform().getYPos() + roomSize[1]/2).toFixed(2);
+                $scope.mItemXPos = (clickedItem.getXform().getXPos() + roomSize[0]/2).toFixed(2);
+                $scope.mItemYPos = (clickedItem.getXform().getYPos() + roomSize[1]/2).toFixed(2);
 
             }
             $scope.currSelection = clickedItem;
