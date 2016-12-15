@@ -128,6 +128,24 @@ SceneNode.prototype.getWCRotation = function() {
     return rot;
 };
 
+// returns highest priority descendent / child in scene touched by the mouse
+SceneNode.prototype.matchDescendant = function matchDescendant(mousePos) {
+    var children = (this.mSet && this.mSet.concat(this.mChildren)) || [];
+    for (var i = children.length - 1; i >= 0; i--){
+        var clickedChild = matchDescendant.call(children[i], mousePos);
+        if (clickedChild) return clickedChild;
+    }
+
+    return this.isClicked(mousePos)? this : null;
+}
+
+// returns highest priority direct child in scene touched by the mouse
+SceneNode.prototype.matchChild = function matchChild(mousePos) {
+    var children = (this.mSet && this.mSet.concat(this.mChildren)) || [];
+    for (var i = children.length - 1; i >= 0; i--)
+        if (children[i].isClicked(mousePos)) return children[i];
+}
+
 SceneNode.prototype.isClicked = function(mousePos) {
     return false; // scenes are just transforms, they don't have a click area
 };

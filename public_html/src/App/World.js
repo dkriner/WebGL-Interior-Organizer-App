@@ -26,9 +26,9 @@ function World() {
     // TODO: add floors
 
     // initial rooms / house
-    this.mCurrentRoom = new Room(this.mShader, "Living Room", 0, 3, 12, 8);
+    var room = new Room(this.mShader, "Living Room", 0, 3, 12, 8);
     this.mHouse = new SceneNode(this.mShader, "House", false, 0,0);
-    this.mHouse.addAsChild(this.mCurrentRoom);
+    this.mHouse.addAsChild(room);
     this.mRooms = this.mHouse.mChildren;
 
     // viewport background

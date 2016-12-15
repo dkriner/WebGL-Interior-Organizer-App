@@ -58,8 +58,8 @@ Room.prototype.addFurniture = function(item) {
 };
 
 Room.prototype.removeFurniture = function(item) {
-    this.floor.removeChild(item);
-    this.ceiling.removeChild(item);
+    this.floor.removeFromSet(item);
+    this.ceiling.removeFromSet(item);
 };
 
 Room.prototype.setDrawCeiling = function(shouldDraw) {
