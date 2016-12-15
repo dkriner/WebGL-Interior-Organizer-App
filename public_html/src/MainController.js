@@ -583,7 +583,7 @@ myModule.controller("MainCtrl", function ($scope){
                 $scope.mItemXDim = clickedItem.getXform().getWidth();
                 $scope.mItemYDim = clickedItem.getXform().getHeight();
                 
-                var itemRoomCoords = clickedItem.wcToRoomScale([clickedItem.getXform().getXPos(), clickedItem.getXform().getYPos()]);
+                var itemRoomCoords = clickedItem.wcToRoomScale([clickedItem.getXform().getXPos(), clickedItem.getXform().getYPos()], [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
             }
@@ -642,7 +642,7 @@ myModule.controller("MainCtrl", function ($scope){
                 relPos[1] += $scope.currSelection.getXform().getYPos();
                 currSelectionForm.setPosition(relPos[0], relPos[1]);
                 
-                var itemRoomCoords = $scope.currSelection.wcToRoomScale([currSelectionForm.getXPos(), currSelectionForm.getYPos()]);
+                var itemRoomCoords = $scope.currSelection.wcToRoomScale([currSelectionForm.getXPos(), currSelectionForm.getYPos()], [-6,6], [0,$scope.mMyWorld.mCurrentRoom.mRoomX], [-4,4], [0,$scope.mMyWorld.mCurrentRoom.mRoomY]);
                 $scope.mItemXPos = itemRoomCoords[0].toFixed(2);
                 $scope.mItemYPos = itemRoomCoords[1].toFixed(2);
 

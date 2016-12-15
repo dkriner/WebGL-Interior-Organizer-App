@@ -27,7 +27,7 @@ function Room(shader, name, xPos, yPos, width, height) {
     // wall
     this.wall = new SquareRenderable(shader);
     this.wall.setColor([132/255, 85/255, 14/255, 1]); // brown
-    this.addToSet(this.wall);
+    // this.addToSet(this.wall);
 
     // floor pattern
     this.floorPattern = new SquareRenderable(shader);
@@ -35,7 +35,7 @@ function Room(shader, name, xPos, yPos, width, height) {
     this.setFloorPattern(new Texture('assets/floor2.jpg'));
     this.setFloorPatternScale(3,3);
     this.setSize(width, height);
-    this.addToSet(this.floorPattern);
+    // this.addToSet(this.floorPattern);
     
     var roomSize = this.getSize();
     this.mRoomX = roomSize[0];
@@ -92,15 +92,7 @@ Room.prototype.setSize = function(width, height) {
 };
 
 Room.prototype.isClicked = function(mousePos) {
-    // var localMouse = this.mParent? this.mParent.wcToLocal(mousePos) : mousePos;         
-    // // make mouse position relative to pivot
-    // localMouse[0] -= this.getXform().getPivot()[0];
-    // localMouse[0] -= this.getXform().getXPos();
-    // localMouse[1] -= this.getXform().getPivot()[1];
-    // localMouse[1] -= this.getXform().getYPos();
-    // var distFromPiv = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]); 
-
-    // if (distAllowed >= distFromPiv) return scene;
+    return this.floorPattern.isClicked(mousePos);
 };
 
 Room.prototype.draw = function (camera) {
