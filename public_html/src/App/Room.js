@@ -34,7 +34,7 @@ function Room(shader, name, xPos, yPos, width, height) {
     // floor pattern
     this.floorPattern = new SquareRenderable(shader);
     // this.floorPattern.setColor([0.3, 0.3, 0.3, 1]);
-    this.setFloorPattern(new Texture('assets/floor2.jpg'));
+    this.setFloorPattern(new Texture('assets/floor4.png'));
     this.setFloorPatternScale(3,3);
     this.setSize(width, height);
     // set parent for coordinate translation ops but keep 
