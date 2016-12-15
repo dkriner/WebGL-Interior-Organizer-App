@@ -48,9 +48,9 @@ Room.prototype.addFurniture = function(item) {
     // TODO: expand logic to any ceiling item via flag
 
     if (item.getName() === 'Ceiling Fan 1')
-        this.ceiling.addAsChild(item);
+        this.ceiling.addToSet(item);
     
-    else this.floor.addAsChild(item);
+    else this.floor.addToSet(item);
 };
 
 Room.prototype.removeFurniture = function(item) {

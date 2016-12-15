@@ -40,6 +40,13 @@ SceneNode.prototype.size = function () { return this.mSet.length; };
 SceneNode.prototype.getRenderableAt = function (index) {
     return this.mSet[index];
 };
+SceneNode.prototype.getIndexOfChild = function (obj) {    
+    return this.mChildren.indexOf(obj);
+};
+SceneNode.prototype.getIndexOfItem = function (obj) {
+    console.log('set', this.mSet);
+    return this.mSet.indexOf(obj);
+};
 
 SceneNode.prototype.addToSet = function (obj) {
     this.mSet.push(obj);

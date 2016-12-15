@@ -452,10 +452,13 @@ myModule.controller("MainCtrl", function ($scope){
   
     };
 
-    // delete furniture item
+    // delete furniture item or room
     $scope.deleteItem = function () {
-        if ($scope.currSelection && $scope.currSelection.mParent)
-            $scope.currSelection.mParent.removeChild($scope.currSelection);
+        if ($scope.currSelection && $scope.currSelection.mParent) {
+            if ($scope.currSelection instanceof SceneNode)
+                $scope.currSelection.mParent.removeChild($scope.currSelection);
+            else $scope.currSelection.mParent.removeFromSet($scope.currSelection);
+        }
 
         $scope.mMyTransHandle.setTransformable(null);
         $scope.currSelection = null;
@@ -464,13 +467,57 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mItemXPos = 0.0;
         $scope.mItemYPos = 0.0;
     };
+
+    $scope.bringForward = function () {
+        var selection = $scope.currSelection
+        if (!selection || !selection.mParent) return; // no selection or no parent
+
+        if (selection instanceof SceneNode) {
+            var index = selection.mParent.getIndexOfChild(selection);
+            if (index >= selection.mParent.mChildren.length -1) return; // already top
+
+            // swap with upper neighbor
+            selection.mParent.mChildren[index] = selection.mParent.mChildren[index +1];
+            selection.mParent.mChildren[index +1] = selection; 
+        }
+        else {
+            var index = selection.mParent.getIndexOfItem(selection);
+            if (index >= selection.mParent.mSet.length -1) return; // already top
+
+            // swap with upper neighbor
+            selection.mParent.mSet[index] = selection.mParent.mSet[index +1];
+            selection.mParent.mSet[index +1] = selection; 
+        }
+    };
+
+    $scope.sendBackward = function () {
+        var selection = $scope.currSelection;
+        if (!selection || !selection.mParent) return; // no selection or no parent
+
+        if (selection instanceof SceneNode) {
+            var index = selection.mParent.getIndexOfChild(selection);
+            if (index <= 0) return; // already bottom
+
+            // swap with upper neighbor
+            selection.mParent.mChildren[index] = selection.mParent.mChildren[index -1];
+            selection.mParent.mChildren[index -1] = selection; 
+        }
+        else {
+            var index = selection.mParent.getIndexOfItem(selection);
+            if (index <= 0) return; // already bottom
+
+            // swap with upper neighbor
+            selection.mParent.mSet[index] = selection.mParent.mSet[index -1];
+            selection.mParent.mSet[index -1] = selection; 
+        }
+    };
     
-    $scope.changeColor = function (){
+    $scope.changeColor = function () {
         //CHANGE THE COLOR (TINT) OF THE SELECTED FURNITURE ITEM
         
     };
     
-    $scope.editTexture = function(selection){
+    $scope.editTexture = function(selection) {
         //CHANGE TEXTURE OF SELECTED OBJECT
     };
 
@@ -548,9 +595,15 @@ myModule.controller("MainCtrl", function ($scope){
             
             // returns child in scene that was clicked or null
             function getClickedChild(mousePos, scene, distAllowed, _isChild){
-                if(scene.mChildren){ 
-                    for(var i = scene.mChildren.length - 1; i >= 0; i--){
+                if (scene.mChildren) { 
+                    for (var i = scene.mChildren.length - 1; i >= 0; i--){
                         var clickedScene = getClickedChild(mousePos, scene.mChildren[i], distAllowed, true);
+                        if (clickedScene) return clickedScene;
+                    }
+                }
+                if (scene.mSet) { 
+                    for (var i = scene.mSet.length - 1; i >= 0; i--){
+                        var clickedScene = getClickedChild(mousePos, scene.mSet[i], distAllowed, true);
                         if (clickedScene) return clickedScene;
                     }
                 }
@@ -567,10 +620,8 @@ myModule.controller("MainCtrl", function ($scope){
                 localMouse[1] -= scene.getXform().getPivot()[1];
                 localMouse[1] -= scene.getXform().getYPos();
                 
-                var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);
-                    
-                if(distAllowed >= dist)
-                    return scene;
+                var dist = Math.sqrt(localMouse[0]*localMouse[0] + localMouse[1]*localMouse[1]);    
+                if (distAllowed >= dist) return scene;
                 
                 return null; // no scene clicked
             }
