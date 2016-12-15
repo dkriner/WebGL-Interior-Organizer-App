@@ -524,8 +524,8 @@ myModule.controller("MainCtrl", function ($scope){
     };
 
     $scope.onMouseWheel = function (event,delta,x,y){
-        // console.log($event,$delta,$deltaX,$deltaY);
-        $scope.mCameras[0].setWCWidth(Math.max($scope.mCameras[0].getWCWidth() - delta / 20, 6));
+        for (var i = 0; i< 3; i++)
+            $scope.mCameras[i].setWCWidth(Math.max($scope.mCameras[i].getWCWidth() - delta / 20, 6));
     };
 
     $scope.onMouseDown = function (event){
@@ -598,7 +598,8 @@ myModule.controller("MainCtrl", function ($scope){
                 pos[1] - lastPos[1]
             ];
 
-            $scope.mCameras[0].setWCCenter($scope.mCameras[0].getWCCenter()[0] - relPos[0]/1.5, $scope.mCameras[0].getWCCenter()[1] - relPos[1]/1.5);
+            for (var i = 0; i< 3; i++)
+                $scope.mCameras[i].setWCCenter($scope.mCameras[0].getWCCenter()[0] - relPos[0]/1.5, $scope.mCameras[i].getWCCenter()[1] - relPos[1]/1.5);
         }
 
         // scene handle code
