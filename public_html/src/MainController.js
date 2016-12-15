@@ -262,7 +262,19 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.deleteRoom = function () 
     {
         // TODO: determine how the user knows which room is being deleted
-        
+        // for now, it will delete the last created room
+        if ($scope.mMyWorld.mRooms.length > 1)  // ensure user doesn't delete all rooms
+        {
+            var rooms = $scope.mMyWorld.mRooms;
+            var house = $scope.mMyWorld.mHouse;
+            var currentRoomIndex = rooms.indexOf($scope.mMyWorld.mCurrentRoom);
+
+            rooms.splice(currentRoomIndex, 1);              // delete from array
+            house.removeChild($scope.mMyWorld.mCurrentRoom);// delete from house
+            
+            var newRoomIndex = house.mChildren.length - 1;
+            $scope.mMyWorld.mCurrentRoom = $scope.mMyWorld.mHouse.getChildAt(newRoomIndex); // update current room
+        }
     };
     
     
