@@ -663,6 +663,9 @@ myModule.controller("MainCtrl", function ($scope){
                 var rot = Math.PI/2 - Math.atan2(relPos[0],relPos[1]);
                 if ($scope.currSelection.mParent) 
                     rot -= $scope.currSelection.mParent.getWCRotation();
+                // constrain room rotation to remain on axis
+                if ($scope.currSelection instanceof Room)
+                    rot = Math.PI/2 * Math.round(rot / (Math.PI/2));
                 currSelectionForm.setRotationInRad(rot);
             }
             else if ($scope.handleMode === "Scale") {
@@ -680,8 +683,11 @@ myModule.controller("MainCtrl", function ($scope){
                 var relPosWC = vec2.transformMat4(vec2.create(), relPos, rotMat);
 
                 // TODO: clamp scale 
-
-                currSelectionForm.setSize(currSelectionForm.getWidth() + relPosWC[0]*2, currSelectionForm.getHeight() + relPosWC[1]);
+                if ($scope.currSelection instanceof Room) {
+                    var size = $scope.currSelection.getSize();
+                    $scope.currSelection.setSize(size[0] + relPosWC[0]*2, size[1] + relPosWC[1]*2);
+                }
+                else currSelectionForm.setSize(currSelectionForm.getWidth() + relPosWC[0]*2, currSelectionForm.getHeight() + relPosWC[1]);
 
                 $scope.mItemXDim = Math.abs(currSelectionForm.getWidth().toFixed(2));
                 $scope.mItemYDim = Math.abs(currSelectionForm.getHeight().toFixed(2));
