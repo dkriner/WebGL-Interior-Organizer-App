@@ -21,16 +21,20 @@ Canvas stuff
                 position: absolute;
                 top: 150px;
                 left: 15px;
-                border-radius: 15px 15px 150px 5px;
+                border-radius: 15px 15px 15px 5px;
                 background: darkorange;
                 padding: 20px;
                 width: 1000px;
                 height: 600px;
             }
             canvas{
-                border-radius: 0px 15px 150px 0px;       
+                border-radius: 0px 15px 15px 0px;       
             }
             
+            canvas:hover {
+                border-radius: 0px 15px 15px 0px;       
+            }
+
             /*
             Nameplate, where the title of the app is printed
             */

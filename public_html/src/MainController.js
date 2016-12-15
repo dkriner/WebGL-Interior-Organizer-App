@@ -164,7 +164,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.houseSquareArea.setColor([0,1,0,1]);
 
     $scope.mainTimerHandler = function (){
-        gEngine.Core.clearCanvas([0.6, 0, 0, 1]);
+        gEngine.Core.clearCanvas([12/255, 117/255, 232/255, 1]);
 
         // ********************************************
         //        draw large view and handles
