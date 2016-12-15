@@ -255,6 +255,7 @@ myModule.controller("MainCtrl", function ($scope){
         var newRoom = new Room($scope.mMyWorld.mShader, roomName, 0, 3, 12, 8);  
         $scope.mMyWorld.mCurrentRoom = newRoom;
         $scope.mMyWorld.mHouse.addAsChild(newRoom);
+        $scope.currSelection = newRoom;
     };
     
     // delete room
@@ -286,6 +287,7 @@ myModule.controller("MainCtrl", function ($scope){
         item.getXform().setSize(3, 3 * ratio);
         
         $scope.mMyWorld.mCurrentRoom.addFurniture(item);
+        $scope.currSelection = item;
     };
     
 
@@ -457,7 +459,6 @@ myModule.controller("MainCtrl", function ($scope){
             else $scope.currSelection.mParent.removeFromSet($scope.currSelection);
         }
 
-        $scope.mMyTransHandle.setTransformable(null);
         $scope.currSelection = null;
         $scope.mItemXDim = 0.0;
         $scope.mItemYDim = 0.0;
@@ -589,19 +590,16 @@ myModule.controller("MainCtrl", function ($scope){
             }
             
             $scope.currSelection = clickedItem;
-            $scope.mMyTransHandle.setTransformable(clickedItem);
             //$scope.mSelectedXform = $scope.mMyWorld.topChildXform();
             
             // returns child in scene that was clicked or null
-            function getClickedChild(mousePos, scene, _isChild){
+            function getClickedChild(mousePos, scene){
                 var children = (scene.mSet && scene.mSet.concat(scene.mChildren)) || [];
                 for (var i = children.length - 1; i >= 0; i--){
                     var clickedScene = getClickedChild(mousePos, children[i], true);
                     if (clickedScene) return clickedScene;
                 }
 
-                // if (!_isChild) return null; // return if this is root scene
-                // else 
                 return scene.isClicked(mousePos)? scene : null;
             }
         }
@@ -695,4 +693,8 @@ myModule.controller("MainCtrl", function ($scope){
         }
         else $scope.handleMode = null;
     };
+
+    $scope.$watch('currSelection', function(newVal){
+        $scope.mMyTransHandle.setTransformable(newVal);
+    });
 });
