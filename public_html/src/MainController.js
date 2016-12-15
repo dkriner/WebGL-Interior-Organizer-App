@@ -56,6 +56,7 @@ myModule.controller("MainCtrl", function ($scope){
     $scope.mMouseOver = "Nothing";
     $scope.mLastWCPosX = 0;
     $scope.mLastWCPosY = 0;
+    $scope.inViewPort = false;
 //    var roomSize = $scope.mCurrentRoom.getSize();
 //    $scope.mRoomX = roomSize[0];
 //    $scope.mRoomY = roomSize[1];
@@ -171,7 +172,8 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mMyTransHandle.draw($scope.mCameras[0]);
 
         // Draw mouse box (in case of browser zooming-in allignment bug)
-        $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);
+        if (!$scope.inViewPort)
+            $scope.mMyWorld.mXfSq.draw($scope.mCameras[0]);
         // TODO: determine why drawing square area blocks future drawing from inside the square
         // $scope.largeVPSquareArea.draw($scope.mCameras[0]);
 
@@ -494,22 +496,31 @@ myModule.controller("MainCtrl", function ($scope){
         $scope.mCurrentRoom.setFloorPatternScale($scope.floorDesignScale);
     };
     
-    $scope.checkViewSelection = function(canvasX, canvasY){
+    $scope.checkViewSelection = function(canvasX, canvasY, type)
+    {
         if ($scope.mCameras[1].isMouseInViewport(canvasX, canvasY))
         {
-            $scope.mRoomBorderSelection = $scope.mCameraNames[1];
-            $scope.mDrawCeiling = false;
+            if (type==="Down")$scope.drawBorderTo ($scope.mCameraNames[1], false);
+            return true;
         }
         else if($scope.mCameras[2].isMouseInViewport(canvasX, canvasY))
         {
-            $scope.mRoomBorderSelection = $scope.mCameraNames[2];
-            $scope.mDrawCeiling = true;
+            if (type==="Down")$scope.drawBorderTo ($scope.mCameraNames[2], true);
+            return true;
         }
         else if ($scope.mCameras[3].isMouseInViewport(canvasX, canvasY))
         {
-            $scope.mRoomBorderSelection = $scope.mCameraNames[3];
-            $scope.mDrawCeiling = true;
+            if (type==="Down")$scope.drawBorderTo($scope.mCameraNames[3], true);
+            return true;
         }
+        
+        return false;
+    };
+
+    $scope.drawBorderTo = function(camera, drawCeiling)
+    {
+        $scope.mRoomBorderSelection = camera;
+        $scope.mDrawCeiling = drawCeiling;
     };
 
     $scope.onMouseDown = function (event){
@@ -520,39 +531,42 @@ myModule.controller("MainCtrl", function ($scope){
             var dist = 0.4;
 
             //check if user is selecting a new view
-            $scope.checkViewSelection($scope.mCanvasX, $scope.mCanvasY); 
+            $scope.inViewPort = $scope.checkViewSelection($scope.mCanvasX, $scope.mCanvasY, "Down"); 
             
-            // xform handle code
-            if ($scope.mMyTransHandle.mouseInTransHandle(x, y, dist))
-                return $scope.handleMode = "Translate";
-            else if ($scope.mMyTransHandle.mouseInRotHandle(x, y, dist))
-                return $scope.handleMode = "Rotation";
-            else if ($scope.mMyTransHandle.mouseInScaleHandle(x, y, dist))
-                return $scope.handleMode = "Scale";
-            else $scope.handleMode = null;
+            if (!$scope.inViewPort)
+            {
+                // xform handle code
+                if ($scope.mMyTransHandle.mouseInTransHandle(x, y, dist))
+                    return $scope.handleMode = "Translate";
+                else if ($scope.mMyTransHandle.mouseInRotHandle(x, y, dist))
+                    return $scope.handleMode = "Rotation";
+                else if ($scope.mMyTransHandle.mouseInScaleHandle(x, y, dist))
+                    return $scope.handleMode = "Scale";
+                else $scope.handleMode = null;
 
-            // room activation code
-            var clickedRoom = $scope.mMyWorld.mHouse.matchDescendant([x,y]);
-            while (clickedRoom && !(clickedRoom instanceof Room)) 
-                clickedRoom = clickedRoom.mParent;
-            $scope.mCurrentRoom = clickedRoom || $scope.mCurrentRoom;
-            
-            // furniture / room selection code            
-            var clickedItem = null;
-            if ($scope.mDrawCeiling) clickedItem = $scope.mCurrentRoom.ceiling.matchDescendant([x,y]);
-            if (!clickedItem) clickedItem = $scope.mCurrentRoom.floor.matchDescendant([x,y]);
-            if (!clickedItem) clickedItem = clickedRoom;
-            if (clickedItem){
-                $scope.mItemXDim = clickedItem.getXform().getWidth().toFixed(2);
-                $scope.mItemYDim = clickedItem.getXform().getHeight().toFixed(2);
-                
+                // room activation code
+                var clickedRoom = $scope.mMyWorld.mHouse.matchDescendant([x,y]);
+                while (clickedRoom && !(clickedRoom instanceof Room)) 
+                    clickedRoom = clickedRoom.mParent;
+                $scope.mCurrentRoom = clickedRoom || $scope.mCurrentRoom;
 
-                var roomSize = $scope.mCurrentRoom.getSize();
-                $scope.mItemXPos = (clickedItem.getXform().getXPos() + roomSize[0]/2).toFixed(2);
-                $scope.mItemYPos = (clickedItem.getXform().getYPos() + roomSize[1]/2).toFixed(2);
+                // furniture / room selection code            
+                var clickedItem = null;
+                if ($scope.mDrawCeiling) clickedItem = $scope.mCurrentRoom.ceiling.matchDescendant([x,y]);
+                if (!clickedItem) clickedItem = $scope.mCurrentRoom.floor.matchDescendant([x,y]);
+                if (!clickedItem) clickedItem = clickedRoom;
+                if (clickedItem){
+                    $scope.mItemXDim = clickedItem.getXform().getWidth().toFixed(2);
+                    $scope.mItemYDim = clickedItem.getXform().getHeight().toFixed(2);
 
+
+                    var roomSize = $scope.mCurrentRoom.getSize();
+                    $scope.mItemXPos = (clickedItem.getXform().getXPos() + roomSize[0]/2).toFixed(2);
+                    $scope.mItemYPos = (clickedItem.getXform().getYPos() + roomSize[1]/2).toFixed(2);
+
+                }
+                $scope.currSelection = clickedItem;
             }
-            $scope.currSelection = clickedItem;
         }
     };
   
@@ -566,6 +580,8 @@ myModule.controller("MainCtrl", function ($scope){
             //console.log("WC X: " + itemPos[0] + " Y: " + itemPos[1]);
         //}
 
+        // determine if mouse is in a viewport or large view
+        $scope.inViewPort = $scope.checkViewSelection($scope.mCanvasX, $scope.mCanvasY, "Move"); 
         
         // mouse position square
         $scope.mMyWorld.mXfSq.getXform().setPosition(pos[0], pos[1]);
