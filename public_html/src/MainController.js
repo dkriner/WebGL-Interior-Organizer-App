@@ -119,7 +119,7 @@ myModule.controller("MainCtrl", function ($scope){
 
     $scope.mCameraNames = ["Large", "Floor", "Floor+Ceiling", "House"];
     $scope.mRoomBorderSelection = $scope.mCameraNames[2];
-    $scope.mWCWidths = [15, 15, 15, 15];
+    $scope.mWCWidths = [15, 15, 15, 40];
     $scope.mWCCenters = [[0, 3], 
                          [0, 3], 
                          [0, 3],
