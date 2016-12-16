@@ -162,7 +162,7 @@
         <css-slider style="color: darkorange; font-style: oblique;" model="floorDesignScale" min="1" max="100" label="Carpet Scale:" callback="setFloorDesignScale()"></css-slider>
 
         <label style="color: darkorange;"><b>Upload Floor Design:</b></label>
-        <input style="color: darkorange" type="file" onchange="angular.element(this).scope().acceptTexFile(event)">
+        <input type="file" style="color: darkorange;" onchange="angular.element(this).scope().acceptTexFile(event)">
         
         <!-----------Ruler Images--------------
         <img src="assets/rulertop.png" alt="Top ruler" style="position: absolute; top: 698px; left: 100px; width: 670px">
@@ -219,10 +219,10 @@
              Directions: <br>
             1)Adjust the room size to your preference using the controls or input dimensions manually<br>
             2)Use the drop-down on the top right to add furniture<br>
-            3)Select between the viewports to filter what type of furnishings to show <br>
+            3)Select between the viewports to filter what type of furniture to show <br>
             4)Click on an item to adjust its size, scale, and rotation<br>
             5)Change the drawing order of items using the 'Bring Forward' and 'Send Backward' buttons<br>
-            6)Add and delete rooms using the buttons above the controls<br>
+            6)Add and delete items and rooms using the 'Delete Item/Room'<br>
             7)To change the carpet texture, load your own file with 2^n x 2^m dimensions
         </div>
                
